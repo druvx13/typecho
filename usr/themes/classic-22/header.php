@@ -1,6 +1,6 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 <!DOCTYPE html>
-<html lang="zh-Hans"<?php if ($this->options->colorSchema): ?> data-theme="<?php $this->options->colorSchema(); ?>"<?php endif; ?>>
+<html lang="en"<?php if ($this->options->colorSchema): ?> data-theme="<?php $this->options->colorSchema(); ?>"<?php endif; ?>>
 <head>
     <meta charset="<?php $this->options->charset(); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +41,7 @@
 
         <ul class="nav-menu">
             <li>
-                <a href="<?php $this->options->siteUrl(); ?>"<?php if ($this->is('index')): ?> class="active"<?php endif; ?>><?php _e('首页'); ?></a>
+                <a href="<?php $this->options->siteUrl(); ?>"<?php if ($this->is('index')): ?> class="active"<?php endif; ?>><?php _e('Home'); ?></a>
             </li>
 
             <?php \Widget\Contents\Page\Rows::alloc()->to($pages); ?>

@@ -7,23 +7,23 @@ function themeConfig($form)
         'logoUrl',
         null,
         null,
-        _t('站点 LOGO 地址'),
-        _t('在这里填入一个图片 URL 地址, 以在网站标题前加上一个 LOGO')
+        _t('Site Logo URL'),
+        _t('Enter an image URL here to show a logo before the site title')
     );
 
-    $form->addInput($logoUrl->addRule('url', _t('请填写一个合法的URL地址')));
+    $form->addInput($logoUrl->addRule('url', _t('Please enter a valid URL')));
 
     $sidebarBlock = new \Typecho\Widget\Helper\Form\Element\Checkbox(
         'sidebarBlock',
         [
-            'ShowRecentPosts'    => _t('显示最新文章'),
-            'ShowRecentComments' => _t('显示最近回复'),
-            'ShowCategory'       => _t('显示分类'),
-            'ShowArchive'        => _t('显示归档'),
-            'ShowOther'          => _t('显示其它杂项')
+            'ShowRecentPosts'    => _t('Show recent posts'),
+            'ShowRecentComments' => _t('Show recent comments'),
+            'ShowCategory'       => _t('Show categories'),
+            'ShowArchive'        => _t('Show archives'),
+            'ShowOther'          => _t('Show other widgets')
         ],
         ['ShowRecentPosts', 'ShowRecentComments', 'ShowCategory', 'ShowArchive', 'ShowOther'],
-        _t('侧边栏显示')
+        _t('Sidebar sections')
     );
 
     $form->addInput($sidebarBlock->multiMode());
@@ -43,18 +43,18 @@ function postMeta(
     <?php if ($metaType != 'page'): ?>
         <ul class="post-meta">
             <li itemprop="author" itemscope itemtype="http://schema.org/Person">
-                <?php _e('作者'); ?>: <a itemprop="name"
+                <?php _e('Author'); ?>: <a itemprop="name"
                                        href="<?php $archive->author->permalink(); ?>"
                                        rel="author"><?php $archive->author(); ?></a>
             </li>
-            <li><?php _e('时间'); ?>:
+            <li><?php _e('Date'); ?>:
                 <time datetime="<?php $archive->date('c'); ?>" itemprop="datePublished"><?php $archive->date(); ?></time>
             </li>
-            <li><?php _e('分类'); ?>: <?php $archive->category(','); ?></li>
+            <li><?php _e('Categories'); ?>: <?php $archive->category(','); ?></li>
             <?php if ($metaType == 'archive'): ?>
                 <li itemprop="interactionCount">
                     <a itemprop="discussionUrl"
-                       href="<?php $archive->permalink() ?>#comments"><?php $archive->commentsNum(_t('暂无评论'), _t('1 条评论'), _t('%d 条评论')); ?></a>
+                       href="<?php $archive->permalink() ?>#comments"><?php $archive->commentsNum(_t('No comments yet'), _t('1 comment'), _t('%d comments')); ?></a>
                 </li>
             <?php endif; ?>
         </ul>
@@ -69,8 +69,8 @@ function themeFields($layout)
         'logoUrl',
         null,
         null,
-        _t('站点LOGO地址'),
-        _t('在这里填入一个图片URL地址, 以在网站标题前加上一个LOGO')
+        _t('Site Logo URL'),
+        _t('Enter an image URL here to show a logo before the site title')
     );
     $layout->addItem($logoUrl);
 }

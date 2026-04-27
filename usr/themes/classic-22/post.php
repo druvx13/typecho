@@ -8,14 +8,14 @@
 
             <div class="entry-content fmt" itemprop="articleBody">
                 <?php $this->content(); ?>
-                <p itemprop="keywords"><?php _e('标签'); ?>：<?php $this->tags(', ', true, _t('无')); ?></p>
+                <p itemprop="keywords"><?php _e('Tags'); ?>：<?php $this->tags(', ', true, _t('none')); ?></p>
             </div>
         </article>
 
         <nav class="post-nav">
             <ul class="page-navigator">
-                <li class="prev"><?php $this->thePrev('%s', _t('没有了')); ?></li>
-                <li class="next"><?php $this->theNext('%s', _t('没有了')); ?></li>
+                <li class="prev"><?php $this->thePrev('%s', _t('None')); ?></li>
+                <li class="next"><?php $this->theNext('%s', _t('None')); ?></li>
             </ul>
         </nav>
 

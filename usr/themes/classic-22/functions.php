@@ -7,23 +7,23 @@ function themeConfig($form)
         'logoUrl',
         null,
         null,
-        _t('网站 Logo'),
-        _t('在这里填写图片 URL，网站将显示 Logo')
+        _t('Website Logo'),
+        _t('在这里填写图片 URL，Website将显示 Logo')
     );
 
-    $form->addInput($logoUrl->addRule('url', _t('请填写正确的 URL 地址')));
+    $form->addInput($logoUrl->addRule('url', _t('Please enter a valid URL')));
 
     $colorSchema = new \Typecho\Widget\Helper\Form\Element\Select(
         'colorSchema',
         array(
-            null => _t('自动'),
-            'light' => _t('浅色'),
-            'dark' => _t('深色'),
-            'customize' => _t('自定义'),
+            null => _t('Auto'),
+            'light' => _t('Light'),
+            'dark' => _t('Dark'),
+            'customize' => _t('Custom'),
         ),
         null,
-        _t('外观风格'),
-        _t('如果选择了自定义，主题将使用 theme.css 的样式')
+        _t('Appearance'),
+        _t('如果选择了Custom，主题将使用 theme.css 的样式')
     );
 
     $form->addInput($colorSchema);
@@ -43,7 +43,7 @@ function postMeta(
         <ul class="entry-meta list-inline text-muted">
             <li class="feather-calendar"><time datetime="<?php $archive->date('c'); ?>" itemprop="datePublished"><?php $archive->date(); ?></time></li>
             <li class="feather-folder"><?php $archive->category(', '); ?></li>
-            <li class="feather-message"><a href="<?php $archive->permalink() ?>#comments"  itemprop="discussionUrl"><?php $archive->commentsNum(_t('暂无评论'), _t('1 条评论'), _t('%d 条评论')); ?></a></li>
+            <li class="feather-message"><a href="<?php $archive->permalink() ?>#comments"  itemprop="discussionUrl"><?php $archive->commentsNum(_t('No comments yet'), _t('1 comment'), _t('%d comments')); ?></a></li>
         </ul>
         <?php endif; ?>
     </header>

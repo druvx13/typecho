@@ -15,10 +15,10 @@ $this->need('header.php');
 <div class="col-mb-12 col-8" id="main" role="main">
     <?php if (!($this->is('index')) && !($this->is('post'))): ?>
     <h3 class="archive-title"><?php $this->archiveTitle([
-            'category' => _t('分类 %s 下的文章'),
-            'search'   => _t('包含关键字 %s 的文章'),
-            'tag'      => _t('标签 %s 下的文章'),
-            'author'   => _t('%s 发布的文章')
+            'category' => _t('Categories %s 下的文章'),
+            'search'   => _t('Posts containing keyword %s'),
+            'tag'      => _t('Tags %s 下的文章'),
+            'author'   => _t('Posts published by %s')
         ], '', ''); ?></h3>
     <?php endif; ?>
     <?php if ($this->have()): ?>
@@ -26,17 +26,17 @@ $this->need('header.php');
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
             <?php postMeta($this); ?>
             <div class="post-content" itemprop="articleBody">
-                <?php $this->content(_t('阅读剩余部分')); ?>
+                <?php $this->content(_t('Read the rest')); ?>
             </div>
         </article>
     <?php endwhile; ?>
     <?php else: ?>
         <article class="post">
-            <h2 class="post-title"><?php _e('没有找到内容'); ?></h2>
+            <h2 class="post-title"><?php _e('No content found'); ?></h2>
         </article>
     <?php endif; ?>
 
-    <?php $this->pageNav('&laquo; ' . _t('前一页'), _t('后一页') . ' &raquo;'); ?>
+    <?php $this->pageNav('&laquo; ' . _t('Previous'), _t('Next') . ' &raquo;'); ?>
 </div><!-- end #main-->
 
 <?php $this->need('sidebar.php'); ?>
