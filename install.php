@@ -35,7 +35,8 @@ function install_get_lang(): string
     if (!empty($serverLang)) {
         return $serverLang;
     } else {
-        $lang = 'zh_CN';
+        $langDir = defined('__TYPECHO_LANG_DIR__') ? __TYPECHO_LANG_DIR__ : __TYPECHO_ROOT_DIR__ . '/usr/langs';
+        $lang = file_exists($langDir . '/en_US.mo') ? 'en_US' : 'zh_CN';
         $request = \Typecho\Request::getInstance();
 
         if ($request->is('lang')) {

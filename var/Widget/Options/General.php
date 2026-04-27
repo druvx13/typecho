@@ -47,7 +47,7 @@ class General extends Options implements ActionInterface
     {
         $dir = defined('__TYPECHO_LANG_DIR__') ? __TYPECHO_LANG_DIR__ : __TYPECHO_ROOT_DIR__ . '/usr/langs';
         $files = glob($dir . '/*.mo');
-        $langs = ['zh_CN' => '简体中文'];
+        $langs = ['zh_CN' => 'Simplified Chinese (简体中文)'];
 
         if (!empty($files)) {
             foreach ($files as $file) {

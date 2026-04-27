@@ -12,6 +12,7 @@ Typecho is released under the GNU General Public License 2.0.
 * Theme Support
 * Custom Fields
 * Custom Pages
+* Built-in English language pack (`en_US`)
 
 ## Requirements
 
