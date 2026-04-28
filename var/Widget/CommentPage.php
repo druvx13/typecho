@@ -26,7 +26,7 @@ class CommentPage extends Base implements ActionInterface
         ]);
 
         if (!($archive instanceof Archive) || !$archive->is('single')) {
-            throw new WidgetException(_t('请求的地址不存在'), 404);
+            throw new WidgetException(_t('Requested URL does not exist.'), 404);
         }
 
         $currentCommentUrl = Router::url('comment_page', [

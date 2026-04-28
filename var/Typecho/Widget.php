@@ -8,7 +8,7 @@ use Typecho\Widget\Response as WidgetResponse;
 use Typecho\Widget\Terminal;
 
 /**
- * Typecho组件基类
+ * TypechoWidget base class
  *
  * @property $sequence
  * @property $length
@@ -19,78 +19,78 @@ use Typecho\Widget\Terminal;
 abstract class Widget
 {
     /**
-     * widget对象池
+     * Widget object pool
      *
      * @var array
      */
     private static array $widgetPool = [];
 
     /**
-     * widget别名
+     * widgetAlias
      *
      * @var array
      */
     private static array $widgetAlias = [];
 
     /**
-     * request对象
+     * Request object
      *
      * @var WidgetRequest
      */
     protected WidgetRequest $request;
 
     /**
-     * response对象
+     * Response object
      *
      * @var WidgetResponse
      */
     protected WidgetResponse $response;
 
     /**
-     * 数据堆栈
+     * Data stack
      *
      * @var array
      */
     protected array $stack = [];
 
     /**
-     * 当前队列指针顺序值,从1开始
+     * Current queue pointer index, starting from 1
      *
      * @var integer
      */
     protected int $sequence = 0;
 
     /**
-     * 队列长度
+     * Queue length
      *
      * @var integer
      */
     protected int $length = 0;
 
     /**
-     * config对象
+     * Config object
      *
      * @var Config
      */
     protected Config $parameter;
 
     /**
-     * 数据堆栈每一行
+     * Each row in the data stack
      *
      * @var array
      */
     protected array $row = [];
 
     /**
-     * 构造函数,初始化组件
+     * Constructor,Initialize widget
      *
-     * @param WidgetRequest $request request对象
-     * @param WidgetResponse $response response对象
-     * @param mixed $params 参数列表
+     * @param WidgetRequest $request Request object
+     * @param WidgetResponse $response Response object
+     * @param mixed $params Parameter list
      */
     public function __construct(WidgetRequest $request, WidgetResponse $response, $params = null)
     {
-        //设置函数内部对象
+        // Set internal function objects
         $this->request = $request;
         $this->response = $response;
         $this->parameter = Config::factory($params);
@@ -106,7 +106,7 @@ abstract class Widget
     }
 
     /**
-     * widget别名
+     * widgetAlias
      *
      * @param string $widgetClass
      * @param string $aliasClass
@@ -117,12 +117,12 @@ abstract class Widget
     }
 
     /**
-     * 工厂方法,将类静态化放置到列表中
+     * Factory method; adds the class statically to the pool
      *
-     * @param class-string $alias 组件别名
-     * @param mixed $params 传递的参数
-     * @param mixed $request 前端参数
-     * @param bool|callable $disableSandboxOrCallback 回调
+     * @param class-string $alias Widget alias
+     * @param mixed $params Parameters to pass
+     * @param mixed $request Frontend parameters
+     * @param bool|callable $disableSandboxOrCallback Callback
      * @return Widget
      */
     public static function widget(
@@ -211,9 +211,9 @@ abstract class Widget
     }
 
     /**
-     * 释放组件
+     * Release widget
      *
-     * @param string $alias 组件名称
+     * @param string $alias Widget name
      * @deprecated alias for destroy
      */
     public static function destory(string $alias)
@@ -222,9 +222,9 @@ abstract class Widget
     }
 
     /**
-     * 释放组件
+     * Release widget
      *
-     * @param string|null $alias 组件名称
+     * @param string|null $alias Widget name
      */
     public static function destroy(?string $alias = null)
     {
@@ -248,9 +248,9 @@ abstract class Widget
     }
 
     /**
-     * post事件触发
+     * Trigger post event
      *
-     * @param boolean $condition 触发条件
+     * @param boolean $condition Trigger condition
      *
      * @return $this|EmptyClass
      */
@@ -264,9 +264,9 @@ abstract class Widget
     }
 
     /**
-     * 将类本身赋值
+     * Assign the class itself
      *
-     * @param mixed $variable 变量名
+     * @param mixed $variable Variable name
      * @return $this
      */
     public function to(&$variable): Widget
@@ -275,9 +275,9 @@ abstract class Widget
     }
 
     /**
-     * 按模版渲染
+     * Render by template
      *
-     * @param string $template 模版
+     * @param string $template Template
      * @return string
      */
     public function template(string $template): string
@@ -292,9 +292,9 @@ abstract class Widget
     }
 
     /**
-     * 格式化解析堆栈内的所有数据
+     * Format and parse all data in the stack
      *
-     * @param string $template 模版
+     * @param string $template Template
      */
     public function parse(string $template)
     {
@@ -337,7 +337,7 @@ abstract class Widget
     }
 
     /**
-     * 返回堆栈每一行的值
+     * Return each row value in the stack
      *
      * @return mixed
      */
@@ -359,14 +359,14 @@ abstract class Widget
     }
 
     /**
-     * 将每一行的值压入堆栈
+     * Push each row value onto the stack
      *
-     * @param array $value 每一行的值
+     * @param array $value Row values
      * @return mixed
      */
     public function push(array $value)
     {
-        //将行数据按顺序置位
+        // Set row data in order
         $this->row = $value;
         $this->length++;
 
@@ -375,9 +375,9 @@ abstract class Widget
     }
 
     /**
-     * 将所有行的值压入堆栈
+     * Push all row values onto the stack
      *
-     * @param array $values 所有行的值
+     * @param array $values All row values
      */
     public function pushAll(array $values)
     {
@@ -387,7 +387,7 @@ abstract class Widget
     }
 
     /**
-     * 根据余数输出
+     * Output based on remainder
      *
      * @param mixed ...$args
      */
@@ -397,7 +397,7 @@ abstract class Widget
     }
 
     /**
-     * 根据余数输出
+     * Output based on remainder
      *
      * @param int $current
      * @param mixed ...$args
@@ -410,7 +410,7 @@ abstract class Widget
     }
 
     /**
-     * 返回堆栈是否为空
+     * Return whether stack is empty
      *
      * @return boolean
      */
@@ -420,10 +420,10 @@ abstract class Widget
     }
 
     /**
-     * 魔术函数,用于挂接其它函数
+     * Magic function for hooking other functions
      *
-     * @param string $name 函数名
-     * @param array $args 函数参数
+     * @param string $name Function name
+     * @param array $args Function arguments
      */
     public function __call(string $name, array $args)
     {
@@ -436,7 +436,7 @@ abstract class Widget
     }
 
     /**
-     * 获取对象插件句柄
+     * Get object plugin handle
      *
      * @return Plugin
      */
@@ -446,9 +446,9 @@ abstract class Widget
     }
 
     /**
-     * 魔术函数,用于获取内部变量
+     * Magic function for accessing internal variables
      *
-     * @param string $name 变量名
+     * @param string $name Variable name
      * @return mixed
      */
     public function __get(string $name)
@@ -474,10 +474,10 @@ abstract class Widget
     }
 
     /**
-     * 设定堆栈每一行的值
+     * Set the value of each row in the stack
      *
-     * @param string $name 值对应的键值
-     * @param mixed $value 相应的值
+     * @param string $name Key corresponding to the value
+     * @param mixed $value Corresponding value
      */
     public function __set(string $name, $value)
     {

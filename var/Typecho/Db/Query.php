@@ -5,9 +5,9 @@ namespace Typecho\Db;
 use Typecho\Db;
 
 /**
- * Typecho数据库查询语句构建类
- * 使用方法:
- * $query = new Query();    //或者使用DB积累的sql方法返回实例化对象
+ * Typecho database query builder
+ * Usage:
+ * $query = new Query();    //或者使用DB积累的sql方法返回Instantiate object
  * $query->select('posts', 'post_id, post_title')
  * ->where('post_id = %d', 1)
  * ->limit(1);
@@ -44,21 +44,21 @@ class Query
     ];
 
     /**
-     * 数据库适配器
+     * Database adapter
      *
      * @var Adapter
      */
     private Adapter $adapter;
 
     /**
-     * 查询语句预结构,由数组构成,方便组合为SQL查询字符串
+     * 查询语句预结构,由数组构成,方便组合为SQL查询String
      *
      * @var array
      */
     private array $sqlPreBuild;
 
     /**
-     * 前缀
+     * Prefix
      *
      * @access private
      * @var string
@@ -71,10 +71,10 @@ class Query
     private array $params = [];
 
     /**
-     * 构造函数,引用数据库适配器作为内部数据
+     * Constructor,引用数据库适配器作为内部数据
      *
      * @param Adapter $adapter 数据库适配器
-     * @param string $prefix 前缀
+     * @param string $prefix Prefix
      */
     public function __construct(Adapter $adapter, string $prefix)
     {
@@ -108,7 +108,7 @@ class Query
      * 获取查询字串属性值
      *
      * @access public
-     * @param string $attributeName 属性名称
+     * @param string $attributeName Attribute name
      * @return string
      */
     public function getAttribute(string $attributeName): ?string
@@ -120,7 +120,7 @@ class Query
      * 清除查询字串属性值
      *
      * @access public
-     * @param string $attributeName 属性名称
+     * @param string $attributeName Attribute name
      * @return Query
      */
     public function cleanAttribute(string $attributeName): Query
@@ -146,9 +146,9 @@ class Query
     }
 
     /**
-     * 过滤表前缀,表前缀由table.构成
+     * 过滤表Prefix,表Prefix由table.构成
      *
-     * @param string $string 需要解析的字符串
+     * @param string $string 需要解析的String
      * @return string
      */
     private function filterPrefix(string $string): string
@@ -157,7 +157,7 @@ class Query
     }
 
     /**
-     * 过滤数组键值
+     * 过滤数组Key value
      *
      * @access private
      * @param string $str 待处理字段值
@@ -305,7 +305,7 @@ class Query
     }
 
     /**
-     * 查询行数偏移量
+     * 查询行数Offset
      *
      * @param mixed $offset 需要偏移的行数
      * @return Query
@@ -317,7 +317,7 @@ class Query
     }
 
     /**
-     * 分页查询
+     * Pagination查询
      *
      * @param mixed $page 页数
      * @param mixed $pageSize 每页行数
@@ -362,10 +362,10 @@ class Query
     }
 
     /**
-     * 排序顺序(ORDER BY)
+     * Sort顺序(ORDER BY)
      *
-     * @param string $orderBy 排序的索引
-     * @param string $sort 排序的方式(ASC, DESC)
+     * @param string $orderBy Sort的索引
+     * @param string $sort Sort的方式(ASC, DESC)
      * @return Query
      */
     public function order(string $orderBy, string $sort = Db::SORT_ASC): Query
@@ -383,7 +383,7 @@ class Query
     /**
      * 集合聚集(GROUP BY)
      *
-     * @param string $key 聚集的键值
+     * @param string $key 聚集的Key value
      * @return Query
      */
     public function group(string $key): Query
@@ -412,7 +412,7 @@ class Query
     }
 
     /**
-     * 选择查询字段
+     * Select query fields
      *
      * @param mixed ...$args 查询字段
      * @return $this
@@ -462,9 +462,9 @@ class Query
     }
 
     /**
-     * 更新记录操作(UPDATE)
+     * Update record operation (UPDATE)
      *
-     * @param string $table 需要更新记录的表
+     * @param string $table Table to update
      * @return Query
      */
     public function update(string $table): Query
@@ -475,9 +475,9 @@ class Query
     }
 
     /**
-     * 删除记录操作(DELETE)
+     * Delete record operation (DELETE)
      *
-     * @param string $table 需要删除记录的表
+     * @param string $table Table to delete from
      * @return Query
      */
     public function delete(string $table): Query
@@ -488,9 +488,9 @@ class Query
     }
 
     /**
-     * 插入记录操作(INSERT)
+     * Insert record operation (INSERT)
      *
-     * @param string $table 需要插入记录的表
+     * @param string $table Table to insert into
      * @return Query
      */
     public function insert(string $table): Query

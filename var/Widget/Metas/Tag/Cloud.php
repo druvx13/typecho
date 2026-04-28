@@ -11,7 +11,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 标签云组件
+ * Tag cloud widget
  *
  * @category typecho
  * @package Widget
@@ -21,7 +21,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Cloud extends Metas
 {
     /**
-     * 入口函数
+     * Entry point
      *
      * @throws Db\Exception
      */
@@ -45,9 +45,9 @@ class Cloud extends Metas
     }
 
     /**
-     * 按分割数输出字符串
+     * 按分割数输出String
      *
-     * @param mixed ...$args 需要输出的值
+     * @param mixed ...$args Values to output
      */
     public function split(...$args)
     {

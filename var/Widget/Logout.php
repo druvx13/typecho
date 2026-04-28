@@ -9,7 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 登出组件
+ * Logout widget
  *
  * @category typecho
  * @package Widget
@@ -19,7 +19,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Logout extends Users implements ActionInterface
 {
     /**
-     * 初始化函数
+     * Initialization function
      *
      * @access public
      * @return void

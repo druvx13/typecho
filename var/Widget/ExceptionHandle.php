@@ -7,7 +7,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 异常处理组件
+ * Exception handling widget
  *
  * @author qining
  * @category typecho
@@ -18,7 +18,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class ExceptionHandle extends Base
 {
     /**
-     * 重载构造函数
+     * 重载Constructor
      */
     public function execute()
     {

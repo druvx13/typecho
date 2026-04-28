@@ -13,21 +13,21 @@ $pages = \Widget\Contents\Page\Admin::alloc();
             <div class="col-mb-12 typecho-list">
                 <form method="get" class="typecho-list-operate">
                     <div class="operate">
-                        <label><i class="sr-only"><?php _e('全选'); ?></i><input type="checkbox"
+                        <label><i class="sr-only"><?php _e('Select all'); ?></i><input type="checkbox"
                                                                                class="typecho-table-select-all"/></label>
                         <div class="btn-group btn-drop">
                             <button class="btn dropdown-toggle btn-s" type="button"><i
-                                    class="sr-only"><?php _e('操作'); ?></i><?php _e('选中项'); ?> <i
+                                    class="sr-only"><?php _e('Operations'); ?></i><?php _e('Selected'); ?> <i
                                     class="i-caret-down"></i></button>
                             <ul class="dropdown-menu">
-                                <li><a lang="<?php _e('你确认要删除这些页面吗?'); ?>"
-                                       href="<?php $security->index('/action/contents-page-edit?do=delete'); ?>"><?php _e('删除'); ?></a>
+                                <li><a lang="<?php _e('Are you sure to delete thiese pages?'); ?>"
+                                       href="<?php $security->index('/action/contents-page-edit?do=delete'); ?>"><?php _e('Delete'); ?></a>
                                 </li>
                                 <li>
-                                    <a href="<?php $security->index('/action/contents-page-edit?do=mark&status=publish'); ?>"><?php _e('标记为<strong>%s</strong>', _t('公开')); ?></a>
+                                    <a href="<?php $security->index('/action/contents-page-edit?do=mark&status=publish'); ?>"><?php _e('Mark as: <strong>%s</strong>', _t('Public')); ?></a>
                                 </li>
                                 <li>
-                                    <a href="<?php $security->index('/action/contents-page-edit?do=mark&status=hidden'); ?>"><?php _e('标记为<strong>%s</strong>', _t('隐藏')); ?></a>
+                                    <a href="<?php $security->index('/action/contents-page-edit?do=mark&status=hidden'); ?>"><?php _e('Mark as: <strong>%s</strong>', _t('Hide')); ?></a>
                                 </li>
                             </ul>
                         </div>
@@ -36,11 +36,11 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                     <div class="search" role="search">
                         <?php $pages->backLink(); ?>
                         <?php if ('' != $request->keywords): ?>
-                            <a href="<?php $options->adminUrl('manage-pages.php'); ?>"><?php _e('&laquo; 取消筛选'); ?></a>
+                            <a href="<?php $options->adminUrl('manage-pages.php'); ?>"><?php _e('&laquo; cancel the filtering'); ?></a>
                         <?php endif; ?>
-                        <input type="text" class="text-s" placeholder="<?php _e('请输入关键字'); ?>"
+                        <input type="text" class="text-s" placeholder="<?php _e('Please enter keywords'); ?>"
                                value="<?php echo $request->filter('html')->keywords; ?>" name="keywords"/>
-                        <button type="submit" class="btn btn-s"><?php _e('筛选'); ?></button>
+                        <button type="submit" class="btn btn-s"><?php _e('Filter'); ?></button>
                     </div>
                 </form>
 
@@ -58,10 +58,10 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                         <tr class="nodrag">
                             <th class="kit-hidden-mb"></th>
                             <th class="kit-hidden-mb"></th>
-                            <th><?php _e('标题'); ?></th>
-                            <th><?php _e('子页面'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('作者'); ?></th>
-                            <th><?php _e('日期'); ?></th>
+                            <th><?php _e('Title'); ?></th>
+                            <th><?php _e('Sub-pages'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Author'); ?></th>
+                            <th><?php _e('Date'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -73,35 +73,35 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                     <td class="kit-hidden-mb"><a
                                             href="<?php $options->adminUrl('manage-comments.php?cid=' . $pages->cid); ?>"
                                             class="balloon-button size-<?php echo \Typecho\Common::splitByCount($pages->commentsNum, 1, 10, 20, 50, 100); ?>"
-                                            title="<?php $pages->commentsNum(); ?> <?php _e('评论'); ?>"><?php $pages->commentsNum(); ?></a>
+                                            title="<?php $pages->commentsNum(); ?> <?php _e('Comments'); ?>"><?php $pages->commentsNum(); ?></a>
                                     </td>
                                     <td>
                                         <a href="<?php $options->adminUrl('write-page.php?cid=' . $pages->cid); ?>"><?php $pages->title(); ?></a>
                                         <?php
                                         if ('page_draft' == $pages->type) {
-                                            echo '<em class="status">' . _t('草稿') . '</em>';
+                                            echo '<em class="status">' . _t('Drafts') . '</em>';
                                         } elseif ($pages->revision) {
-                                            echo '<em class="status">' . _t('有修订版') . '</em>';
+                                            echo '<em class="status">' . _t('Has revision') . '</em>';
                                         }
 
                                         if ('hidden' == $pages->status) {
-                                            echo '<em class="status">' . _t('隐藏') . '</em>';
+                                            echo '<em class="status">' . _t('Hide') . '</em>';
                                         }
                                         ?>
                                         <a href="<?php $options->adminUrl('write-page.php?cid=' . $pages->cid); ?>"
-                                           title="<?php _e('编辑 %s', htmlspecialchars($pages->title)); ?>"><i
+                                           title="<?php _e('Edit %s', htmlspecialchars($pages->title)); ?>"><i
                                                 class="i-edit"></i></a>
                                         <?php if ('page_draft' != $pages->type): ?>
                                             <a href="<?php $pages->permalink(); ?>"
-                                               title="<?php _e('浏览 %s', htmlspecialchars($pages->title)); ?>"><i
+                                               title="<?php _e('View %s', htmlspecialchars($pages->title)); ?>"><i
                                                     class="i-exlink"></i></a>
                                         <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php if (count($pages->children) > 0): ?>
-                                            <a href="<?php $options->adminUrl('manage-pages.php?parent=' . $pages->cid); ?>"><?php echo _n('一个页面', '%d个页面', count($pages->children)); ?></a>
+                                            <a href="<?php $options->adminUrl('manage-pages.php?parent=' . $pages->cid); ?>"><?php echo _n('one page', '%d pages', count($pages->children)); ?></a>
                                         <?php else: ?>
-                                            <a href="<?php $options->adminUrl('write-page.php?parent=' . $pages->cid); ?>"><?php echo _e('新增'); ?></a>
+                                            <a href="<?php $options->adminUrl('write-page.php?parent=' . $pages->cid); ?>"><?php echo _e('Add'); ?></a>
                                         <?php endif; ?>
                                     </td>
                                     <td class="kit-hidden-mb"><?php $pages->author(); ?></td>
@@ -109,7 +109,7 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                         <?php if ('page_draft' == $pages->type || $pages->revision): ?>
                                             <span class="description">
                             <?php $modifyDate = new \Typecho\Date($pages->revision ? $pages->revision['modified'] : $pages->modified); ?>
-                            <?php _e('保存于 %s', $modifyDate->word()); ?>
+                            <?php _e('Saved  at %s', $modifyDate->word()); ?>
                             </span>
                                         <?php else: ?>
                                             <?php $pages->dateWord(); ?>
@@ -119,7 +119,7 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="6" class="none"><?php _e('没有任何页面'); ?></td>
+                                <td colspan="6" class="none"><?php _e('No page.'); ?></td>
                             </tr>
                         <?php endif; ?>
                         </tbody>

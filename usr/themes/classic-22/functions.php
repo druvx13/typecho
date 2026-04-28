@@ -8,7 +8,7 @@ function themeConfig($form)
         null,
         null,
         _t('Website Logo'),
-        _t('在这里填写图片 URL，Website将显示 Logo')
+        _t('Enter an image URL here to display the site logo')
     );
 
     $form->addInput($logoUrl->addRule('url', _t('Please enter a valid URL')));
@@ -23,7 +23,7 @@ function themeConfig($form)
         ),
         null,
         _t('Appearance'),
-        _t('如果选择了Custom，主题将使用 theme.css 的样式')
+        _t('If Custom is selected, the theme will use styles from theme.css')
     );
 
     $form->addInput($colorSchema);

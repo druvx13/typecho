@@ -46,7 +46,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Comments extends Base implements QueryInterface, RowFilterInterface, PrimaryKeyInterface, ParamsDelegateInterface
 {
     /**
-     * @return string 获取主键
+     * @return string Get primary key
      */
     public function getPrimaryKey(): string
     {
@@ -72,13 +72,13 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     /**
      * 增加评论
      *
-     * @param array $rows 评论结构数组
+     * @param array $rows Comment structure array
      * @return integer
      * @throws Exception
      */
     public function insert(array $rows): int
     {
-        /** 构建插入结构 */
+        /** Build insert structure */
         $insertStruct = [
             'cid'      => $rows['cid'],
             'created'  => empty($rows['created']) ? $this->options->time : $rows['created'],
@@ -99,15 +99,15 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
             $insertStruct['coid'] = $rows['coid'];
         }
 
-        /** 过长的客户端字符串要截断 */
+        /** 过长的客户端String要截断 */
         if (Common::strLen($insertStruct['agent']) > 511) {
             $insertStruct['agent'] = Common::subStr($insertStruct['agent'], 0, 511, '');
         }
 
-        /** 首先插入部分数据 */
+        /** Insert partial data first */
         $insertId = $this->db->query($this->db->insert('table.comments')->rows($insertStruct));
 
-        /** 更新评论数 */
+        /** Update comment count */
         $num = $this->db->fetchObject($this->db->select(['COUNT(coid)' => 'num'])->from('table.comments')
             ->where('status = ? AND cid = ?', 'approved', $rows['cid']))->num;
 
@@ -118,16 +118,16 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 更新评论
+     * Update comment
      *
-     * @param array $rows 评论结构数组
-     * @param Query $condition 查询对象
+     * @param array $rows Comment structure array
+     * @param Query $condition Query object
      * @return integer
      * @throws Exception
      */
     public function update(array $rows, Query $condition): int
     {
-        /** 获取内容主键 */
+        /** Get content primary key */
         $updateCondition = clone $condition;
         $updateComment = $this->db->fetchObject($condition->select('cid')->from('table.comments')->limit(1));
 
@@ -137,7 +137,7 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
             return 0;
         }
 
-        /** 构建插入结构 */
+        /** Build insert structure */
         $preUpdateStruct = [
             'author' => Common::strBy($rows['author'] ?? null),
             'mail'   => Common::strBy($rows['mail'] ?? null),
@@ -153,15 +153,15 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
             }
         }
 
-        /** 更新创建时间 */
+        /** Update creation time */
         if (!empty($rows['created'])) {
             $updateStruct['created'] = $rows['created'];
         }
 
-        /** 更新评论数据 */
+        /** Update comment数据 */
         $updateRows = $this->db->query($updateCondition->update('table.comments')->rows($updateStruct));
 
-        /** 更新评论数 */
+        /** Update comment count */
         $num = $this->db->fetchObject($this->db->select(['COUNT(coid)' => 'num'])->from('table.comments')
             ->where('status = ? AND cid = ?', 'approved', $cid))->num;
 
@@ -172,15 +172,15 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 删除数据
+     * Delete data
      *
-     * @param Query $condition 查询对象
+     * @param Query $condition Query object
      * @return integer
      * @throws Exception
      */
     public function delete(Query $condition): int
     {
-        /** 获取内容主键 */
+        /** Get content primary key */
         $deleteCondition = clone $condition;
         $deleteComment = $this->db->fetchObject($condition->select('cid')->from('table.comments')->limit(1));
 
@@ -193,7 +193,7 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
         /** 删除评论数据 */
         $deleteRows = $this->db->query($deleteCondition->delete('table.comments'));
 
-        /** 更新评论数 */
+        /** Update comment count */
         $num = $this->db->fetchObject($this->db->select(['COUNT(coid)' => 'num'])->from('table.comments')
             ->where('status = ? AND cid = ?', 'approved', $cid))->num;
 
@@ -206,7 +206,7 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     /**
      * 按照条件计算评论数量
      *
-     * @param Query $condition 查询对象
+     * @param Query $condition Query object
      * @return integer
      * @throws Exception
      */
@@ -216,9 +216,9 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 将每行的值压入堆栈
+     * Push each row value onto the stack
      *
-     * @param array $value 每行的值
+     * @param array $value Row values
      * @return array
      */
     public function push(array $value): array
@@ -228,14 +228,14 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 通用过滤器
+     * General filter
      *
-     * @param array $row 需要过滤的行数据
+     * @param array $row Row data to filter
      * @return array
      */
     public function filter(array $row): array
     {
-        /** 处理默认空值 */
+        /** Handle default empty value */
         $row['author'] = $row['author'] ?? '';
         $row['mail'] = $row['mail'] ?? '';
         $row['url'] = $row['url'] ?? '';
@@ -248,9 +248,9 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 输出文章发布日期
+     * Output post publication date
      *
-     * @param string|null $format 日期格式
+     * @param string|null $format Date format
      */
     public function date(?string $format = null)
     {
@@ -261,7 +261,7 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
      * 输出作者相关
      *
      * @param boolean|null $autoLink 是否自动加上链接
-     * @param boolean|null $noFollow 是否加上nofollow标签
+     * @param boolean|null $noFollow 是否加上nofollowLabel
      */
     public function author(?bool $autoLink = null, ?bool $noFollow = null)
     {
@@ -277,10 +277,10 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 调用gravatar输出用户头像
+     * Call Gravatar to output user avatar
      *
-     * @param integer $size 头像尺寸
-     * @param string|null $default 默认输出头像
+     * @param integer $size Avatar size
+     * @param string|null $default Default avatar
      */
     public function gravatar(int $size = 32, ?string $default = null, $highRes = false)
     {
@@ -307,8 +307,8 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     /**
      * 输出评论摘要
      *
-     * @param integer $length 摘要截取长度
-     * @param string $trim 摘要后缀
+     * @param integer $length Excerpt length
+     * @param string $trim Excerpt suffix
      */
     public function excerpt(int $length = 100, string $trim = '...')
     {
@@ -328,7 +328,7 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 获取查询对象
+     * Get query object
      *
      * @param mixed $fields
      * @return Query
@@ -379,7 +379,7 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 获取当前内容结构
+     * Get current content structure
      *
      * @return Contents
      */
@@ -389,7 +389,7 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 获取当前评论标题
+     * 获取当前评论Title
      *
      * @return string|null
      */
@@ -475,13 +475,13 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 获取当前评论内容
+     * 获取当前Comment content
      *
      * @return string|null
      */
     protected function ___content(): ?string
     {
-        $text = $this->parentContent->hidden ? _t('内容被隐藏') : $this->text;
+        $text = $this->parentContent->hidden ? _t('The content is hidden.') : $this->text;
 
         $text = Comments::pluginHandle()->trigger($plugged)->filter('content', $text, $this);
         if (!$plugged) {
@@ -494,7 +494,7 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 输出词义化日期
+     * 输出词义化Sun期
      *
      * @return string
      */
@@ -504,7 +504,7 @@ class Comments extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 锚点id
+     * Anchor ID
      *
      * @return string
      */

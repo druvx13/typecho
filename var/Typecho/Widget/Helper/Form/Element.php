@@ -9,7 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 表单元素抽象类
+ * Abstract form element class
  *
  * @category typecho
  * @package Widget
@@ -19,7 +19,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 abstract class Element extends Layout
 {
     /**
-     * 单例唯一id
+     * 单例Unique ID
      *
      * @access protected
      * @var integer
@@ -51,7 +51,7 @@ abstract class Element extends Layout
     public array $inputs = [];
 
     /**
-     * 表单标题
+     * 表单Title
      *
      * @access public
      * @var Layout
@@ -107,12 +107,12 @@ abstract class Element extends Layout
     protected array $multiline = [];
 
     /**
-     * 构造函数
+     * Constructor
      *
      * @param string|null $name 表单输入项名称
-     * @param array|null $options 选择项
-     * @param mixed $value 表单默认值
-     * @param string|null $label 表单标题
+     * @param array|null $options Options array
+     * @param mixed $value Form default value
+     * @param string|null $label 表单Title
      * @param string|null $description 表单描述
      * @return void
      */
@@ -132,18 +132,18 @@ abstract class Element extends Layout
         $this->name = $name;
         self::$uniqueId++;
 
-        /** 运行自定义初始函数 */
+        /** Run custom initialization function */
         $this->init();
 
-        /** 初始化表单标题 */
+        /** 初始化表单Title */
         if (null !== $label) {
             $this->label($label);
         }
 
-        /** 初始化表单项 */
+        /** Initialize form item */
         $this->input = $this->input($name, $options);
 
-        /** 初始化表单值 */
+        /** Initialize form value */
         if (null !== $value) {
             $this->value($value);
         }
@@ -155,7 +155,7 @@ abstract class Element extends Layout
     }
 
     /**
-     * 自定义初始函数
+     * Custom initialization function
      *
      * @return void
      */
@@ -164,14 +164,14 @@ abstract class Element extends Layout
     }
 
     /**
-     * 创建表单标题
+     * 创建表单Title
      *
-     * @param string $value 标题字符串
+     * @param string $value TitleString
      * @return $this
      */
     public function label(string $value): Element
     {
-        /** 创建标题元素 */
+        /** 创建Title元素 */
         if (empty($this->label)) {
             $this->label = new Layout('label', ['class' => 'typecho-label']);
             $this->container($this->label);
@@ -200,18 +200,18 @@ abstract class Element extends Layout
     }
 
     /**
-     * 初始化当前输入项
+     * Initialize current input element
      *
-     * @param string|null $name 表单元素名称
-     * @param array|null $options 选择项
+     * @param string|null $name Form element name
+     * @param array|null $options Options array
      * @return Layout|null
      */
     abstract public function input(?string $name = null, ?array $options = null): ?Layout;
 
     /**
-     * 设置表单元素值
+     * Set form element value
      *
-     * @param mixed $value 表单元素值
+     * @param mixed $value Form element value
      * @return Element
      */
     public function value($value): Element
@@ -257,7 +257,7 @@ abstract class Element extends Layout
     }
 
     /**
-     * 多行输出模式
+     * Multi-line output mode
      *
      * @return Layout
      */
@@ -269,7 +269,7 @@ abstract class Element extends Layout
     }
 
     /**
-     * 多行输出模式
+     * Multi-line output mode
      *
      * @return Element
      */
@@ -294,7 +294,7 @@ abstract class Element extends Layout
     }
 
     /**
-     * 统一设置所有输入项的属性值
+     * 统Mon设置所有输入项的属性值
      *
      * @param string $attributeName
      * @param mixed $attributeValue
@@ -307,9 +307,9 @@ abstract class Element extends Layout
     }
 
     /**
-     * 设置表单元素值
+     * Set form element value
      *
-     * @param mixed $value 表单元素值
+     * @param mixed $value Form element value
      */
     abstract protected function inputValue($value);
 

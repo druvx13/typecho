@@ -22,7 +22,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Author extends Contents
 {
     /**
-     * 执行函数,初始化数据
+     * Execute function, initialize data
      *
      * @throws Exception
      */

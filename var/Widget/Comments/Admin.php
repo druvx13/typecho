@@ -27,7 +27,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Admin extends Comments
 {
     /**
-     * 分页计算对象
+     * Pagination calculation object
      *
      * @access private
      * @var Query
@@ -35,7 +35,7 @@ class Admin extends Comments
     private Query $countSql;
 
     /**
-     * 当前页
+     * Current page
      *
      * @access private
      * @var integer
@@ -43,7 +43,7 @@ class Admin extends Comments
     private int $currentPage;
 
     /**
-     * 所有文章个数
+     * Total post count
      *
      * @access private
      * @var integer|null
@@ -51,7 +51,7 @@ class Admin extends Comments
     private ?int $total;
 
     /**
-     * 获取菜单标题
+     * Get menu title
      *
      * @return string
      * @throws Exception
@@ -61,14 +61,14 @@ class Admin extends Comments
         $content = $this->parentContent;
 
         if ($content) {
-            return _t('%s的评论', $content->title);
+            return _t('Comment of %s', $content->title);
         }
 
-        throw new Exception(_t('内容不存在'), 404);
+        throw new Exception(_t('Content does not exist.'), 404);
     }
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @throws Db\Exception|Exception
      */
@@ -78,7 +78,7 @@ class Admin extends Comments
         $this->parameter->setDefault('pageSize=20');
         $this->currentPage = $this->request->filter('int')->get('page', 1);
 
-        /** 过滤标题 */
+        /** Filter title */
         if (null != ($keywords = $this->request->filter('search')->get('keywords'))) {
             $select->where('table.comments.text LIKE ?', '%' . $keywords . '%');
         }
@@ -122,7 +122,7 @@ class Admin extends Comments
     }
 
     /**
-     * 输出分页
+     * Output pagination
      *
      * @throws Exception|Db\Exception
      */
@@ -130,7 +130,7 @@ class Admin extends Comments
     {
         $query = $this->request->makeUriByRequest('page={page}');
 
-        /** 使用盒状分页 */
+        /** Use box-style pagination */
         $nav = new Box(
             !isset($this->total) ? $this->total = $this->size($this->countSql) : $this->total,
             $this->currentPage,
@@ -141,7 +141,7 @@ class Admin extends Comments
     }
 
     /**
-     * 获取当前内容结构
+     * Get current content structure
      *
      * @return Contents
      * @throws Db\Exception

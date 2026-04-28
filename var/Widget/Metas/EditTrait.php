@@ -8,7 +8,7 @@ trait EditTrait
 {
 
     /**
-     * 获取最大排序
+     * 获取最大Sort
      *
      * @param string $type
      * @param int $parent
@@ -22,7 +22,7 @@ trait EditTrait
     }
 
     /**
-     * 对数据按照sort字段排序
+     * 对数据按照sort字段Sort
      *
      * @param array $metas
      * @param string $type
@@ -43,7 +43,7 @@ trait EditTrait
      *
      * @param integer $mid 数据主键
      * @param string $type 数据类型
-     * @param array $metas 需要合并的数据集
+     * @param array $metas 需要合并的Dataset
      * @throws Exception
      */
     public function merge(int $mid, string $type, array $metas)
@@ -87,7 +87,7 @@ trait EditTrait
      *
      * @param int $mid meta id
      * @param string $type 类别
-     * @param string $status 状态
+     * @param string $status Status
      * @throws Exception
      */
     protected function refreshCountByTypeAndStatus(int $mid, string $type, string $status = 'publish')

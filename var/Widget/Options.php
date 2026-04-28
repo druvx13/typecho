@@ -17,7 +17,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 全局选项组件
+ * Global options widget
  *
  * @property string $feedUrl
  * @property string $feedRssUrl
@@ -143,7 +143,7 @@ class Options extends Base
     }
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @throws DbException
      */
@@ -196,7 +196,7 @@ class Options extends Base
     /**
      * 输出网站路径
      *
-     * @param string|null $path 子路径
+     * @param string|null $path Sub-path
      */
     public function siteUrl(?string $path = null)
     {
@@ -206,7 +206,7 @@ class Options extends Base
     /**
      * 输出解析地址
      *
-     * @param string|null $path 子路径
+     * @param string|null $path Sub-path
      */
     public function index(?string $path = null)
     {
@@ -216,7 +216,7 @@ class Options extends Base
     /**
      * 输出模板路径
      *
-     * @param string|null $path 子路径
+     * @param string|null $path Sub-path
      * @param string|null $theme 模版名称
      * @return string | void
      */
@@ -235,7 +235,7 @@ class Options extends Base
     /**
      * 输出插件路径
      *
-     * @param string|null $path 子路径
+     * @param string|null $path Sub-path
      */
     public function pluginUrl(?string $path = null)
     {
@@ -243,7 +243,7 @@ class Options extends Base
     }
 
     /**
-     * 获取插件目录
+     * 获取Plugin directory
      *
      * @param string|null $plugin
      * @return string
@@ -256,7 +256,7 @@ class Options extends Base
     /**
      * 输出后台路径
      *
-     * @param string|null $path 子路径
+     * @param string|null $path Sub-path
      * @param bool $return
      * @return void|string
      */
@@ -272,7 +272,7 @@ class Options extends Base
     }
 
     /**
-     * 获取或输出后台静态文件路径
+     * 获取或输出后台静态File path
      *
      * @param string $type
      * @param string|null $file
@@ -297,7 +297,7 @@ class Options extends Base
     }
 
     /**
-     * 编码输出允许出现在评论中的html标签
+     * 编码输出允许出现在评论中的htmlLabel
      */
     public function commentsHTMLTagAllowed()
     {
@@ -307,7 +307,7 @@ class Options extends Base
     /**
      * 获取插件系统参数
      *
-     * @param mixed $pluginName 插件名称
+     * @param mixed $pluginName Plugin name
      * @return mixed
      * @throws PluginException
      */
@@ -320,7 +320,7 @@ class Options extends Base
             ) {
                 $this->pluginConfig[$pluginName] = new Config($options);
             } else {
-                throw new PluginException(_t('插件%s的配置信息没有找到', $pluginName), 500);
+                throw new PluginException(_t('No configuration information has been found for plugin %s.', $pluginName), 500);
             }
         }
 
@@ -330,7 +330,7 @@ class Options extends Base
     /**
      * 获取个人插件系统参数
      *
-     * @param mixed $pluginName 插件名称
+     * @param mixed $pluginName Plugin name
      *
      * @return mixed
      * @throws PluginException
@@ -344,7 +344,7 @@ class Options extends Base
             ) {
                 $this->personalPluginConfig[$pluginName] = new Config($options);
             } else {
-                throw new PluginException(_t('插件%s的配置信息没有找到', $pluginName), 500);
+                throw new PluginException(_t('No configuration information has been found for plugin %s.', $pluginName), 500);
             }
         }
 
@@ -359,7 +359,7 @@ class Options extends Base
         $routingTable = $this->tryDeserialize($this->row['routingTable']);
 
         if (isset($this->db) && !isset($routingTable[0])) {
-            /** 解析路由并缓存 */
+            /** Parse route并缓存 */
             $parser = new Parser($routingTable);
             $parsedRoutingTable = $parser->parse();
             $routingTable = array_merge([$parsedRoutingTable], $routingTable);
@@ -540,7 +540,7 @@ class Options extends Base
     }
 
     /**
-     * 获取解析路径前缀
+     * 获取解析路径Prefix
      *
      * @return string
      */
@@ -601,7 +601,7 @@ class Options extends Base
     }
 
     /**
-     * 获取登录提交地址
+     * Get login submission URL
      *
      * @return string
      */
@@ -627,7 +627,7 @@ class Options extends Base
     }
 
     /**
-     * 获取登录提交地址
+     * Get login submission URL
      *
      * @return string
      * @throws Widget\Exception
@@ -733,7 +733,7 @@ class Options extends Base
     }
 
     /**
-     * 允许上传的文件类型
+     * 允许上传的File type
      *
      * @return array
      */

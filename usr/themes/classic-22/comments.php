@@ -24,11 +24,11 @@
 
             <form method="post" action="<?php $this->commentUrl() ?>" id="comment-form" role="form">
                 <div class="grid">
-                    <textarea placeholder="<?php _e('评论Comment...'); ?>" rows="4" cols="300" name="text" id="textarea" required><?php $this->remember('text'); ?></textarea>
+                    <textarea placeholder="<?php _e('Write your comment...'); ?>" rows="4" cols="300" name="text" id="textarea" required><?php $this->remember('text'); ?></textarea>
                 </div>
                 <?php if ($this->user->hasLogin()): ?>
                 <p>
-                    <?php _e('Log in身份：'); ?><a href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a><span class="mx-2 text-muted">&middot;</span><a href="<?php $this->options->logoutUrl(); ?>"><?php _e('Log out'); ?></a>
+                    <?php _e('Logged in as: '); ?><a href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a><span class="mx-2 text-muted">&middot;</span><a href="<?php $this->options->logoutUrl(); ?>"><?php _e('Log out'); ?></a>
                 </p>
                 <?php else: ?>
                 <div class="grid">

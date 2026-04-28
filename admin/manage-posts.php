@@ -16,11 +16,11 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                     <ul class="typecho-option-tabs">
                         <li<?php if (!isset($request->status) || 'all' == $request->get('status')): ?> class="current"<?php endif; ?>>
                             <a href="<?php $options->adminUrl('manage-posts.php'
-                                . (isset($request->uid) ? '?uid=' . $request->filter('encode')->uid : '')); ?>"><?php _e('可用'); ?></a>
+                                . (isset($request->uid) ? '?uid=' . $request->filter('encode')->uid : '')); ?>"><?php _e('Available'); ?></a>
                         </li>
                         <li<?php if ('waiting' == $request->get('status')): ?> class="current"<?php endif; ?>><a
                                 href="<?php $options->adminUrl('manage-posts.php?status=waiting'
-                                    . (isset($request->uid) ? '&uid=' . $request->filter('encode')->uid : '')); ?>"><?php _e('待审核'); ?>
+                                    . (isset($request->uid) ? '&uid=' . $request->filter('encode')->uid : '')); ?>"><?php _e('Awaiting approval'); ?>
                                 <?php if (!$isAllPosts && $stat->myWaitingPostsNum > 0 && !isset($request->uid)): ?>
                                     <span class="balloon"><?php $stat->myWaitingPostsNum(); ?></span>
                                 <?php elseif ($isAllPosts && $stat->waitingPostsNum > 0 && !isset($request->uid)): ?>
@@ -31,7 +31,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                             </a></li>
                         <li<?php if ('draft' == $request->get('status')): ?> class="current"<?php endif; ?>><a
                                 href="<?php $options->adminUrl('manage-posts.php?status=draft'
-                                    . (isset($request->uid) ? '&uid=' . $request->filter('encode')->uid : '')); ?>"><?php _e('草稿'); ?>
+                                    . (isset($request->uid) ? '&uid=' . $request->filter('encode')->uid : '')); ?>"><?php _e('Drafts'); ?>
                                 <?php if (!$isAllPosts && $stat->myDraftPostsNum > 0 && !isset($request->uid)): ?>
                                     <span class="balloon"><?php $stat->myDraftPostsNum(); ?></span>
                                 <?php elseif ($isAllPosts && $stat->draftPostsNum > 0 && !isset($request->uid)): ?>
@@ -45,10 +45,10 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                     <?php if ($user->pass('editor', true) && !isset($request->uid)): ?>
                     <ul class="typecho-option-tabs">
                         <li class="<?php if ($isAllPosts): ?> current<?php endif; ?>"><a
-                                href="<?php echo $request->makeUriByRequest('__typecho_all_posts=on&page=1'); ?>"><?php _e('所有'); ?></a>
+                                href="<?php echo $request->makeUriByRequest('__typecho_all_posts=on&page=1'); ?>"><?php _e('All'); ?></a>
                         </li>
                         <li class="<?php if (!$isAllPosts): ?> current<?php endif; ?>"><a
-                                href="<?php echo $request->makeUriByRequest('__typecho_all_posts=off&page=1'); ?>"><?php _e('我的'); ?></a>
+                                href="<?php echo $request->makeUriByRequest('__typecho_all_posts=off&page=1'); ?>"><?php _e('My'); ?></a>
                         </li>
                     </ul>
                     <?php endif; ?>
@@ -56,28 +56,28 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
 
                 <form method="get" class="typecho-list-operate">
                     <div class="operate">
-                        <label><i class="sr-only"><?php _e('全选'); ?></i><input type="checkbox"
+                        <label><i class="sr-only"><?php _e('Select all'); ?></i><input type="checkbox"
                                                                                class="typecho-table-select-all"/></label>
                         <div class="btn-group btn-drop">
                             <button class="btn dropdown-toggle btn-s" type="button"><i
-                                    class="sr-only"><?php _e('操作'); ?></i><?php _e('选中项'); ?> <i
+                                    class="sr-only"><?php _e('Operations'); ?></i><?php _e('Selected'); ?> <i
                                     class="i-caret-down"></i></button>
                             <ul class="dropdown-menu">
-                                <li><a lang="<?php _e('你确认要删除这些文章吗?'); ?>"
-                                       href="<?php $security->index('/action/contents-post-edit?do=delete'); ?>"><?php _e('删除'); ?></a>
+                                <li><a lang="<?php _e('Are you sure to delete these posts?'); ?>"
+                                       href="<?php $security->index('/action/contents-post-edit?do=delete'); ?>"><?php _e('Delete'); ?></a>
                                 </li>
                                 <?php if ($user->pass('editor', true)): ?>
                                     <li>
-                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=publish'); ?>"><?php _e('标记为<strong>%s</strong>', _t('公开')); ?></a>
+                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=publish'); ?>"><?php _e('Mark as: <strong>%s</strong>', _t('Public')); ?></a>
                                     </li>
                                     <li>
-                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=waiting'); ?>"><?php _e('标记为<strong>%s</strong>', _t('待审核')); ?></a>
+                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=waiting'); ?>"><?php _e('Mark as: <strong>%s</strong>', _t('Awaiting approval')); ?></a>
                                     </li>
                                     <li>
-                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=hidden'); ?>"><?php _e('标记为<strong>%s</strong>', _t('隐藏')); ?></a>
+                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=hidden'); ?>"><?php _e('Mark as: <strong>%s</strong>', _t('Hide')); ?></a>
                                     </li>
                                     <li>
-                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=private'); ?>"><?php _e('标记为<strong>%s</strong>', _t('私密')); ?></a>
+                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=private'); ?>"><?php _e('Mark as: <strong>%s</strong>', _t('Private')); ?></a>
                                     </li>
                                 <?php endif; ?>
                             </ul>
@@ -88,19 +88,19 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                             <a href="<?php $options->adminUrl('manage-posts.php'
                                 . (isset($request->status) || isset($request->uid) ? '?' .
                                     (isset($request->status) ? 'status=' . $request->filter('encode')->status : '') .
-                                    (isset($request->uid) ? (isset($request->status) ? '&' : '') . 'uid=' . $request->filter('encode')->uid : '') : '')); ?>"><?php _e('&laquo; 取消筛选'); ?></a>
+                                    (isset($request->uid) ? (isset($request->status) ? '&' : '') . 'uid=' . $request->filter('encode')->uid : '') : '')); ?>"><?php _e('&laquo; cancel the filtering'); ?></a>
                         <?php endif; ?>
-                        <input type="text" class="text-s" placeholder="<?php _e('请输入关键字'); ?>"
+                        <input type="text" class="text-s" placeholder="<?php _e('Please enter keywords'); ?>"
                                value="<?php echo $request->filter('html')->keywords; ?>" name="keywords"/>
                         <select name="category">
-                            <option value=""><?php _e('所有分类'); ?></option>
+                            <option value=""><?php _e('All categories'); ?></option>
                             <?php \Widget\Metas\Category\Rows::alloc()->to($category); ?>
                             <?php while ($category->next()): ?>
                                 <option
                                     value="<?php $category->mid(); ?>"<?php if ($request->get('category') == $category->mid): ?> selected="true"<?php endif; ?>><?php $category->name(); ?></option>
                             <?php endwhile; ?>
                         </select>
-                        <button type="submit" class="btn btn-s"><?php _e('筛选'); ?></button>
+                        <button type="submit" class="btn btn-s"><?php _e('Filter'); ?></button>
                         <?php if (isset($request->uid)): ?>
                             <input type="hidden" value="<?php echo $request->filter('html')->uid; ?>"
                                    name="uid"/>
@@ -126,10 +126,10 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                         <tr>
                             <th class="kit-hidden-mb"></th>
                             <th class="kit-hidden-mb"></th>
-                            <th><?php _e('标题'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('作者'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('分类'); ?></th>
-                            <th><?php _e('日期'); ?></th>
+                            <th><?php _e('Title'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Author'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Category'); ?></th>
+                            <th><?php _e('Date'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -141,33 +141,33 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                     <td class="kit-hidden-mb"><a
                                             href="<?php $options->adminUrl('manage-comments.php?cid=' . ($posts->parentId ? $posts->parentId : $posts->cid)); ?>"
                                             class="balloon-button size-<?php echo \Typecho\Common::splitByCount($posts->commentsNum, 1, 10, 20, 50, 100); ?>"
-                                            title="<?php $posts->commentsNum(); ?> <?php _e('评论'); ?>"><?php $posts->commentsNum(); ?></a>
+                                            title="<?php $posts->commentsNum(); ?> <?php _e('Comments'); ?>"><?php $posts->commentsNum(); ?></a>
                                     </td>
                                     <td>
                                         <a href="<?php $options->adminUrl('write-post.php?cid=' . $posts->cid); ?>"><?php $posts->title(); ?></a>
                                         <?php
                                         if ('post_draft' == $posts->type) {
-                                            echo '<em class="status">' . _t('草稿') . '</em>';
+                                            echo '<em class="status">' . _t('Drafts') . '</em>';
                                         } elseif ($posts->revision) {
-                                            echo '<em class="status">' . _t('有修订版') . '</em>';
+                                            echo '<em class="status">' . _t('Has revision') . '</em>';
                                         }
 
                                         if ('hidden' == $posts->status) {
-                                            echo '<em class="status">' . _t('隐藏') . '</em>';
+                                            echo '<em class="status">' . _t('Hide') . '</em>';
                                         } elseif ('waiting' == $posts->status) {
-                                            echo '<em class="status">' . _t('待审核') . '</em>';
+                                            echo '<em class="status">' . _t('Awaiting approval') . '</em>';
                                         } elseif ('private' == $posts->status) {
-                                            echo '<em class="status">' . _t('私密') . '</em>';
+                                            echo '<em class="status">' . _t('Private') . '</em>';
                                         } elseif ($posts->password) {
-                                            echo '<em class="status">' . _t('密码保护') . '</em>';
+                                            echo '<em class="status">' . _t('Protected by password') . '</em>';
                                         }
                                         ?>
                                         <a href="<?php $options->adminUrl('write-post.php?cid=' . $posts->cid); ?>"
-                                           title="<?php _e('编辑 %s', htmlspecialchars($posts->title)); ?>"><i
+                                           title="<?php _e('Edit %s', htmlspecialchars($posts->title)); ?>"><i
                                                 class="i-edit"></i></a>
                                         <?php if ('post_draft' != $posts->type): ?>
                                             <a href="<?php $posts->permalink(); ?>"
-                                               title="<?php _e('浏览 %s', htmlspecialchars($posts->title)); ?>"><i
+                                               title="<?php _e('View %s', htmlspecialchars($posts->title)); ?>"><i
                                                     class="i-exlink"></i></a>
                                         <?php endif; ?>
                                     </td>
@@ -186,7 +186,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                         <?php if ('post_draft' == $posts->type || $posts->revision): ?>
                                             <span class="description">
                             <?php $modifyDate = new \Typecho\Date($posts->revision ? $posts->revision['modified'] : $posts->modified); ?>
-                            <?php _e('保存于 %s', $modifyDate->word()); ?>
+                            <?php _e('Saved  at %s', $modifyDate->word()); ?>
                             </span>
                                         <?php else: ?>
                                             <?php $posts->dateWord(); ?>
@@ -196,7 +196,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="6" class="none"><?php _e('没有任何文章'); ?></td>
+                                <td colspan="6" class="none"><?php _e('No post'); ?></td>
                             </tr>
                         <?php endif; ?>
                         </tbody>
@@ -205,28 +205,28 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
 
                 <form method="get" class="typecho-list-operate">
                     <div class="operate">
-                        <label><i class="sr-only"><?php _e('全选'); ?></i><input type="checkbox"
+                        <label><i class="sr-only"><?php _e('Select all'); ?></i><input type="checkbox"
                                                                                class="typecho-table-select-all"/></label>
                         <div class="btn-group btn-drop">
                             <button class="btn dropdown-toggle btn-s" type="button"><i
-                                    class="sr-only"><?php _e('操作'); ?></i><?php _e('选中项'); ?> <i
+                                    class="sr-only"><?php _e('Operations'); ?></i><?php _e('Selected'); ?> <i
                                     class="i-caret-down"></i></button>
                             <ul class="dropdown-menu">
-                                <li><a lang="<?php _e('你确认要删除这些文章吗?'); ?>"
-                                       href="<?php $security->index('/action/contents-post-edit?do=delete'); ?>"><?php _e('删除'); ?></a>
+                                <li><a lang="<?php _e('Are you sure to delete these posts?'); ?>"
+                                       href="<?php $security->index('/action/contents-post-edit?do=delete'); ?>"><?php _e('Delete'); ?></a>
                                 </li>
                                 <?php if ($user->pass('editor', true)): ?>
                                     <li>
-                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=publish'); ?>"><?php _e('标记为<strong>%s</strong>', _t('公开')); ?></a>
+                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=publish'); ?>"><?php _e('Mark as: <strong>%s</strong>', _t('Public')); ?></a>
                                     </li>
                                     <li>
-                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=waiting'); ?>"><?php _e('标记为<strong>%s</strong>', _t('待审核')); ?></a>
+                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=waiting'); ?>"><?php _e('Mark as: <strong>%s</strong>', _t('Awaiting approval')); ?></a>
                                     </li>
                                     <li>
-                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=hidden'); ?>"><?php _e('标记为<strong>%s</strong>', _t('隐藏')); ?></a>
+                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=hidden'); ?>"><?php _e('Mark as: <strong>%s</strong>', _t('Hide')); ?></a>
                                     </li>
                                     <li>
-                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=private'); ?>"><?php _e('标记为<strong>%s</strong>', _t('私密')); ?></a>
+                                        <a href="<?php $security->index('/action/contents-post-edit?do=mark&status=private'); ?>"><?php _e('Mark as: <strong>%s</strong>', _t('Private')); ?></a>
                                     </li>
                                 <?php endif; ?>
                             </ul>

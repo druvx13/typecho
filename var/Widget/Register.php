@@ -15,7 +15,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 注册组件
+ * Registration widget
  *
  * @author qining
  * @category typecho
@@ -26,7 +26,7 @@ class Register extends Users implements ActionInterface
     use EditTrait;
 
     /**
-     * 初始化函数
+     * Initialization function
      *
      * @throws Exception
      */
@@ -35,38 +35,38 @@ class Register extends Users implements ActionInterface
         // protect
         $this->security->protect();
 
-        /** 如果已经登录 */
+        /** If already logged in */
         if ($this->user->hasLogin() || !$this->options->allowRegister) {
-            /** 直接返回 */
+            /** Return directly */
             $this->response->redirect($this->options->index);
         }
 
-        /** 初始化验证类 */
+        /** Initialize validation class */
         $validator = new Validate();
-        $validator->addRule('name', 'required', _t('必须填写用户名称'));
-        $validator->addRule('name', 'minLength', _t('用户名至少包含2个字符'), 2);
-        $validator->addRule('name', 'maxLength', _t('用户名最多包含32个字符'), 32);
-        $validator->addRule('name', 'xssCheck', _t('请不要在用户名中使用特殊字符'));
-        $validator->addRule('name', [$this, 'nameExists'], _t('用户名已经存在'));
-        $validator->addRule('mail', 'required', _t('必须填写电子邮箱'));
-        $validator->addRule('mail', [$this, 'mailExists'], _t('电子邮箱地址已经存在'));
-        $validator->addRule('mail', 'email', _t('电子邮箱格式错误'));
-        $validator->addRule('mail', 'maxLength', _t('电子邮箱最多包含64个字符'), 64);
+        $validator->addRule('name', 'required', _t('You must enter a username.'));
+        $validator->addRule('name', 'minLength', _t('Username should contain at least 2 characters.'), 2);
+        $validator->addRule('name', 'maxLength', _t('Username should contain at most 32 characters.'), 32);
+        $validator->addRule('name', 'xssCheck', _t('Please do not include special characters in username.'));
+        $validator->addRule('name', [$this, 'nameExists'], _t('Username already exist.'));
+        $validator->addRule('mail', 'required', _t('You must enter an email address.'));
+        $validator->addRule('mail', [$this, 'mailExists'], _t('Email address already exists.'));
+        $validator->addRule('mail', 'email', _t('Invalid Email address'));
+        $validator->addRule('mail', 'maxLength', _t('Email address should contain at most 64 characters'), 64);
 
         /** 如果请求中有password */
         if (array_key_exists('password', $_REQUEST)) {
-            $validator->addRule('password', 'required', _t('必须填写密码'));
-            $validator->addRule('password', 'minLength', _t('为了保证账户安全, 请输入至少六位的密码'), 6);
-            $validator->addRule('password', 'maxLength', _t('为了便于记忆, 密码长度请不要超过十八位'), 18);
-            $validator->addRule('confirm', 'confirm', _t('两次输入的密码不一致'), 'password');
+            $validator->addRule('password', 'required', _t('You must enter a password.'));
+            $validator->addRule('password', 'minLength', _t('For the security of your account, please choose a password containing at least 6 characters.'), 6);
+            $validator->addRule('password', 'maxLength', _t('For the convenience of memory, please choose a password containing at most 18 characters.'), 18);
+            $validator->addRule('confirm', 'confirm', _t('Passwords do not match.'), 'password');
         }
 
-        /** 截获验证异常 */
+        /** Catch validation exception */
         if ($error = $validator->run($this->request->from('name', 'password', 'mail', 'confirm'))) {
             Cookie::set('__typecho_remember_name', $this->request->get('name'));
             Cookie::set('__typecho_remember_mail', $this->request->get('mail'));
 
-            /** 设置提示信息 */
+            /** Set notice message */
             Notice::alloc()->set($error);
             $this->response->goBack();
         }
@@ -99,7 +99,7 @@ class Register extends Users implements ActionInterface
 
         Notice::alloc()->set(
             _t(
-                '用户 <strong>%s</strong> 已经成功注册, 密码为 <strong>%s</strong>',
+                'User <strong>%s</strong> registered successfully, password is <strong>%s</strong>.',
                 $this->screenName,
                 $generatedPassword
             ),

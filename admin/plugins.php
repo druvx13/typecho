@@ -10,7 +10,7 @@ include 'menu.php';
             <div class="col-mb-12 typecho-list">
                 <?php \Widget\Plugins\Rows::allocWithAlias('activated', 'activated=1')->to($activatedPlugins); ?>
                 <?php if ($activatedPlugins->have() || !empty($activatedPlugins->activatedPlugins)): ?>
-                    <h4 class="typecho-list-table-title"><?php _e('启用的插件'); ?></h4>
+                    <h4 class="typecho-list-table-title"><?php _e('Enabled plugins'); ?></h4>
                     <table class="typecho-list-table">
                         <colgroup>
                             <col width="25%"/>
@@ -21,11 +21,11 @@ include 'menu.php';
                         </colgroup>
                         <thead>
                         <tr>
-                            <th><?php _e('名称'); ?></th>
-                            <th><?php _e('描述'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('版本'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('作者'); ?></th>
-                            <th><?php _e('操作'); ?></th>
+                            <th><?php _e('Name'); ?></th>
+                            <th><?php _e('Description'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Version'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Author'); ?></th>
+                            <th><?php _e('Operations'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -34,7 +34,7 @@ include 'menu.php';
                                 <td><?php $activatedPlugins->title(); ?>
                                     <?php if (!$activatedPlugins->dependence): ?>
                                         <i class="i-delete"
-                                           title="<?php _e('%s 无法在此版本的typecho下正常工作', $activatedPlugins->title); ?>"></i>
+                                           title="<?php _e('%s cannot work under this version of typecho', $activatedPlugins->title); ?>"></i>
                                     <?php endif; ?>
                                 </td>
                                 <td><?php $activatedPlugins->description(); ?></td>
@@ -44,13 +44,13 @@ include 'menu.php';
                                 <td>
                                     <?php if ($activatedPlugins->activate || $activatedPlugins->deactivate || $activatedPlugins->config || $activatedPlugins->personalConfig): ?>
                                         <?php if ($activatedPlugins->config): ?>
-                                            <a href="<?php $options->adminUrl('options-plugin.php?config=' . $activatedPlugins->name); ?>"><?php _e('设置'); ?></a>
+                                            <a href="<?php $options->adminUrl('options-plugin.php?config=' . $activatedPlugins->name); ?>"><?php _e('Settings'); ?></a>
                                             &bull;
                                         <?php endif; ?>
-                                        <a lang="<?php _e('你确认要禁用插件 %s 吗?', $activatedPlugins->name); ?>"
-                                           href="<?php $security->index('/action/plugins-edit?deactivate=' . $activatedPlugins->name); ?>"><?php _e('禁用'); ?></a>
+                                        <a lang="<?php _e('Are you sure to disable plugin %s ?', $activatedPlugins->name); ?>"
+                                           href="<?php $security->index('/action/plugins-edit?deactivate=' . $activatedPlugins->name); ?>"><?php _e('Disable'); ?></a>
                                     <?php else: ?>
-                                        <span class="important"><?php _e('即插即用'); ?></span>
+                                        <span class="important"><?php _e('Plug and play.'); ?></span>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -61,9 +61,9 @@ include 'menu.php';
                                 <tr>
                                     <td><?php echo $key; ?></td>
                                     <td colspan="3"><span
-                                            class="warning"><?php _e('此插件文件已经损坏或者被不安全移除, 强烈建议你禁用它'); ?></span></td>
-                                    <td><a lang="<?php _e('你确认要禁用插件 %s 吗?', $key); ?>"
-                                           href="<?php $security->index('/action/plugins-edit?deactivate=' . $key); ?>"><?php _e('禁用'); ?></a>
+                                            class="warning"><?php _e('The files of this plugin has been damaged or removed unsafely. Disabling it is strongly recommended.'); ?></span></td>
+                                    <td><a lang="<?php _e('Are you sure to disable plugin %s ?', $key); ?>"
+                                           href="<?php $security->index('/action/plugins-edit?deactivate=' . $key); ?>"><?php _e('Disable'); ?></a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -75,7 +75,7 @@ include 'menu.php';
 
                 <?php \Widget\Plugins\Rows::allocWithAlias('unactivated', 'activated=0')->to($deactivatedPlugins); ?>
                 <?php if ($deactivatedPlugins->have() || !$activatedPlugins->have()): ?>
-                    <h4 class="typecho-list-table-title"><?php _e('禁用的插件'); ?></h4>
+                    <h4 class="typecho-list-table-title"><?php _e('Disabled plugins.'); ?></h4>
                     <table class="typecho-list-table deactivate">
                         <colgroup>
                             <col width="25%"/>
@@ -86,11 +86,11 @@ include 'menu.php';
                         </colgroup>
                         <thead>
                         <tr>
-                            <th><?php _e('名称'); ?></th>
-                            <th><?php _e('描述'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('版本'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('作者'); ?></th>
-                            <th class="typecho-radius-topright"><?php _e('操作'); ?></th>
+                            <th><?php _e('Name'); ?></th>
+                            <th><?php _e('Description'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Version'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Author'); ?></th>
+                            <th class="typecho-radius-topright"><?php _e('Operations'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -103,13 +103,13 @@ include 'menu.php';
                                     <td class="kit-hidden-mb"><?php echo empty($deactivatedPlugins->homepage) ? $deactivatedPlugins->author : '<a href="' . $deactivatedPlugins->homepage
                                             . '">' . $deactivatedPlugins->author . '</a>'; ?></td>
                                     <td>
-                                        <a href="<?php $security->index('/action/plugins-edit?activate=' . $deactivatedPlugins->name); ?>"><?php _e('启用'); ?></a>
+                                        <a href="<?php $security->index('/action/plugins-edit?activate=' . $deactivatedPlugins->name); ?>"><?php _e('Enable.'); ?></a>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="5"><h6 class="typecho-list-table-title"><?php _e('没有安装插件'); ?></h6>
+                                <td colspan="5"><h6 class="typecho-list-table-title"><?php _e('Uninstalled plugins.'); ?></h6>
                                 </td>
                             </tr>
                         <?php endif; ?>

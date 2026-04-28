@@ -11,7 +11,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 登录组件
+ * Login widget
  *
  * @category typecho
  * @package Widget
@@ -21,7 +21,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Login extends Users implements ActionInterface
 {
     /**
-     * 初始化函数
+     * Initialization function
      *
      * @access public
      * @return void
@@ -31,16 +31,16 @@ class Login extends Users implements ActionInterface
         // protect
         $this->security->protect();
 
-        /** 如果已经登录 */
+        /** If already logged in */
         if ($this->user->hasLogin()) {
-            /** 直接返回 */
+            /** Return directly */
             $this->response->redirect($this->options->index);
         }
 
-        /** 初始化验证类 */
+        /** Initialize validation class */
         $validator = new Validate();
-        $validator->addRule('name', 'required', _t('请输入用户名'));
-        $validator->addRule('password', 'required', _t('请输入密码'));
+        $validator->addRule('name', 'required', _t('Please enter username'));
+        $validator->addRule('password', 'required', _t('Please enter password'));
         $expire = 30 * 24 * 3600;
 
         /** 记住密码状态 */
@@ -50,16 +50,16 @@ class Login extends Users implements ActionInterface
             Cookie::delete('__typecho_remember_remember');
         }
 
-        /** 截获验证异常 */
+        /** Catch validation exception */
         if ($error = $validator->run($this->request->from('name', 'password'))) {
             Cookie::set('__typecho_remember_name', $this->request->get('name'));
 
-            /** 设置提示信息 */
+            /** Set notice message */
             Notice::alloc()->set($error);
             $this->response->goBack();
         }
 
-        /** 开始验证用户 **/
+        /** Begin user validation **/
         $valid = $this->user->login(
             $this->request->get('name'),
             $this->request->get('password'),
@@ -81,7 +81,7 @@ class Login extends Users implements ActionInterface
             );
 
             Cookie::set('__typecho_remember_name', $this->request->get('name'));
-            Notice::alloc()->set(_t('用户名或密码无效'), 'error');
+            Notice::alloc()->set(_t('Username or password is invalid.'), 'error');
             $this->response->goBack('?referer=' . urlencode($this->request->get('referer')));
         }
 

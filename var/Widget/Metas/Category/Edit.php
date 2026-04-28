@@ -28,12 +28,12 @@ class Edit extends Metas implements ActionInterface
     use EditTrait;
 
     /**
-     * 入口函数
+     * Entry point
      * @throws \Exception
      */
     public function execute()
     {
-        /** 编辑以上权限 */
+        /** Editor or higher permission */
         $this->user->pass('editor');
     }
 
@@ -55,10 +55,10 @@ class Edit extends Metas implements ActionInterface
     }
 
     /**
-     * 判断分类名称是否存在
-     * fix #1843 将重复性判断限制在同一父分类下
+     * 判断分Class name称是否存在
+     * fix #1843 将重复性判断限制在同Mon父分类下
      *
-     * @param string $name 分类名称
+     * @param string $name 分Class name称
      * @return boolean
      * @throws Exception
      */
@@ -74,7 +74,7 @@ class Edit extends Metas implements ActionInterface
             $select->where('mid <> ?', $this->request->get('mid'));
         }
 
-        // 只在同一父分类下判断重复性
+        // 只在同Mon父分类下判断重复性
         $select->where('parent = ?', $this->request->filter('int')->get('parent', 0));
 
         $category = $this->db->fetchRow($select);
@@ -82,9 +82,9 @@ class Edit extends Metas implements ActionInterface
     }
 
     /**
-     * 判断分类名转换到缩略名后是否合法
+     * 判断分Class name转换到缩略名后是否合法
      *
-     * @param string $name 分类名
+     * @param string $name 分Class name
      * @return boolean
      * @throws Exception
      */
@@ -103,7 +103,7 @@ class Edit extends Metas implements ActionInterface
     /**
      * 判断分类缩略名是否存在
      *
-     * @param string $slug 缩略名
+     * @param string $slug Slug
      * @return boolean
      * @throws Exception
      */
@@ -134,59 +134,59 @@ class Edit extends Metas implements ActionInterface
             $this->response->goBack();
         }
 
-        /** 取出数据 */
+        /** Fetch data */
         $category = $this->request->from('name', 'slug', 'description', 'parent');
 
         $category['slug'] = Common::slugName(Common::strBy($category['slug'] ?? null, $category['name']));
         $category['type'] = 'category';
         $category['order'] = $this->getMaxOrder('category', $category['parent']) + 1;
 
-        /** 插入数据 */
+        /** Insert data */
         $category['mid'] = $this->insert($category);
         $this->push($category);
 
-        /** 设置高亮 */
+        /** Set highlight */
         Notice::alloc()->highlight($this->theId);
 
-        /** 提示信息 */
+        /** Notice message */
         Notice::alloc()->set(
-            _t('分类 <a href="%s">%s</a> 已经被增加', $this->permalink, $this->name),
+            _t('Category <a href="%s">%s</a> added.', $this->permalink, $this->name),
             'success'
         );
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->redirect(Common::url('manage-categories.php'
             . ($category['parent'] ? '?parent=' . $category['parent'] : ''), $this->options->adminUrl));
     }
 
     /**
-     * 生成表单
+     * Generate form
      *
-     * @param string|null $action 表单动作
+     * @param string|null $action Form action
      * @return Form
      * @throws Exception
      */
     public function form(?string $action = null): Form
     {
-        /** 构建表格 */
+        /** Build form */
         $form = new Form($this->security->getIndex('/action/metas-category-edit'), Form::POST_METHOD);
 
-        /** 分类名称 */
-        $name = new Form\Element\Text('name', null, null, _t('分类名称') . ' *');
+        /** Category name */
+        $name = new Form\Element\Text('name', null, null, _t('分Class name称') . ' *');
         $form->addInput($name);
 
-        /** 分类缩略名 */
+        /** Category slug */
         $slug = new Form\Element\Text(
             'slug',
             null,
             null,
-            _t('分类缩略名'),
-            _t('分类缩略名用于创建友好的链接形式, 建议使用字母, 数字, 下划线和横杠.')
+            _t('Category abbreviation'),
+            _t('Category abbreviations are used to create friendly URL. We recommend that you use alphanumeric, underlines and dashes.')
         );
         $form->addInput($slug);
 
         /** 父级分类 */
-        $options = [0 => _t('不选择')];
+        $options = [0 => _t('Deselect')];
         $parents = Rows::allocWithAlias(
             'options',
             ($this->request->is('mid') ? 'ignore=' . $this->request->get('mid') : '')
@@ -200,8 +200,8 @@ class Edit extends Metas implements ActionInterface
             'parent',
             $options,
             $this->request->get('parent'),
-            _t('父级分类'),
-            _t('此分类将归档在您选择的父级分类下.')
+            _t('Parent category'),
+            _t('This category will be archived under the parent category of your choice.')
         );
         $form->addInput($parent);
 
@@ -210,26 +210,26 @@ class Edit extends Metas implements ActionInterface
             'description',
             null,
             null,
-            _t('分类描述'),
-            _t('此文字用于描述分类, 在有的主题中它会被显示.')
+            _t('Category description.'),
+            _t('This text is used to describe taxonomies. Certain themes will display this information.')
         );
         $form->addInput($description);
 
-        /** 分类动作 */
+        /** Category action */
         $do = new Form\Element\Hidden('do');
         $form->addInput($do);
 
-        /** 分类主键 */
+        /** Category primary key */
         $mid = new Form\Element\Hidden('mid');
         $form->addInput($mid);
 
-        /** 提交按钮 */
+        /** Submit button */
         $submit = new Form\Element\Submit();
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
 
         if (isset($this->request->mid) && 'insert' != $action) {
-            /** 更新模式 */
+            /** Update mode */
             $meta = $this->db->fetchRow($this->select()
                 ->where('mid = ?', $this->request->mid)
                 ->where('type = ?', 'category')->limit(1));
@@ -244,11 +244,11 @@ class Edit extends Metas implements ActionInterface
             $description->value($meta['description']);
             $do->value('update');
             $mid->value($meta['mid']);
-            $submit->value(_t('编辑分类'));
+            $submit->value(_t('Edit a category.'));
             $_action = 'update';
         } else {
             $do->value('insert');
-            $submit->value(_t('增加分类'));
+            $submit->value(_t('Add a new category.'));
             $_action = 'insert';
         }
 
@@ -256,26 +256,26 @@ class Edit extends Metas implements ActionInterface
             $action = $_action;
         }
 
-        /** 给表单增加规则 */
+        /** Add validation rule to form */
         if ('insert' == $action || 'update' == $action) {
-            $name->addRule('required', _t('必须填写分类名称'));
-            $name->addRule([$this, 'nameExists'], _t('分类名称已经存在'));
-            $name->addRule([$this, 'nameToSlug'], _t('分类名称无法被转换为缩略名'));
-            $name->addRule('xssCheck', _t('请不要在分类名称中使用特殊字符'));
-            $slug->addRule([$this, 'slugExists'], _t('缩略名已经存在'));
-            $slug->addRule('xssCheck', _t('请不要在缩略名中使用特殊字符'));
+            $name->addRule('required', _t('You must enter a name for category.'));
+            $name->addRule([$this, 'nameExists'], _t('Category already exists.'));
+            $name->addRule([$this, 'nameToSlug'], _t('This category name cannot be converted to an abbreviation.'));
+            $name->addRule('xssCheck', _t('Please do not use special characters in category names'));
+            $slug->addRule([$this, 'slugExists'], _t('Abbreviation already exists.'));
+            $slug->addRule('xssCheck', _t('Please do not include special characters in the thumbnail name.'));
         }
 
         if ('update' == $action) {
-            $mid->addRule('required', _t('分类主键不存在'));
-            $mid->addRule([$this, 'categoryExists'], _t('分类不存在'));
+            $mid->addRule('required', _t('Category key does not exist.'));
+            $mid->addRule([$this, 'categoryExists'], _t('This category does not exist.'));
         }
 
         return $form;
     }
 
     /**
-     * 更新分类
+     * Update category
      *
      * @throws Exception
      */
@@ -285,7 +285,7 @@ class Edit extends Metas implements ActionInterface
             $this->response->goBack();
         }
 
-        /** 取出数据 */
+        /** Fetch data */
         $category = $this->request->from('name', 'slug', 'description', 'parent');
         $category['mid'] = $this->request->get('mid');
         $category['slug'] = Common::slugName(Common::strBy($category['slug'] ?? null, $category['name']));
@@ -306,24 +306,24 @@ class Edit extends Metas implements ActionInterface
             }
         }
 
-        /** 更新数据 */
+        /** Update data */
         $this->update($category, $this->db->sql()->where('mid = ?', $this->request->filter('int')->get('mid')));
         $this->push($category);
 
-        /** 设置高亮 */
+        /** Set highlight */
         Notice::alloc()->highlight($this->theId);
 
-        /** 提示信息 */
+        /** Notice message */
         Notice::alloc()
-            ->set(_t('分类 <a href="%s">%s</a> 已经被更新', $this->permalink, $this->name), 'success');
+            ->set(_t('Category <a href="%s">%s</a> updated.', $this->permalink, $this->name), 'success');
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->redirect(Common::url('manage-categories.php'
             . ($category['parent'] ? '?parent=' . $category['parent'] : ''), $this->options->adminUrl));
     }
 
     /**
-     * 删除分类
+     * Delete category
      *
      * @access public
      * @return void
@@ -344,11 +344,11 @@ class Edit extends Metas implements ActionInterface
             }
         }
 
-        /** 提示信息 */
+        /** Notice message */
         Notice::alloc()
-            ->set($deleteCount > 0 ? _t('分类已经删除') : _t('没有分类被删除'), $deleteCount > 0 ? 'success' : 'notice');
+            ->set($deleteCount > 0 ? _t('Category deleted.') : _t('No category to delete.'), $deleteCount > 0 ? 'success' : 'notice');
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->goBack();
     }
 
@@ -358,10 +358,10 @@ class Edit extends Metas implements ActionInterface
      */
     public function mergeCategory()
     {
-        /** 验证数据 */
+        /** Validate data */
         $validator = new Validate();
-        $validator->addRule('merge', 'required', _t('分类主键不存在'));
-        $validator->addRule('merge', [$this, 'categoryExists'], _t('请选择需要合并的分类'));
+        $validator->addRule('merge', 'required', _t('Category key does not exist.'));
+        $validator->addRule('merge', [$this, 'categoryExists'], _t('Please choose categories to combine.'));
 
         if ($error = $validator->run($this->request->from('merge'))) {
             Notice::alloc()->set($error, 'error');
@@ -374,18 +374,18 @@ class Edit extends Metas implements ActionInterface
         if ($categories) {
             $this->merge($merge, 'category', $categories);
 
-            /** 提示信息 */
-            Notice::alloc()->set(_t('分类已经合并'), 'success');
+            /** Notice message */
+            Notice::alloc()->set(_t('Categories combined.'), 'success');
         } else {
-            Notice::alloc()->set(_t('没有选择任何分类'));
+            Notice::alloc()->set(_t('No category selected.'));
         }
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->goBack();
     }
 
     /**
-     * 分类排序
+     * 分类Sort
      * @throws Exception
      */
     public function sortCategory()
@@ -396,10 +396,10 @@ class Edit extends Metas implements ActionInterface
         }
 
         if (!$this->request->isAjax()) {
-            /** 转向原页 */
+            /** Redirect to original page */
             $this->response->redirect(Common::url('manage-categories.php', $this->options->adminUrl));
         } else {
-            $this->response->throwJson(['success' => 1, 'message' => _t('分类排序已经完成')]);
+            $this->response->throwJson(['success' => 1, 'message' => _t('Categories sorted.')]);
         }
     }
 
@@ -416,12 +416,12 @@ class Edit extends Metas implements ActionInterface
                 $this->refreshCountByTypeAndStatus($category, 'post');
             }
 
-            Notice::alloc()->set(_t('分类刷新已经完成'), 'success');
+            Notice::alloc()->set(_t('Categories refreshed.'), 'success');
         } else {
-            Notice::alloc()->set(_t('没有选择任何分类'));
+            Notice::alloc()->set(_t('No category selected.'));
         }
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->goBack();
     }
 
@@ -432,10 +432,10 @@ class Edit extends Metas implements ActionInterface
      */
     public function defaultCategory()
     {
-        /** 验证数据 */
+        /** Validate data */
         $validator = new Validate();
-        $validator->addRule('mid', 'required', _t('分类主键不存在'));
-        $validator->addRule('mid', [$this, 'categoryExists'], _t('分类不存在'));
+        $validator->addRule('mid', 'required', _t('Category key does not exist.'));
+        $validator->addRule('mid', [$this, 'categoryExists'], _t('This category does not exist.'));
 
         if ($error = $validator->run($this->request->from('mid'))) {
             Notice::alloc()->set($error, 'error');
@@ -447,22 +447,22 @@ class Edit extends Metas implements ActionInterface
             $this->db->fetchRow($this->select()->where('mid = ?', $this->request->get('mid'))
                 ->where('type = ?', 'category')->limit(1), [$this, 'push']);
 
-            /** 设置高亮 */
+            /** Set highlight */
             Notice::alloc()->highlight($this->theId);
 
-            /** 提示信息 */
+            /** Notice message */
             Notice::alloc()->set(
-                _t('<a href="%s">%s</a> 已经被设为默认分类', $this->permalink, $this->name),
+                _t('<a href="%s">%s</a> has been set to the default category.', $this->permalink, $this->name),
                 'success'
             );
         }
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->redirect(Common::url('manage-categories.php', $this->options->adminUrl));
     }
 
     /**
-     * 获取菜单标题
+     * Get menu title
      *
      * @return string|null
      * @throws \Typecho\Widget\Exception|Exception
@@ -474,7 +474,7 @@ class Edit extends Metas implements ActionInterface
                 ->where('type = ? AND mid = ?', 'category', $this->request->filter('int')->get('mid')));
 
             if (!empty($category)) {
-                return _t('编辑分类 %s', $category['name']);
+                return _t('Edit Category %s', $category['name']);
             }
         }
 
@@ -483,17 +483,17 @@ class Edit extends Metas implements ActionInterface
                 ->where('type = ? AND mid = ?', 'category', $this->request->filter('int')->get('parent')));
 
             if (!empty($category)) {
-                return _t('新增 %s 的子分类', $category['name']);
+                return _t('New subcategory for %s', $category['name']);
             }
         } else {
             return null;
         }
 
-        throw new \Typecho\Widget\Exception(_t('分类不存在'), 404);
+        throw new \Typecho\Widget\Exception(_t('This category does not exist.'), 404);
     }
 
     /**
-     * 入口函数
+     * Entry point
      *
      * @access public
      * @return void

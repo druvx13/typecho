@@ -3,7 +3,7 @@
 namespace IXR;
 
 /**
- * IXR Base64编码
+ * IXR Base64 encoding
  *
  * @package IXR
  */

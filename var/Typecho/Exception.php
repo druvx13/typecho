@@ -3,7 +3,7 @@
 namespace Typecho;
 
 /**
- * Typecho异常基类
+ * Typecho base exception class
  * 主要重载异常打印函数
  *
  * @package Exception

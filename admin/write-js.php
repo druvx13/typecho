@@ -6,28 +6,28 @@
 <script src="<?php $options->adminStaticUrl('js', 'tokeninput.js'); ?>"></script>
 <script>
 $(document).ready(function() {
-    // 日期时间控件
+    // Date-time widget
     $('#date').mask('9999-99-99 99:99').datetimepicker({
-        currentText     :   '<?php _e('现在'); ?>',
-        prevText        :   '<?php _e('上一月'); ?>',
-        nextText        :   '<?php _e('下一月'); ?>',
-        monthNames      :   ['<?php _e('一月'); ?>', '<?php _e('二月'); ?>', '<?php _e('三月'); ?>', '<?php _e('四月'); ?>',
-            '<?php _e('五月'); ?>', '<?php _e('六月'); ?>', '<?php _e('七月'); ?>', '<?php _e('八月'); ?>',
-            '<?php _e('九月'); ?>', '<?php _e('十月'); ?>', '<?php _e('十一月'); ?>', '<?php _e('十二月'); ?>'],
-        dayNames        :   ['<?php _e('星期日'); ?>', '<?php _e('星期一'); ?>', '<?php _e('星期二'); ?>',
-            '<?php _e('星期三'); ?>', '<?php _e('星期四'); ?>', '<?php _e('星期五'); ?>', '<?php _e('星期六'); ?>'],
-        dayNamesShort   :   ['<?php _e('周日'); ?>', '<?php _e('周一'); ?>', '<?php _e('周二'); ?>', '<?php _e('周三'); ?>',
-            '<?php _e('周四'); ?>', '<?php _e('周五'); ?>', '<?php _e('周六'); ?>'],
-        dayNamesMin     :   ['<?php _e('日'); ?>', '<?php _e('一'); ?>', '<?php _e('二'); ?>', '<?php _e('三'); ?>',
-            '<?php _e('四'); ?>', '<?php _e('五'); ?>', '<?php _e('六'); ?>'],
-        closeText       :   '<?php _e('完成'); ?>',
-        timeOnlyTitle   :   '<?php _e('选择时间'); ?>',
-        timeText        :   '<?php _e('时间'); ?>',
-        hourText        :   '<?php _e('时'); ?>',
-        amNames         :   ['<?php _e('上午'); ?>', 'A'],
-        pmNames         :   ['<?php _e('下午'); ?>', 'P'],
-        minuteText      :   '<?php _e('分'); ?>',
-        secondText      :   '<?php _e('秒'); ?>',
+        currentText     :   '<?php _e('Now'); ?>',
+        prevText        :   '<?php _e('Last month'); ?>',
+        nextText        :   '<?php _e('Next month'); ?>',
+        monthNames      :   ['<?php _e('Jun'); ?>', '<?php _e('Feb'); ?>', '<?php _e('Mar'); ?>', '<?php _e('Apr'); ?>',
+            '<?php _e('May'); ?>', '<?php _e('Jun'); ?>', '<?php _e('Jul'); ?>', '<?php _e('Aug'); ?>',
+            '<?php _e('Sept'); ?>', '<?php _e('Oct'); ?>', '<?php _e('Nov'); ?>', '<?php _e('Dec'); ?>'],
+        dayNames        :   ['<?php _e('Sun'); ?>', '<?php _e('Mon'); ?>', '<?php _e('Tue'); ?>',
+            '<?php _e('Wed'); ?>', '<?php _e('Thu'); ?>', '<?php _e('Fri'); ?>', '<?php _e('Sat'); ?>'],
+        dayNamesShort   :   ['<?php _e('Sun'); ?>', '<?php _e('Mon'); ?>', '<?php _e('Tue'); ?>', '<?php _e('Wed'); ?>',
+            '<?php _e('Thu'); ?>', '<?php _e('Fri'); ?>', '<?php _e('Sat'); ?>'],
+        dayNamesMin     :   ['<?php _e('Sun'); ?>', '<?php _e('Mon'); ?>', '<?php _e('Tue'); ?>', '<?php _e('Wed'); ?>',
+            '<?php _e('Thu'); ?>', '<?php _e('Fri'); ?>', '<?php _e('S'); ?>'],
+        closeText       :   '<?php _e('Done'); ?>',
+        timeOnlyTitle   :   '<?php _e('Select time'); ?>',
+        timeText        :   '<?php _e('Time'); ?>',
+        hourText        :   '<?php _e('hour'); ?>',
+        amNames         :   ['<?php _e('a.m.'); ?>', 'A'],
+        pmNames         :   ['<?php _e('p.m.'); ?>', 'P'],
+        minuteText      :   '<?php _e('min'); ?>',
+        secondText      :   '<?php _e('sec'); ?>',
 
         dateFormat      :   'yy-mm-dd',
         timezone        :   <?php $options->timezone(); ?> / 60,
@@ -35,13 +35,13 @@ $(document).ready(function() {
         minute          :   (new Date()).getMinutes()
     });
 
-    // 聚焦
+    // Focus
     $('#title').select();
 
-    // text 自动拉伸
+    // Auto-resize textarea
     Typecho.editorResize('text', '<?php $security->index('/action/ajax?do=editorResize'); ?>');
 
-    // tag autocomplete 提示
+    // Tag autocomplete
     const tags = $('#tags'), tagsPre = [];
     
     if (tags.length > 0) {
@@ -74,8 +74,8 @@ $(document).ready(function() {
             searchDelay     :   0,
             preventDuplicates   :   true,
             animateDropdown :   false,
-            hintText        :   '<?php _e('请输入标签名'); ?>',
-            noResultsText   :   '<?php _e('此标签不存在, 按回车创建'); ?>',
+            hintText        :   '<?php _e('Please enter tag name'); ?>',
+            noResultsText   :   '<?php _e('This tag does not exist. Press enter to create it.'); ?>',
             prePopulate     :   tagsPre,
 
             onResult        :   function (result, query, val) {
@@ -101,7 +101,7 @@ $(document).ready(function() {
             }
         });
 
-        // tag autocomplete 提示宽度设置
+        // Tag autocomplete width
         $('#token-input-tags').focus(function() {
             const t = $('.token-input-dropdown'),
                 offset = t.outerWidth() - t.width();
@@ -109,7 +109,7 @@ $(document).ready(function() {
         });
     }
 
-    // 缩略名自适应宽度
+    // Adaptive width for slug field
     const slug = $('#slug');
 
     if (slug.length > 0) {
@@ -140,7 +140,7 @@ $(document).ready(function() {
         justifySlugWidth();
     }
 
-    // 处理保存文章的逻辑
+    // Handle post-save logic
     const form = $('form[name=write_post],form[name=write_page]'),
         idInput = $('input[name=cid]'),
         draft = $('input[name=draft]'),
@@ -168,14 +168,14 @@ $(document).ready(function() {
         $('input[name=do]').val($(this).val());
     });
 
-    // 自动检测离开页
+    // Auto-detect page leave
     $(window).bind('beforeunload', function () {
         if (changed && !form.hasClass('submitting')) {
-            return '<?php _e('内容已经改变尚未保存, 您确认要离开此页面吗?'); ?>';
+            return '<?php _e('Changes are not saved. Are you sure to leave this page?'); ?>';
         }
     });
 
-    // 发送保存请求
+    // Send save request
     Typecho.savePost = function(cb) {
         if (!changed) {
             cb && cb();
@@ -187,13 +187,13 @@ $(document).ready(function() {
             cid = o.cid;
             draftId = o.draftId;
             idInput.val(cid);
-            autoSave.text('<?php _e('已保存'); ?>' + ' (' + o.time + ')').effect('highlight', 1000);
+            autoSave.text('<?php _e('Saved'); ?>' + ' (' + o.time + ')').effect('highlight', 1000);
 
             cb && cb();
         };
 
         changed = false;
-        autoSave.text('<?php _e('正在保存'); ?>');
+        autoSave.text('<?php _e('Saving...'); ?>');
 
         const data = new FormData(form.get(0));
         data.append('do', 'save');
@@ -207,7 +207,7 @@ $(document).ready(function() {
             data: data,
             success: callback,
             error: function () {
-                autoSave.text('<?php _e('保存失败, 请重试'); ?>');
+                autoSave.text('<?php _e('Save failed, please try again'); ?>');
             },
             complete: function () {
                 form.trigger('submitted');
@@ -216,13 +216,13 @@ $(document).ready(function() {
     };
 
     <?php if ($options->autoSave): ?>
-    // 自动保存
+    // Auto-save
     let saveTimer = null;
     let stopAutoSave = false;
 
     form.on('datachange', function () {
         changed = true;
-        autoSave.text('<?php _e('尚未保存'); ?>' + (lastSaveTime ? ' (<?php _e('上次保存时间'); ?>: ' + lastSaveTime + ')' : ''));
+        autoSave.text('<?php _e('Not saved'); ?>' + (lastSaveTime ? ' (<?php _e('Last save'); ?>: ' + lastSaveTime + ')' : ''));
 
         if (saveTimer) {
             clearTimeout(saveTimer);
@@ -242,7 +242,7 @@ $(document).ready(function() {
     });
     <?php endif; ?>
 
-    // 计算夏令时偏移
+    // Calculate daylight saving time offset
     const dstOffset = (function () {
         const d = new Date(),
             jan = new Date(d.getFullYear(), 0, 1),
@@ -256,10 +256,10 @@ $(document).ready(function() {
         $('<input name="dst" type="hidden" />').appendTo(form).val(dstOffset);
     }
 
-    // 时区
+    // Timezone
     $('<input name="timezone" type="hidden" />').appendTo(form).val(- (new Date).getTimezoneOffset() * 60);
 
-    // 预览功能
+    // Preview feature
     let isFullScreen = false;
 
     function previewData(cid) {
@@ -297,7 +297,7 @@ $(document).ready(function() {
 
     btnPreview.click(function () {
         if (changed) {
-            if (confirm('<?php _e('修改后的内容需要保存后才能预览, 是否保存?'); ?>')) {
+            if (confirm('<?php _e('To preview, you need to save the content. Continue?'); ?>')) {
                 Typecho.savePost(function () {
                     previewData(draftId);
                 });
@@ -309,7 +309,7 @@ $(document).ready(function() {
         }
     });
 
-    // 控制选项和附件的切换
+    // Control toggling between options and attachments
     $('#edit-secondary .typecho-option-tabs li').click(function() {
         $('#edit-secondary .typecho-option-tabs li.active').removeClass('active');
         $('#edit-secondary .tab-content').addClass('hidden');
@@ -320,7 +320,7 @@ $(document).ready(function() {
         return false;
     });
 
-    // 自动隐藏密码框
+    // Auto-hide password field
     $('#visibility').change(function () {
         const val = $(this).val(), password = $('#post-password');
 
@@ -331,9 +331,9 @@ $(document).ready(function() {
         }
     });
     
-    // 草稿删除确认
+    // Draft deletion confirmation
     $('.edit-draft-notice a').click(function () {
-        if (confirm('<?php _e('您确认要删除这份草稿吗?'); ?>')) {
+        if (confirm('<?php _e('Delete this draft?'); ?>')) {
             window.location.href = $(this).attr('href');
         }
 

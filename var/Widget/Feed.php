@@ -47,17 +47,17 @@ class Feed extends Contents
         $currentFeedUrl = $this->options->feedUrl;
         $isComments = false;
 
-        /** 判断聚合类型 */
+        /** Determine feed type */
         switch (true) {
             case preg_match("/^\/rss(\/|$)/", $feedPath):
-                /** 如果是RSS1标准 */
+                /** IfRSS1标准 */
                 $feedPath = substr($feedPath, 4);
                 $feedType = FeedGenerator::RSS1;
                 $currentFeedUrl = $this->options->feedRssUrl;
                 $feedContentType = 'application/rdf+xml';
                 break;
             case preg_match("/^\/atom(\/|$)/", $feedPath):
-                /** 如果是ATOM标准 */
+                /** IfATOM标准 */
                 $feedPath = substr($feedPath, 5);
                 $feedType = FeedGenerator::ATOM1;
                 $currentFeedUrl = $this->options->feedAtomUrl;
@@ -86,7 +86,7 @@ class Feed extends Contents
             ]);
 
             if (!($archive instanceof Archive)) {
-                throw new WidgetException(_t('聚合页不存在'), 404);
+                throw new WidgetException(_t('Aggregation page does not exist.'), 404);
             }
 
             switch ($feedType) {
@@ -125,7 +125,7 @@ class Feed extends Contents
     ) {
         if ($isComments || $archive->is('single')) {
             $feed->setTitle(_t(
-                '%s 的评论',
+                'Comments to %s',
                 $this->options->title . ($isComments ? '' : ' - ' . $archive->getArchiveTitle())
             ));
 

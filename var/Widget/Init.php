@@ -17,14 +17,14 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 初始化模块
+ * Initialization module
  *
  * @package Widget
  */
 class Init extends Widget
 {
     /**
-     * 入口函数,初始化路由器
+     * Entry point, initialize router
      *
      * @access public
      * @return void
@@ -98,10 +98,10 @@ class Init extends Widget
             Cookie::setOptions(__TYPECHO_COOKIE_OPTIONS__);
         }
 
-        /** 初始化路由器 */
+        /** Initialize routes器 */
         Router::setRoutes($options->routingTable);
 
-        /** 初始化插件 */
+        /** Initialize plugin */
         Plugin::init($options->plugins);
 
         /** 初始化回执 */

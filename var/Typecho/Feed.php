@@ -9,13 +9,13 @@ namespace Typecho;
  */
 class Feed
 {
-    /** 定义RSS 1.0类型 */
+    /** Define RSS 1.0 type */
     public const RSS1 = 'RSS 1.0';
 
-    /** 定义RSS 2.0类型 */
+    /** Define RSS 2.0 type */
     public const RSS2 = 'RSS 2.0';
 
-    /** 定义ATOM 1.0类型 */
+    /** Define ATOM 1.0 type */
     public const ATOM1 = 'ATOM 1.0';
 
     /** 定义RSS时间格式 */
@@ -36,7 +36,7 @@ class Feed
     private string $type;
 
     /**
-     * 字符集编码
+     * Character set编码
      *
      * @access private
      * @var string
@@ -68,7 +68,7 @@ class Feed
     private string $baseUrl;
 
     /**
-     * 聚合标题
+     * Feed title
      *
      * @access private
      * @var string
@@ -76,7 +76,7 @@ class Feed
     private string $title;
 
     /**
-     * 聚合副标题
+     * 聚合副Title
      *
      * @access private
      * @var string|null
@@ -124,9 +124,9 @@ class Feed
     }
 
     /**
-     * 设置标题
+     * 设置Title
      *
-     * @param string $title 标题
+     * @param string $title Title
      */
     public function setTitle(string $title)
     {
@@ -134,9 +134,9 @@ class Feed
     }
 
     /**
-     * 设置副标题
+     * 设置副Title
      *
-     * @param string|null $subTitle 副标题
+     * @param string|null $subTitle 副Title
      */
     public function setSubTitle(?string $subTitle)
     {
@@ -195,7 +195,7 @@ class Feed
     }
 
     /**
-     * 输出字符串
+     * 输出String
      *
      * @return string
      */
@@ -396,7 +396,7 @@ xml:base="' . $this->baseUrl . '"
     /**
      * 获取Feed时间格式
      *
-     * @param integer $stamp 时间戳
+     * @param integer $stamp Timestamp
      * @return string
      */
     public function dateFormat(int $stamp): string

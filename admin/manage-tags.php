@@ -16,22 +16,22 @@ include 'menu.php';
                 <form method="post" name="manage_tags" class="operate-form">
                     <div class="typecho-list-operate">
                         <div class="operate">
-                            <label><i class="sr-only"><?php _e('全选'); ?></i><input type="checkbox"
+                            <label><i class="sr-only"><?php _e('Select all'); ?></i><input type="checkbox"
                                                                                    class="typecho-table-select-all"/></label>
                             <div class="btn-group btn-drop">
                                 <button class="btn dropdown-toggle btn-s" type="button"><i
-                                        class="sr-only"><?php _e('操作'); ?></i><?php _e('选中项'); ?> <i
+                                        class="sr-only"><?php _e('Operations'); ?></i><?php _e('Selected'); ?> <i
                                         class="i-caret-down"></i></button>
                                 <ul class="dropdown-menu">
-                                    <li><a lang="<?php _e('你确认要删除这些标签吗?'); ?>"
-                                           href="<?php $security->index('/action/metas-tag-edit?do=delete'); ?>"><?php _e('删除'); ?></a>
+                                    <li><a lang="<?php _e('Delete these tags?'); ?>"
+                                           href="<?php $security->index('/action/metas-tag-edit?do=delete'); ?>"><?php _e('Delete'); ?></a>
                                     </li>
-                                    <li><a lang="<?php _e('刷新标签可能需要等待较长时间, 你确认要刷新这些标签吗?'); ?>"
-                                           href="<?php $security->index('/action/metas-tag-edit?do=refresh'); ?>"><?php _e('刷新'); ?></a>
+                                    <li><a lang="<?php _e('Refresh these tags may take a long time, are you sure?'); ?>"
+                                           href="<?php $security->index('/action/metas-tag-edit?do=refresh'); ?>"><?php _e('Refresh'); ?></a>
                                     </li>
                                     <li class="multiline">
                                         <button type="button" class="btn btn-s merge"
-                                                rel="<?php $security->index('/action/metas-tag-edit?do=merge'); ?>"><?php _e('合并到'); ?></button>
+                                                rel="<?php $security->index('/action/metas-tag-edit?do=merge'); ?>"><?php _e('Combine to'); ?></button>
                                         <input type="text" name="merge" class="text-s"/>
                                     </li>
                                 </ul>
@@ -54,7 +54,7 @@ include 'menu.php';
                         </ul>
                     <?php else: ?>
                         <ul class="tag-list">
-                            <li class="none"><?php _e('没有任何标签'); ?></li>
+                            <li class="none"><?php _e('No tag.'); ?></li>
                         </ul>
                     <?php endif; ?>
                     <input type="hidden" name="do" value="delete"/>

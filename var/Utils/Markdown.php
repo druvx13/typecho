@@ -3,7 +3,7 @@
 namespace Utils;
 
 /**
- * Markdown解析
+ * Markdown parser
  *
  * @package Markdown
  * @copyright Copyright (c) 2014 Typecho team (http://www.typecho.org)

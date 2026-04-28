@@ -26,135 +26,135 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 内容的文章基类
- * 定义的css类
- * p.more:阅读全文链接所属段落
+ * Content/post base class
+ * Defined CSS class
+ * p.more: paragraph containing the "read more" link
  *
  * @package Widget
  */
 class Archive extends Contents
 {
     /**
-     * 调用的风格文件
+     * Stylesheet file in use
      *
      * @var string
      */
     private string $themeFile;
 
     /**
-     * 风格目录
+     * Theme directory
      *
      * @var string
      */
     private string $themeDir;
 
     /**
-     * 分页计算对象
+     * Pagination calculation object
      *
      * @var Query
      */
     private Query $countSql;
 
     /**
-     * 所有文章个数
+     * Total post count
      *
      * @var int|null
      */
     private ?int $total = null;
 
     /**
-     * 标记是否为从外部调用
+     * Flag indicating external invocation
      *
      * @var boolean
      */
     private bool $invokeFromOutside = false;
 
     /**
-     * 是否由聚合调用
+     * Whether called by feed
      *
      * @var boolean
      */
     private bool $invokeByFeed = false;
 
     /**
-     * 当前页
+     * Current page
      *
      * @var integer
      */
     private int $currentPage;
 
     /**
-     * 生成分页的内容
+     * Generate pagination content
      *
      * @var Router\ParamsDelegateInterface
      */
     private Router\ParamsDelegateInterface $pageRow;
 
     /**
-     * RSS 2.0聚合地址
+     * RSS 2.0 feed URL
      *
      * @var string
      */
     private string $archiveFeedUrl;
 
     /**
-     * RSS 1.0聚合地址
+     * RSS 1.0 feed URL
      *
      * @var string
      */
     private string $archiveFeedRssUrl;
 
     /**
-     * ATOM 聚合地址
+     * ATOM feed URL
      *
      * @var string
      */
     private string $archiveFeedAtomUrl;
 
     /**
-     * 本页关键字
+     * Page keywords
      *
      * @var string|null
      */
     private ?string $archiveKeywords = null;
 
     /**
-     * 本页描述
+     * Page description
      *
      * @var string|null
      */
     private ?string $archiveDescription = null;
 
     /**
-     * 归档标题
+     * Archive title
      *
      * @var string|null
      */
     private ?string $archiveTitle = null;
 
     /**
-     * 归档地址
+     * Archive URL
      *
      * @var string|null
      */
     private ?string $archiveUrl = null;
 
     /**
-     * 归档类型
+     * Archive type
      *
      * @var string
      */
     private string $archiveType = 'index';
 
     /**
-     * 是否为单一归档
+     * Whether this is a single-item archive
      *
      * @var boolean
      */
     private bool $archiveSingle = false;
 
     /**
-     * 是否为自定义首页, 主要为了标记自定义首页的情况
+     * Whether this is a custom homepage
      *
      * (default value: false)
      *
@@ -164,7 +164,7 @@ class Archive extends Contents
     private bool $makeSinglePageAsFrontPage = false;
 
     /**
-     * 归档缩略名
+     * Archive slug
      *
      * @access private
      * @var string
@@ -185,7 +185,7 @@ class Archive extends Contents
             'commentPage'    => 0
         ]);
 
-        /** 用于判断是路由调用还是外部调用 */
+        /** Used to distinguish route call from external call */
         if (null == $parameter->type) {
             if (!isset(Router::$current)) {
                 throw new WidgetException('Archive type is not set', 500);
@@ -196,18 +196,18 @@ class Archive extends Contents
             $this->invokeFromOutside = true;
         }
 
-        /** 用于判断是否为feed调用 */
+        /** Used to check whether this is a feed call */
         if ($parameter->isFeed) {
             $this->invokeByFeed = true;
         }
 
-        /** 初始化皮肤路径 */
+        /** Initialize theme path */
         $this->themeDir = rtrim($this->options->themeFile($this->options->theme), '/') . '/';
     }
 
     /**
-     * 增加标题
-     * @param string $archiveTitle 标题
+     * Add title
+     * @param string $archiveTitle Title
      */
     public function addArchiveTitle(string $archiveTitle)
     {
@@ -463,7 +463,7 @@ class Archive extends Contents
     }
 
     /**
-     * 获取页数
+     * Get page count
      *
      * @return integer
      */
@@ -526,11 +526,11 @@ class Archive extends Contents
     }
 
     /**
-     * 执行函数
+     * Execute action
      */
     public function execute()
     {
-        /** 避免重复取数据 */
+        /** Avoid fetching data twice */
         if ($this->have()) {
             return;
         }
@@ -561,11 +561,11 @@ class Archive extends Contents
             'search_page'        => 'searchHandle'
         ];
 
-        /** 处理搜索结果跳转 */
+        /** Handle search result redirect */
         if ($this->request->is('s')) {
             $filterKeywords = $this->request->filter('search')->get('s');
 
-            /** 跳转到搜索页 */
+            /** Redirect to search page */
             if (null != $filterKeywords) {
                 $this->response->redirect(
                     Router::url('search', ['keywords' => urlencode($filterKeywords)], $this->options->index)
@@ -573,17 +573,17 @@ class Archive extends Contents
             }
         }
 
-        /** 自定义首页功能 */
+        /** Custom homepage feature */
         $frontPage = $this->options->frontPage;
         if (!$this->invokeByFeed && ('index' == $this->parameter->type || 'index_page' == $this->parameter->type)) {
-            //显示某个页面
+            // Display a specific page
             if (0 === strpos($frontPage, 'page:')) {
-                // 对某些变量做hack
+                // Patch some variables
                 $this->request->setParam('cid', intval(substr($frontPage, 5)));
                 $this->parameter->type = 'page';
                 $this->makeSinglePageAsFrontPage = true;
             } elseif (0 === strpos($frontPage, 'file:')) {
-                // 显示某个文件
+                // Display a specific file
                 $this->setThemeFile(substr($frontPage, 5));
                 return;
             }
@@ -595,7 +595,7 @@ class Archive extends Contents
             $this->archiveType = 'front';
         }
 
-        /** 初始化分页变量 */
+        /** Initialize pagination variables */
         $this->currentPage = $this->request->filter('int')->get('page', 1);
         $hasPushed = false;
         $this->pageRow = new class implements Router\ParamsDelegateInterface
@@ -606,10 +606,10 @@ class Archive extends Contents
             }
         };
 
-        /** select初始化 */
+        /** Initialize select query */
         $select = self::pluginHandle()->trigger($selectPlugged)->call('select', $this);
 
-        /** 定时发布功能 */
+        /** Scheduled publish feature */
         if (!$selectPlugged) {
             $select = $this->select('table.contents.*');
 
@@ -647,10 +647,10 @@ class Archive extends Contents
             }
         }
 
-        /** handle初始化 */
+        /** Initialize handle */
         self::pluginHandle()->call('handleInit', $this, $select);
 
-        /** 初始化其它变量 */
+        /** Initialize other variables */
         $this->archiveFeedUrl = $this->options->feedUrl;
         $this->archiveFeedRssUrl = $this->options->feedRssUrl;
         $this->archiveFeedAtomUrl = $this->options->feedAtomUrl;
@@ -665,7 +665,7 @@ class Archive extends Contents
             $hasPushed = self::pluginHandle()->call('handle', $this->parameter->type, $this, $select);
         }
 
-        /** 初始化皮肤函数 */
+        /** Initialize theme functions */
         $functionsFile = $this->themeDir . 'functions.php';
         if (
             (!$this->invokeFromOutside || $this->parameter->type == 404 || $this->parameter->preview)
@@ -677,26 +677,26 @@ class Archive extends Contents
             }
         }
 
-        /** 如果已经提前压入则直接返回 */
+        /** Return immediately if already pushed */
         if ($hasPushed) {
             return;
         }
 
-        /** 仅输出文章 */
+        /** Output posts only */
         $this->countSql = clone $select;
 
         $select->order('table.contents.created', Db::SORT_DESC)
             ->page($this->currentPage, $this->parameter->pageSize);
         $this->query($select);
 
-        /** 处理超出分页的情况 */
+        /** Handle out-of-bounds pagination */
         if ($this->currentPage > 1 && !$this->have()) {
-            throw new WidgetException(_t('请求的地址不存在'), 404);
+            throw new WidgetException(_t('Requested URL does not exist.'), 404);
         }
     }
 
     /**
-     * 重载select
+     * Override select
      *
      * @param mixed $fields
      * @return Query
@@ -705,7 +705,7 @@ class Archive extends Contents
     public function select(...$fields): Query
     {
         if ($this->invokeByFeed) {
-            // 对feed输出加入限制条件
+            // Add restriction conditions for feed output
             return parent::select(...$fields)->where('table.contents.allowFeed = ?', 1)
                 ->where("table.contents.password IS NULL OR table.contents.password = ''");
         } else {
@@ -714,9 +714,9 @@ class Archive extends Contents
     }
 
     /**
-     * 输出文章内容
+     * Output post content
      *
-     * @param string $more 文章截取后缀
+     * @param string $more Post excerpt suffix
      */
     public function content($more = null)
     {
@@ -724,13 +724,13 @@ class Archive extends Contents
     }
 
     /**
-     * 输出分页
+     * Output pagination
      *
-     * @param string $prev 上一页文字
-     * @param string $next 下一页文字
-     * @param int $splitPage 分割范围
-     * @param string $splitWord 分割字符
-     * @param string|array $template 展现配置信息
+     * @param string $prev Previous page text
+     * @param string $next Next page text
+     * @param int $splitPage Split range
+     * @param string $splitWord Split character
+     * @param string|array $template Display configuration value
      * @throws Db\Exception|WidgetException
      */
     public function pageNav(
@@ -776,7 +776,7 @@ class Archive extends Contents
             );
 
             if (!$hasNav && $total > $this->parameter->pageSize) {
-                /** 使用盒状分页 */
+                /** Use box-style pagination */
                 $nav = new Box(
                     $total,
                     $this->currentPage,
@@ -793,10 +793,10 @@ class Archive extends Contents
     }
 
     /**
-     * 前一页
+     * Previous page
      *
-     * @param string $word 链接标题
-     * @param string $page 页面链接
+     * @param string $word Link title
+     * @param string $page Page link
      * @throws Db\Exception|WidgetException
      */
     public function pageLink(string $word = '&laquo; Previous Entries', string $page = 'prev')
@@ -812,7 +812,7 @@ class Archive extends Contents
                     $this->options->index
                 );
 
-                /** 使用盒状分页 */
+                /** Use box-style pagination */
                 $nav = new Classic(
                     $this->getTotal(),
                     $this->currentPage,
@@ -826,7 +826,7 @@ class Archive extends Contents
     }
 
     /**
-     * 获取评论归档对象
+     * Get comment archive object
      *
      * @access public
      * @return \Widget\Comments\Archive
@@ -875,11 +875,11 @@ class Archive extends Contents
     }
 
     /**
-     * 显示下一个内容的标题链接
+     * 显示下Mon个内容的Title链接
      *
-     * @param string $format 格式
-     * @param string|null $default 如果没有下一篇,显示的默认文字
-     * @param array $custom 定制化样式
+     * @param string $format Format
+     * @param string|null $default 如果没有下Mon篇,显示的默认文字
+     * @param array $custom Custom styles
      */
     public function theNext(string $format = '%s', ?string $default = null, array $custom = [])
     {
@@ -903,12 +903,12 @@ class Archive extends Contents
     }
 
     /**
-     * 显示上一个内容的标题链接
+     * 显示上Mon个内容的Title链接
      *
      * @access public
-     * @param string $format 格式
-     * @param string|null $default 如果没有上一篇,显示的默认文字
-     * @param array $custom 定制化样式
+     * @param string $format Format
+     * @param string|null $default 如果没有上Mon篇,显示的默认文字
+     * @param array $custom Custom styles
      * @return void
      */
     public function thePrev(string $format = '%s', ?string $default = null, array $custom = [])
@@ -968,12 +968,12 @@ class Archive extends Contents
 
         switch ($type) {
             case 'author':
-                /** 如果访问权限被设置为禁止,则tag会被置为空 */
+                /** If access permission is set to deny, the tag will be emptied */
                 return AuthorRelated::alloc(
                     ['cid' => $this->cid, 'type' => $this->type, 'author' => $this->author->uid, 'limit' => $limit]
                 );
             default:
-                /** 如果访问权限被设置为禁止,则tag会被置为空 */
+                /** If access permission is set to deny, the tag will be emptied */
                 return ContentsRelated::alloc(
                     ['cid' => $this->cid, 'type' => $this->type, 'tags' => $this->tags, 'limit' => $limit]
                 );
@@ -981,7 +981,7 @@ class Archive extends Contents
     }
 
     /**
-     * 输出头部元数据
+     * Output head metadata
      *
      * @param string|null $rule 规则
      */
@@ -1004,7 +1004,7 @@ class Archive extends Contents
             'atom'         => $this->archiveFeedAtomUrl
         ];
 
-        /** 头部是否输出聚合 */
+        /** 头部是否Output feed */
         $allowFeed = !$this->is('single') || $this->allow('feed') || $this->makeSinglePageAsFrontPage;
 
         if (!empty($rule)) {
@@ -1247,7 +1247,7 @@ EOF;
     }
 
     /**
-     * 输出cookie记忆别名
+     * 输出cookie记忆Alias
      *
      * @param string $cookieName 已经记忆的cookie名称
      * @param boolean $return 是否返回
@@ -1269,7 +1269,7 @@ EOF;
     }
 
     /**
-     * 输出归档标题
+     * 输出归档Title
      *
      * @param mixed $defines
      * @param string $before
@@ -1340,7 +1340,7 @@ EOF;
                 }
             }
 
-            //~ 然后找归档类型路径, 比如 category.php
+            //~ 然后找Archive type路径, 比如 category.php
             if (!$valid) {
                 $themeFile = $this->archiveType . '.php';
                 if (file_exists($this->themeDir . $themeFile)) {
@@ -1380,24 +1380,24 @@ EOF;
 
         /** 文件不存在 */
         if (!$valid) {
-            throw new WidgetException(_t('文件不存在'), 500);
+            throw new WidgetException(_t('File does not exist.'), 500);
         }
 
-        /** 挂接插件 */
+        /** Hook plugin */
         self::pluginHandle()->call('beforeRender', $this);
 
         /** 输出模板 */
         require_once $this->themeDir . $this->themeFile;
 
-        /** 挂接插件 */
+        /** Hook plugin */
         self::pluginHandle()->call('afterRender', $this);
     }
 
     /**
-     * 判断归档类型和名称
+     * 判断Archive type和名称
      *
      * @access public
-     * @param string $archiveType 归档类型
+     * @param string $archiveType Archive type
      * @param string|null $archiveSlug 归档名称
      * @return boolean
      */
@@ -1441,14 +1441,14 @@ EOF;
     }
 
     /**
-     * 评论地址
+     * Comment URL
      *
      * @return string
      */
     protected function ___commentUrl(): string
     {
-        /** 生成反馈地址 */
-        /** 评论 */
+        /** Generate feedback URL */
+        /** Comment */
         $commentUrl = parent::___commentUrl();
 
         //不依赖js的父级评论
@@ -1518,84 +1518,84 @@ EOF;
     /**
      * 处理index
      *
-     * @param Query $select 查询对象
-     * @param boolean $hasPushed 是否已经压入队列
+     * @param Query $select Query object
+     * @param boolean $hasPushed Whether already pushed to queue
      */
     private function indexHandle(Query $select, bool &$hasPushed)
     {
         $select->where('table.contents.type = ?', 'post');
 
-        /** 插件接口 */
+        /** Plugin interface */
         self::pluginHandle()->call('indexHandle', $this, $select);
     }
 
     /**
      * 默认的非首页归档处理
      *
-     * @param Query $select 查询对象
-     * @param boolean $hasPushed 是否已经压入队列
+     * @param Query $select Query object
+     * @param boolean $hasPushed Whether already pushed to queue
      * @throws WidgetException
      */
     private function archiveEmptyHandle(Query $select, bool &$hasPushed)
     {
-        throw new WidgetException(_t('请求的地址不存在'), 404);
+        throw new WidgetException(_t('Requested URL does not exist.'), 404);
     }
 
     /**
      * 404页面处理
      *
-     * @param Query $select 查询对象
-     * @param boolean $hasPushed 是否已经压入队列
+     * @param Query $select Query object
+     * @param boolean $hasPushed Whether already pushed to queue
      */
     private function error404Handle(Query $select, bool &$hasPushed)
     {
         /** 设置header */
         $this->response->setStatus(404);
 
-        /** 设置标题 */
-        $this->archiveTitle = _t('页面没找到');
+        /** Set title */
+        $this->archiveTitle = _t('Page not found.');
 
-        /** 设置归档类型 */
+        /** Set archive type */
         $this->archiveType = 'archive';
 
-        /** 设置归档缩略名 */
+        /** Set archive slug */
         $this->archiveSlug = 404;
 
         /** 设置归档模板 */
         $this->themeFile = '404.php';
 
-        /** 设置单一归档类型 */
+        /** 设置单MonArchive type */
         $this->archiveSingle = false;
 
         $hasPushed = true;
 
-        /** 插件接口 */
+        /** Plugin interface */
         self::pluginHandle()->call('error404Handle', $this, $select);
     }
 
     /**
      * 独立页处理
      *
-     * @param Query $select 查询对象
-     * @param boolean $hasPushed 是否已经压入队列
+     * @param Query $select Query object
+     * @param boolean $hasPushed Whether already pushed to queue
      * @throws WidgetException|Db\Exception
      */
     private function singleHandle(Query $select, bool &$hasPushed)
     {
-        /** 将这两个设置提前是为了保证在调用query的plugin时可以在插件中使用is判断初步归档类型 */
+        /** 将这两个设置提前是为了保证在调用query的plugin时可以在插件中使用is判断初步Archive type */
         /** 如果需要更细判断，则可以使用singleHandle来实现 */
         $this->archiveSingle = true;
 
-        /** 默认归档类型 */
+        /** 默认Archive type */
         $this->archiveType = 'single';
 
-        /** 匹配类型 */
+        /** Match type */
 
         if ('single' != $this->parameter->type) {
             $select->where('table.contents.type = ?', $this->parameter->type);
         }
 
-        /** 如果是单篇文章或独立页面 */
+        /** If单篇文章或独立页面 */
         if ($this->request->is('cid')) {
             $select->where('table.contents.cid = ?', $this->request->filter('int')->get('cid'));
         }
@@ -1632,7 +1632,7 @@ EOF;
                 }
             }
 
-            /** 获取起始GMT时间的unix时间戳 */
+            /** 获取起始GMT时间的unixTimestamp */
             $from = mktime(0, 0, 0, $fromMonth, $fromDay, $year)
                 - $this->options->timezone + $this->options->serverTimezone;
             $to = mktime(23, 59, 59, $toMonth, $toDay, $year)
@@ -1657,14 +1657,14 @@ EOF;
             $isPasswordPosted = true;
         }
 
-        /** 匹配类型 */
+        /** Match type */
         $select->limit(1);
         $this->query($select);
 
         if (!$this->have()) {
             if (!$this->invokeFromOutside) {
                 /** 对没有索引情况下的判断 */
-                throw new WidgetException(_t('请求的地址不存在'), 404);
+                throw new WidgetException(_t('Requested URL does not exist.'), 404);
             } else {
                 $hasPushed = true;
                 return;
@@ -1673,7 +1673,7 @@ EOF;
 
         /** 密码表单判断逻辑 */
         if ($isPasswordPosted && $this->hidden) {
-            throw new WidgetException(_t('对不起,您输入的密码错误'), 403);
+            throw new WidgetException(_t('Sorry, the entered password is wrong.'), 403);
         }
 
         /** 设置模板 */
@@ -1682,7 +1682,7 @@ EOF;
             $this->themeFile = $this->template;
         }
 
-        /** 设置头部feed */
+        /** Set head feed */
         /** RSS 2.0 */
 
         //对自定义首页使用全局变量
@@ -1695,17 +1695,17 @@ EOF;
             /** ATOM 1.0 */
             $this->archiveFeedAtomUrl = $this->feedAtomUrl;
 
-            /** 设置标题 */
+            /** Set title */
             $this->archiveTitle = $this->title;
 
-            /** 设置关键词 */
+            /** Set keywords */
             $this->archiveKeywords = implode(',', array_column($this->tags, 'name'));
 
-            /** 设置描述 */
+            /** Set description */
             $this->archiveDescription = $this->plainExcerpt;
         }
 
-        /** 设置归档类型 */
+        /** Set archive type */
         if ($this->parameter->preview && $this->type === 'revision') {
             $parent = ContentsFrom::allocWithAlias($this->parent, ['cid' => $this->parent]);
             $this->archiveType = $parent->type;
@@ -1713,11 +1713,11 @@ EOF;
             [$this->archiveType] = explode('_', $this->type);
         }
 
-        /** 设置归档缩略名 */
+        /** Set archive slug */
         $this->archiveSlug = ('post' == $this->archiveType || 'attachment' == $this->archiveType)
             ? $this->cid : $this->slug;
 
-        /** 设置归档地址 */
+        /** Set archive URL */
         $this->archiveUrl = $this->permalink;
 
         /** 设置403头 */
@@ -1727,19 +1727,19 @@ EOF;
 
         $hasPushed = true;
 
-        /** 插件接口 */
+        /** Plugin interface */
         self::pluginHandle()->call('singleHandle', $this, $select);
     }
 
     /**
      * 处理分类
      *
-     * @param Query $select 查询对象
+     * @param Query $select Query object
      * @throws WidgetException|Db\Exception
      */
     private function categoryHandle(Query $select)
     {
-        /** 如果是分类 */
+        /** If分类 */
         $categorySelect = $this->db->select()
             ->from('table.metas')
             ->where('type = ?', 'category')
@@ -1771,11 +1771,11 @@ EOF;
         ]);
 
         if (!$category->have()) {
-            throw new WidgetException(_t('分类不存在'), 404);
+            throw new WidgetException(_t('This category does not exist.'), 404);
         }
 
         if (isset($directory) && (implode('/', $directory) != implode('/', $category->directory))) {
-            throw new WidgetException(_t('父级分类不存在'), 404);
+            throw new WidgetException(_t('Parent category does not exist.'), 404);
         }
 
         $children = $category->getAllChildIds($category->mid);
@@ -1787,16 +1787,16 @@ EOF;
             ->where('table.contents.type = ?', 'post')
             ->group('table.contents.cid');
 
-        /** 设置分页 */
+        /** Set pagination */
         $this->pageRow = $category;
 
-        /** 设置关键词 */
+        /** Set keywords */
         $this->archiveKeywords = $category->name;
 
-        /** 设置描述 */
+        /** Set description */
         $this->archiveDescription = $category->description;
 
-        /** 设置头部feed */
+        /** Set head feed */
         /** RSS 2.0 */
         $this->archiveFeedUrl = $category->feedUrl;
 
@@ -1806,26 +1806,26 @@ EOF;
         /** ATOM 1.0 */
         $this->archiveFeedAtomUrl = $category->feedAtomUrl;
 
-        /** 设置标题 */
+        /** Set title */
         $this->archiveTitle = $category->name;
 
-        /** 设置归档类型 */
+        /** Set archive type */
         $this->archiveType = 'category';
 
-        /** 设置归档缩略名 */
+        /** Set archive slug */
         $this->archiveSlug = $category->slug;
 
-        /** 设置归档地址 */
+        /** Set archive URL */
         $this->archiveUrl = $category->permalink;
 
-        /** 插件接口 */
+        /** Plugin interface */
         self::pluginHandle()->call('categoryHandle', $this, $select);
     }
 
     /**
-     * 处理标签
+     * 处理Label
      *
-     * @param Query $select 查询对象
+     * @param Query $select Query object
      * @throws WidgetException|Db\Exception
      */
     private function tagHandle(Query $select)
@@ -1847,13 +1847,13 @@ EOF;
             $alias .= ':' . $slug;
         }
 
-        /** 如果是标签 */
+        /** IfLabel */
         $tag = MetasFrom::allocWithAlias($alias, [
             'query' => $tagSelect
         ]);
 
         if (!$tag->have()) {
-            throw new WidgetException(_t('标签不存在'), 404);
+            throw new WidgetException(_t('This tag does not exist.'), 404);
         }
 
         /** fix sql92 by 70 */
@@ -1861,16 +1861,16 @@ EOF;
             ->where('table.relationships.mid = ?', $tag->mid)
             ->where('table.contents.type = ?', 'post');
 
-        /** 设置分页 */
+        /** Set pagination */
         $this->pageRow = $tag;
 
-        /** 设置关键词 */
+        /** Set keywords */
         $this->archiveKeywords = $tag->name;
 
-        /** 设置描述 */
+        /** Set description */
         $this->archiveDescription = $tag->description;
 
-        /** 设置头部feed */
+        /** Set head feed */
         /** RSS 2.0 */
         $this->archiveFeedUrl = $tag->feedUrl;
 
@@ -1880,26 +1880,26 @@ EOF;
         /** ATOM 1.0 */
         $this->archiveFeedAtomUrl = $tag->feedAtomUrl;
 
-        /** 设置标题 */
+        /** Set title */
         $this->archiveTitle = $tag->name;
 
-        /** 设置归档类型 */
+        /** Set archive type */
         $this->archiveType = 'tag';
 
-        /** 设置归档缩略名 */
+        /** Set archive slug */
         $this->archiveSlug = $tag->slug;
 
-        /** 设置归档地址 */
+        /** Set archive URL */
         $this->archiveUrl = $tag->permalink;
 
-        /** 插件接口 */
+        /** Plugin interface */
         self::pluginHandle()->call('tagHandle', $this, $select);
     }
 
     /**
      * 处理作者
      *
-     * @param Query $select 查询对象
+     * @param Query $select Query object
      * @throws WidgetException|Db\Exception
      */
     private function authorHandle(Query $select)
@@ -1911,22 +1911,22 @@ EOF;
         ]);
 
         if (!$author->have()) {
-            throw new WidgetException(_t('作者不存在'), 404);
+            throw new WidgetException(_t('The author does not exist.'), 404);
         }
 
         $select->where('table.contents.authorId = ?', $uid)
             ->where('table.contents.type = ?', 'post');
 
-        /** 设置分页 */
+        /** Set pagination */
         $this->pageRow = $author;
 
-        /** 设置关键词 */
+        /** Set keywords */
         $this->archiveKeywords = $author->screenName;
 
-        /** 设置描述 */
+        /** Set description */
         $this->archiveDescription = $author->screenName;
 
-        /** 设置头部feed */
+        /** Set head feed */
         /** RSS 2.0 */
         $this->archiveFeedUrl = $author->feedUrl;
 
@@ -1936,79 +1936,79 @@ EOF;
         /** ATOM 1.0 */
         $this->archiveFeedAtomUrl = $author->feedAtomUrl;
 
-        /** 设置标题 */
+        /** Set title */
         $this->archiveTitle = $author->screenName;
 
-        /** 设置归档类型 */
+        /** Set archive type */
         $this->archiveType = 'author';
 
-        /** 设置归档缩略名 */
+        /** Set archive slug */
         $this->archiveSlug = $author->uid;
 
-        /** 设置归档地址 */
+        /** Set archive URL */
         $this->archiveUrl = $author->permalink;
 
-        /** 插件接口 */
+        /** Plugin interface */
         self::pluginHandle()->call('authorHandle', $this, $select);
     }
 
     /**
-     * 处理日期
+     * 处理Sun期
      *
      * @access private
-     * @param Query $select 查询对象
+     * @param Query $select Query object
      * @return void
      */
     private function dateHandle(Query $select)
     {
-        /** 如果是按日期归档 */
+        /** If按Sun期归档 */
         $year = $this->request->filter('int')->get('year');
         $month = $this->request->filter('int')->get('month');
         $day = $this->request->filter('int')->get('day');
 
         if (!empty($year) && !empty($month) && !empty($day)) {
 
-            /** 如果按日归档 */
+            /** 如果按Sun归档 */
             $from = mktime(0, 0, 0, $month, $day, $year);
             $to = mktime(23, 59, 59, $month, $day, $year);
 
-            /** 归档缩略名 */
+            /** Archive slug */
             $this->archiveSlug = 'day';
 
-            /** 设置标题 */
-            $this->archiveTitle = _t('%d年%d月%d日', $year, $month, $day);
+            /** Set title */
+            $this->archiveTitle = _t('%d - %d - %d', $year, $month, $day);
         } elseif (!empty($year) && !empty($month)) {
 
             /** 如果按月归档 */
             $from = mktime(0, 0, 0, $month, 1, $year);
             $to = mktime(23, 59, 59, $month, date('t', $from), $year);
 
-            /** 归档缩略名 */
+            /** Archive slug */
             $this->archiveSlug = 'month';
 
-            /** 设置标题 */
-            $this->archiveTitle = _t('%d年%d月', $year, $month);
+            /** Set title */
+            $this->archiveTitle = _t('%d - %d', $year, $month);
         } elseif (!empty($year)) {
 
             /** 如果按年归档 */
             $from = mktime(0, 0, 0, 1, 1, $year);
             $to = mktime(23, 59, 59, 12, 31, $year);
 
-            /** 归档缩略名 */
+            /** Archive slug */
             $this->archiveSlug = 'year';
 
-            /** 设置标题 */
-            $this->archiveTitle = _t('%d年', $year);
+            /** Set title */
+            $this->archiveTitle = _t('%d', $year);
         }
 
         $select->where('table.contents.created >= ?', $from - $this->options->timezone + $this->options->serverTimezone)
             ->where('table.contents.created <= ?', $to - $this->options->timezone + $this->options->serverTimezone)
             ->where('table.contents.type = ?', 'post');
 
-        /** 设置归档类型 */
+        /** Set archive type */
         $this->archiveType = 'date';
 
-        /** 设置分页 */
+        /** Set pagination */
         $this->pageRow = new class ($year, $month, $day) implements Router\ParamsDelegateInterface {
             private int $year;
             private int $month;
@@ -2048,10 +2048,10 @@ EOF;
         /** ATOM 1.0 */
         $this->archiveFeedAtomUrl = Router::url($currentRoute, $this->pageRow, $this->options->feedAtomUrl);
 
-        /** 设置归档地址 */
+        /** Set archive URL */
         $this->archiveUrl = Router::url($currentRoute, $this->pageRow, $this->options->index);
 
-        /** 插件接口 */
+        /** Plugin interface */
         self::pluginHandle()->call('dateHandle', $this, $select);
     }
 
@@ -2059,8 +2059,8 @@ EOF;
      * 处理搜索
      *
      * @access private
-     * @param Query $select 查询对象
-     * @param boolean $hasPushed 是否已经压入队列
+     * @param Query $select Query object
+     * @param boolean $hasPushed Whether already pushed to queue
      * @return void
      */
     private function searchHandle(Query $select, bool &$hasPushed)
@@ -2088,10 +2088,10 @@ EOF;
                 ->where('table.contents.type = ?', 'post');
         }
 
-        /** 设置关键词 */
+        /** Set keywords */
         $this->archiveKeywords = $keywords;
 
-        /** 设置分页 */
+        /** Set pagination */
         $this->pageRow = new class ($keywords) implements Router\ParamsDelegateInterface {
             private string $keywords;
 
@@ -2111,7 +2111,7 @@ EOF;
             }
         };
 
-        /** 设置头部feed */
+        /** Set head feed */
         /** RSS 2.0 */
         $this->archiveFeedUrl = Router::url('search', $this->pageRow, $this->options->feedUrl);
 
@@ -2121,19 +2121,19 @@ EOF;
         /** ATOM 1.0 */
         $this->archiveFeedAtomUrl = Router::url('search', $this->pageRow, $this->options->feedAtomUrl);
 
-        /** 设置标题 */
+        /** Set title */
         $this->archiveTitle = $keywords;
 
-        /** 设置归档类型 */
+        /** Set archive type */
         $this->archiveType = 'search';
 
-        /** 设置归档缩略名 */
+        /** Set archive slug */
         $this->archiveSlug = $keywords;
 
-        /** 设置归档地址 */
+        /** Set archive URL */
         $this->archiveUrl = Router::url('search', $this->pageRow, $this->options->index);
 
-        /** 插件接口 */
+        /** Plugin interface */
         self::pluginHandle()->call('searchHandle', $this, $select);
     }
 }

@@ -10,7 +10,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 提示框组件
+ * Notice widget
  *
  * @package Widget
  */
@@ -48,9 +48,9 @@ class Notice extends Widget
     }
 
     /**
-     * 设定堆栈每一行的值
+     * Set the value of each row in the stack
      *
-     * @param string|array $value 值对应的键值
+     * @param string|array $value 值对应的Key value
      * @param string|null $type 提示类型
      * @param string $typeFix 兼容老插件
      */

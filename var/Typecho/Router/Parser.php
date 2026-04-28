@@ -3,7 +3,7 @@
 namespace Typecho\Router;
 
 /**
- * 路由器解析器
+ * Router parser
  *
  * @category typecho
  * @package Router
@@ -37,7 +37,7 @@ class Parser
     private array $params;
 
     /**
-     * 设置路由表
+     * 设置Routing table
      *
      * @access public
      * @param array $routingTable 路由器映射表
@@ -57,7 +57,7 @@ class Parser
     }
 
     /**
-     * 局部匹配并替换正则字符串
+     * 局部匹配并替换正则String
      *
      * @access public
      * @param array $matches 匹配部分
@@ -83,7 +83,7 @@ class Parser
     }
 
     /**
-     * 解析路由表
+     * 解析Routing table
      *
      * @access public
      * @return array

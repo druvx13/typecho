@@ -9,7 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 隐藏域帮手类
+ * Hidden field helper class
  *
  * @category typecho
  * @package Widget
@@ -21,7 +21,7 @@ class Hidden extends Element
     use TextInputTrait;
 
     /**
-     * 自定义初始函数
+     * Custom initialization function
      *
      * @return void
      */

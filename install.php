@@ -339,27 +339,27 @@ function install_get_db_drivers(): array
     $drivers = [];
 
     if (\Typecho\Db\Adapter\Pdo\Mysql::isAvailable()) {
-        $drivers['Pdo_Mysql'] = _t('Pdo 驱动 Mysql 适配器');
+        $drivers['Pdo_Mysql'] = _t('Pdo driver Mysql adapter');
     }
 
     if (\Typecho\Db\Adapter\Pdo\SQLite::isAvailable()) {
-        $drivers['Pdo_SQLite'] = _t('Pdo 驱动 SQLite 适配器');
+        $drivers['Pdo_SQLite'] = _t('Pdo driver SQLite adapter (SQLite 3.x)');
     }
 
     if (\Typecho\Db\Adapter\Pdo\Pgsql::isAvailable()) {
-        $drivers['Pdo_Pgsql'] = _t('Pdo 驱动 PostgreSql 适配器');
+        $drivers['Pdo_Pgsql'] = _t('Pdo driver PostgreSql adapter');
     }
 
     if (\Typecho\Db\Adapter\Mysqli::isAvailable()) {
-        $drivers['Mysqli'] = _t('Mysql 原生函数适配器');
+        $drivers['Mysqli'] = _t('MySQL native function adapter');
     }
 
     if (\Typecho\Db\Adapter\SQLite::isAvailable()) {
-        $drivers['SQLite'] = _t('SQLite 原生函数适配器');
+        $drivers['SQLite'] = _t('SQLite native function adapter');
     }
 
     if (\Typecho\Db\Adapter\Pgsql::isAvailable()) {
-        $drivers['Pgsql'] = _t('Pgsql 原生函数适配器');
+        $drivers['Pgsql'] = _t('Pgsql native function adapter');
     }
 
     return $drivers;
@@ -533,9 +533,9 @@ function install_success($step, ?array $config = null)
 
         if (!empty($config)) {
             [$userName, $userPassword] = $config;
-            echo _t('安装成功') . "\n";
-            echo _t('您的用户名是') . " {$userName}\n";
-            echo _t('您的密码是') . " {$userPassword}\n";
+            echo _t('Successfully installed.') . "\n";
+            echo _t('Your username is') . " {$userName}\n";
+            echo _t('Your password is') . " {$userPassword}\n";
         }
 
         exit(0);
@@ -579,21 +579,21 @@ function install_js_support()
     <div id="success" class="row typecho-page-main hidden">
         <div class="col-mb-12 col-tb-8 col-tb-offset-2">
             <div class="typecho-page-title">
-                <h2><?php _e('安装成功'); ?></h2>
+                <h2><?php _e('Successfully installed.'); ?></h2>
             </div>
             <div id="typecho-welcome">
                 <p class="keep-word">
-                    <?php _e('您选择了使用原有的数据, 您的用户名和密码和原来的一致'); ?>
+                    <?php _e('Since you choose to use the original data, your uesrname and password would remain unchanged.'); ?>
                 </p>
                 <p class="fresh-word">
-                    <?php _e('您的用户名是'); ?>: <strong class="warning" id="success-user"></strong><br>
-                    <?php _e('您的密码是'); ?>: <strong class="warning" id="success-password"></strong>
+                    <?php _e('Your username is'); ?>: <strong class="warning" id="success-user"></strong><br>
+                    <?php _e('Your password is'); ?>: <strong class="warning" id="success-password"></strong>
                 </p>
                 <ul>
-                    <li><a id="login-url" href=""><?php _e('点击这里访问您的控制面板'); ?></a></li>
-                    <li><a id="site-url" href=""><?php _e('点击这里查看您的 Blog'); ?></a></li>
+                    <li><a id="login-url" href=""><?php _e('Click here to access your dashboard.'); ?></a></li>
+                    <li><a id="site-url" href=""><?php _e('Click here to view your blog.'); ?></a></li>
                 </ul>
-                <p><?php _e('希望您能尽情享用 Typecho 带来的乐趣!'); ?></p>
+                <p><?php _e('I hope you will enjoy Typecho!'); ?></p>
             </div>
         </div>
     </div>
@@ -693,7 +693,7 @@ function install_check_extension(array $extensions): ?string
         }
     }
 
-    return _n('缺少PHP扩展', '请在服务器上安装以下PHP扩展中的至少一个', count($extensions))
+    return _n('Missing PHP extension', 'Please install at least one of the following PHP extensions on your server', count($extensions))
         . ': ' . implode(', ', $extensions);
 }
 
@@ -705,25 +705,25 @@ function install_step_1()
     <div class="row typecho-page-main">
         <div class="col-mb-12 col-tb-8 col-tb-offset-2">
             <div class="typecho-page-title">
-                <h2><?php _e('欢迎使用 Typecho'); ?></h2>
+                <h2><?php _e('Welcome to Typecho'); ?></h2>
             </div>
             <div id="typecho-welcome">
                 <form autocomplete="off" method="post" action="install.php">
-                    <h3><?php _e('安装说明'); ?></h3>
+                    <h3><?php _e('Installation instructions'); ?></h3>
                     <p class="warning">
-                        <strong><?php _e('本安装程序将自动检测服务器环境是否符合最低配置需求. 如果不符合, 将在上方出现提示信息, 请按照提示信息检查您的主机配置. 如果服务器环境符合要求, 将在下方出现 "开始下一步" 的按钮, 点击此按钮即可一步完成安装.'); ?></strong>
+                        <strong><?php _e('This installer will auto examine if the server environment meet the minimum requirements. If not, you will be notified at the header of the page. Please check your host configuration according to the notification. If your server environment meets the requirements, a "next step" button will appear below. Click it to finish your one-step installation. '); ?></strong>
                     </p>
-                    <h3><?php _e('许可及协议'); ?></h3>
+                    <h3><?php _e('Terms and license'); ?></h3>
                     <ul>
-                        <li><?php _e('Typecho 基于 <a href="https://www.gnu.org/copyleft/gpl.html">GPL</a> 协议发布, 我们允许用户在 GPL 协议许可的范围内使用, 拷贝, 修改和分发此程序.'); ?>
-                            <?php _e('在GPL许可的范围内, 您可以自由地将其用于商业以及非商业用途.'); ?></li>
-                        <li><?php _e('Typecho 软件由其社区提供支持, 核心开发团队负责维护程序日常开发工作以及新特性的制定.'); ?>
-                            <?php _e('如果您遇到使用上的问题, 程序中的 BUG, 以及期许的新功能, 欢迎您在社区中交流或者直接向我们贡献代码.'); ?>
-                            <?php _e('对于贡献突出者, 他的名字将出现在贡献者名单中.'); ?></li>
+                        <li><?php _e('Typecho is released under the <a href="https://www.gnu.org/copyleft/gpl.html">GPL</a> license. Users are permitted to use, copy, modify, and distribute this software within the terms of the GPL.'); ?>
+                            <?php _e('The GPL License allows both commercial and non-commercial use.'); ?></li>
+                        <li><?php _e('Typecho is supported by its community. The core developers are responsible for the routine development and new features planing.'); ?>
+                            <?php _e('If you have problems in using typecho, find bugs in the program, or have a idea of new features, we welcome you to communicate in community or contribute code to us directly.'); ?>
+                            <?php _e(' Pre-eminent contributors will be credited.'); ?></li>
                     </ul>
 
                     <p class="submit">
-                        <button class="btn primary" type="submit"><?php _e('我准备好了, 开始下一步 &raquo;'); ?></button>
+                        <button class="btn primary" type="submit"><?php _e('I am ready. Begin next step &raquo;'); ?></button>
                         <input type="hidden" name="step" value="1">
 
                         <?php if (count($langs) > 1) : ?>
@@ -781,7 +781,7 @@ function install_step_1_perform()
     }
 
     if (!$writeable) {
-        $errors[] = _t('上传目录无法写入, 请手动将安装目录下的 %s 目录的权限设置为可写然后继续升级', $uploadDir);
+        $errors[] = _t('Cannot write into upload directory. Please set the permission of %s directory (under installation directory) to writable before continuing to upgrade.', $uploadDir);
     }
 
     if (empty($errors)) {
@@ -811,12 +811,12 @@ function install_step_2()
     <div class="row typecho-page-main">
         <div class="col-mb-12 col-tb-8 col-tb-offset-2">
             <div class="typecho-page-title">
-                <h2><?php _e('初始化配置'); ?></h2>
+                <h2><?php _e('Initialize configuration'); ?></h2>
             </div>
             <form autocomplete="off" action="install.php" method="post">
                 <ul class="typecho-option">
                     <li>
-                        <label for="dbAdapter" class="typecho-label"><?php _e('数据库适配器'); ?></label>
+                        <label for="dbAdapter" class="typecho-label"><?php _e('Database adapter'); ?></label>
                         <select name="dbAdapter" id="dbAdapter" onchange="location.href='?step=2&driver=' + this.value">
                             <?php foreach ($drivers as $driver => $name) : ?>
                                 <option value="<?php echo $driver; ?>"<?php if ($driver == $adapter) :
@@ -824,15 +824,15 @@ function install_step_2()
                                                endif; ?>><?php echo $name; ?></option>
                             <?php endforeach; ?>
                         </select>
-                        <p class="description"><?php _e('请根据您的数据库类型选择合适的适配器'); ?></p>
+                        <p class="description"><?php _e('Please choose the adapter according to your database type.'); ?></p>
                         <input type="hidden" id="dbNext" name="dbNext" value="none">
                     </li>
                 </ul>
                 <ul class="typecho-option">
                     <li>
-                        <label class="typecho-label" for="dbPrefix"><?php _e('数据库前缀'); ?></label>
+                        <label class="typecho-label" for="dbPrefix"><?php _e('database prefix'); ?></label>
                         <input type="text" class="text" name="dbPrefix" id="dbPrefix" value="typecho_" />
-                        <p class="description"><?php _e('默认前缀是 "typecho_"'); ?></p>
+                        <p class="description"><?php _e('the default prefix is "typecho_"'); ?></p>
                     </li>
                 </ul>
                 <?php require_once './install/' . $type . '.php'; ?>
@@ -840,7 +840,7 @@ function install_step_2()
 
                 <ul class="typecho-option typecho-option-submit">
                     <li>
-                        <button id="confirm" type="submit" class="btn primary"><?php _e('确认, 开始安装 &raquo;'); ?></button>
+                        <button id="confirm" type="submit" class="btn primary"><?php _e('Confirm and start to install &raquo;'); ?></button>
                         <input type="hidden" name="step" value="2">
                     </li>
                 </ul>
@@ -856,7 +856,7 @@ function install_step_2()
                 let text = $('<textarea></textarea>'),
                     btn = $('<button></button>');
 
-                btn.html('<?php _e('创建完毕, 继续安装 &raquo;'); ?>')
+                btn.html('<?php _e('Done, continue installation &raquo;'); ?>')
                     .attr('type', 'button')
                     .addClass('btn btn-s primary');
 
@@ -989,14 +989,14 @@ function install_step_2_perform()
     }
 
     $error = (new \Typecho\Validate())
-        ->addRule('dbPrefix', 'required', _t('确认您的配置'))
-        ->addRule('dbPrefix', 'minLength', _t('确认您的配置'), 1)
-        ->addRule('dbPrefix', 'maxLength', _t('确认您的配置'), 16)
-        ->addRule('dbPrefix', 'alphaDash', _t('确认您的配置'))
-        ->addRule('dbAdapter', 'required', _t('确认您的配置'))
-        ->addRule('dbAdapter', 'enum', _t('确认您的配置'), array_keys($drivers))
-        ->addRule('dbNext', 'required', _t('确认您的配置'))
-        ->addRule('dbNext', 'enum', _t('确认您的配置'), ['none', 'delete', 'keep', 'config'])
+        ->addRule('dbPrefix', 'required', _t('Confirm your configuration.'))
+        ->addRule('dbPrefix', 'minLength', _t('Confirm your configuration.'), 1)
+        ->addRule('dbPrefix', 'maxLength', _t('Confirm your configuration.'), 16)
+        ->addRule('dbPrefix', 'alphaDash', _t('Confirm your configuration.'))
+        ->addRule('dbAdapter', 'required', _t('Confirm your configuration.'))
+        ->addRule('dbAdapter', 'enum', _t('Confirm your configuration.'), array_keys($drivers))
+        ->addRule('dbNext', 'required', _t('Confirm your configuration.'))
+        ->addRule('dbNext', 'enum', _t('Confirm your configuration.'), ['none', 'delete', 'keep', 'config'])
         ->run($config);
 
     if (!empty($error)) {
@@ -1013,45 +1013,45 @@ function install_step_2_perform()
     switch ($type) {
         case 'Mysql':
             $error = (new \Typecho\Validate())
-                ->addRule('dbHost', 'required', _t('确认您的配置'))
-                ->addRule('dbPort', 'required', _t('确认您的配置'))
-                ->addRule('dbPort', 'isInteger', _t('确认您的配置'))
-                ->addRule('dbUser', 'required', _t('确认您的配置'))
-                ->addRule('dbCharset', 'required', _t('确认您的配置'))
-                ->addRule('dbCharset', 'enum', _t('确认您的配置'), ['utf8', 'utf8mb4'])
-                ->addRule('dbDatabase', 'required', _t('确认您的配置'))
-                ->addRule('dbEngine', 'required', _t('确认您的配置'))
-                ->addRule('dbEngine', 'enum', _t('确认您的配置'), ['InnoDB', 'MyISAM'])
-                ->addRule('dbSslCa', 'file_exists', _t('确认您的配置'))
-                ->addRule('dbSslVerify', 'enum', _t('确认您的配置'), ['on', 'off'])
+                ->addRule('dbHost', 'required', _t('Confirm your configuration.'))
+                ->addRule('dbPort', 'required', _t('Confirm your configuration.'))
+                ->addRule('dbPort', 'isInteger', _t('Confirm your configuration.'))
+                ->addRule('dbUser', 'required', _t('Confirm your configuration.'))
+                ->addRule('dbCharset', 'required', _t('Confirm your configuration.'))
+                ->addRule('dbCharset', 'enum', _t('Confirm your configuration.'), ['utf8', 'utf8mb4'])
+                ->addRule('dbDatabase', 'required', _t('Confirm your configuration.'))
+                ->addRule('dbEngine', 'required', _t('Confirm your configuration.'))
+                ->addRule('dbEngine', 'enum', _t('Confirm your configuration.'), ['InnoDB', 'MyISAM'])
+                ->addRule('dbSslCa', 'file_exists', _t('Confirm your configuration.'))
+                ->addRule('dbSslVerify', 'enum', _t('Confirm your configuration.'), ['on', 'off'])
                 ->run($config);
             break;
         case 'Pgsql':
             $error = (new \Typecho\Validate())
-                ->addRule('dbHost', 'required', _t('确认您的配置'))
-                ->addRule('dbPort', 'required', _t('确认您的配置'))
-                ->addRule('dbPort', 'isInteger', _t('确认您的配置'))
-                ->addRule('dbUser', 'required', _t('确认您的配置'))
-                ->addRule('dbCharset', 'required', _t('确认您的配置'))
-                ->addRule('dbCharset', 'enum', _t('确认您的配置'), ['utf8'])
-                ->addRule('dbDatabase', 'required', _t('确认您的配置'))
-                ->addRule('dbSslVerify', 'enum', _t('确认您的配置'), ['on', 'off'])
+                ->addRule('dbHost', 'required', _t('Confirm your configuration.'))
+                ->addRule('dbPort', 'required', _t('Confirm your configuration.'))
+                ->addRule('dbPort', 'isInteger', _t('Confirm your configuration.'))
+                ->addRule('dbUser', 'required', _t('Confirm your configuration.'))
+                ->addRule('dbCharset', 'required', _t('Confirm your configuration.'))
+                ->addRule('dbCharset', 'enum', _t('Confirm your configuration.'), ['utf8'])
+                ->addRule('dbDatabase', 'required', _t('Confirm your configuration.'))
+                ->addRule('dbSslVerify', 'enum', _t('Confirm your configuration.'), ['on', 'off'])
                 ->run($config);
             break;
         case 'SQLite':
             $error = (new \Typecho\Validate())
-                ->addRule('dbFile', 'required', _t('确认您的配置'))
+                ->addRule('dbFile', 'required', _t('Confirm your configuration.'))
                 ->addRule('dbFile', function (string $path) {
                     $pattern = "/^(\/[._a-z0-9-]+)*[a-z0-9]+\.[a-z0-9]{2,}$/i";
                     if (strstr(PHP_OS, 'WIN')) {
                         $pattern = "/(\/[._a-z0-9-]+)*[a-z0-9]+\.[a-z0-9]{2,}$/i";
                     }
                     return !!preg_match($pattern, $path);
-                }, _t('确认您的配置'))
+                }, _t('Confirm your configuration.'))
                 ->run($config);
             break;
         default:
-            install_raise_error(_t('确认您的配置'));
+            install_raise_error(_t('Confirm your configuration.'));
             break;
     }
 
@@ -1084,7 +1084,7 @@ function install_step_2_perform()
     // check config file
     if ($config['dbNext'] == 'config' && !install_check('config')) {
         $code = install_config_file($config['dbAdapter'], $config['dbPrefix'], $dbConfig, true);
-        install_raise_error(_t('没有检测到您手动创建的配置文件, 请检查后再次创建'), ['code' => $code]);
+        install_raise_error(_t('No configure file you created manually has been detected. Please check it and create it again.'), ['code' => $code]);
     } elseif (empty($installDb)) {
         // detect db config
         try {
@@ -1094,20 +1094,20 @@ function install_step_2_perform()
         } catch (\Typecho\Db\Adapter\ConnectionException $e) {
             $code = $e->getCode();
             if (('Mysql' == $type && 1049 == $code) || ('Pgsql' == $type && 7 == $code)) {
-                install_raise_error(_t('数据库: "%s"不存在，请手动创建后重试', $config['dbDatabase']));
+                install_raise_error(_t('Database "%s" does not exist. Please create it manually and try again.', $config['dbDatabase']));
             } else {
-                install_raise_error(_t('对不起, 无法连接数据库, 请先检查数据库配置再继续进行安装: "%s"', $e->getMessage()));
+                install_raise_error(_t('Sorry, could not connect to the database. Please check your database configuration and try again: "%s"', $e->getMessage()));
             }
         } catch (\Typecho\Db\Exception $e) {
-            install_raise_error(_t('安装程序捕捉到以下错误: "%s". 程序被终止, 请检查您的配置信息.', $e->getMessage()));
+            install_raise_error(_t('Installer detects this error: "%s". The program is terminated. Please check your configuration.', $e->getMessage()));
         }
 
         $code = install_config_file($config['dbAdapter'], $config['dbPrefix'], $dbConfig);
 
         if (!install_check('config')) {
             install_raise_error(
-                _t('安装程序无法自动创建 <strong>config.inc.php</strong> 文件') . "\n" .
-                _t('您可以在网站根目录下手动创建 <strong>config.inc.php</strong> 文件, 并复制如下代码至其中'),
+                _t('Installer cannot create <strong>config.inc.php</strong> file automatically.') . "\n" .
+                _t('You can manually create  <strong>config.inc.php</strong>  file under the root directory of the website, and add the following code in it'),
                 [
                 'code' => $code
                 ]
@@ -1140,7 +1140,7 @@ function install_step_2_perform()
                 }
             }
         } catch (\Typecho\Db\Exception $e) {
-            install_raise_error(_t('安装程序捕捉到以下错误: "%s". 程序被终止, 请检查您的配置信息.', $e->getMessage()));
+            install_raise_error(_t('Installer detects this error: "%s". The program is terminated. Please check your configuration.', $e->getMessage()));
         }
     }
 
@@ -1181,15 +1181,15 @@ function install_step_2_perform()
             } elseif ($config['dbNext'] == 'none') {
                 install_remove_config_file();
 
-                install_raise_error(_t('安装程序检查到原有数据表已经存在.'), [
-                    'delete' => _t('删除原有数据'),
-                    'keep' => _t('使用原有数据')
+                install_raise_error(_t('Installer detected that a database table already existed.'), [
+                    'delete' => _t('delete original data'),
+                    'keep' => _t('use original data')
                 ]);
             }
         } else {
             install_remove_config_file();
 
-            install_raise_error(_t('安装程序捕捉到以下错误: "%s". 程序被终止, 请检查您的配置信息.', $e->getMessage()));
+            install_raise_error(_t('Installer detects this error: "%s". The program is terminated. Please check your configuration.', $e->getMessage()));
         }
     }
 
@@ -1206,40 +1206,40 @@ function install_step_3()
     <div class="row typecho-page-main">
         <div class="col-mb-12 col-tb-8 col-tb-offset-2">
             <div class="typecho-page-title">
-                <h2><?php _e('创建您的管理员帐号'); ?></h2>
+                <h2><?php _e('create your admin account'); ?></h2>
             </div>
             <form autocomplete="off" action="install.php" method="post">
                 <ul class="typecho-option">
                     <li>
-                        <label class="typecho-label" for="userUrl"><?php _e('网站地址'); ?></label>
+                        <label class="typecho-label" for="userUrl"><?php _e('website URL'); ?></label>
                         <input autocomplete="new-password" type="text" name="userUrl" id="userUrl" class="text" value="<?php $options->rootUrl(); ?>" />
-                        <p class="description"><?php _e('这是程序自动匹配的网站路径, 如果不正确请修改它'); ?></p>
+                        <p class="description"><?php _e('This is the auto matched website URL. If it is incorrect, please edit it.'); ?></p>
                     </li>
                 </ul>
                 <ul class="typecho-option">
                     <li>
-                        <label class="typecho-label" for="userName"><?php _e('用户名'); ?></label>
+                        <label class="typecho-label" for="userName"><?php _e('username'); ?></label>
                         <input autocomplete="new-password" type="text" name="userName" id="userName" class="text" />
-                        <p class="description"><?php _e('请填写您的用户名'); ?></p>
+                        <p class="description"><?php _e('Please enter your username'); ?></p>
                     </li>
                 </ul>
                 <ul class="typecho-option">
                     <li>
-                        <label class="typecho-label" for="userPassword"><?php _e('登录密码'); ?></label>
+                        <label class="typecho-label" for="userPassword"><?php _e('login password'); ?></label>
                         <input type="password" name="userPassword" id="userPassword" class="text" />
-                        <p class="description"><?php _e('请填写您的登录密码, 如果留空系统将为您随机生成一个'); ?></p>
+                        <p class="description"><?php _e('Please enter your login password. If you leave it blank, typecho will randomly generate it for you.'); ?></p>
                     </li>
                 </ul>
                 <ul class="typecho-option">
                     <li>
-                        <label class="typecho-label" for="userMail"><?php _e('邮件地址'); ?></label>
+                        <label class="typecho-label" for="userMail"><?php _e('email address'); ?></label>
                         <input autocomplete="new-password" type="text" name="userMail" id="userMail" class="text" />
-                        <p class="description"><?php _e('请填写一个您的常用邮箱'); ?></p>
+                        <p class="description"><?php _e('Please enter an email address you regularly use.'); ?></p>
                     </li>
                 </ul>
                 <ul class="typecho-option typecho-option-submit">
                     <li>
-                        <button type="submit" class="btn primary"><?php _e('继续安装 &raquo;'); ?></button>
+                        <button type="submit" class="btn primary"><?php _e('continue to install &raquo;'); ?></button>
                         <input type="hidden" name="step" value="3">
                     </li>
                 </ul>
@@ -1278,14 +1278,14 @@ function install_step_3_perform()
     }
 
     $error = (new \Typecho\Validate())
-        ->addRule('userUrl', 'required', _t('请填写站点地址'))
-        ->addRule('userUrl', 'url', _t('请填写一个合法的URL地址'))
-        ->addRule('userName', 'required', _t('必须填写用户名称'))
-        ->addRule('userName', 'xssCheck', _t('请不要在用户名中使用特殊字符'))
-        ->addRule('userName', 'maxLength', _t('用户名长度超过限制, 请不要超过 32 个字符'), 32)
-        ->addRule('userMail', 'required', _t('必须填写电子邮箱'))
-        ->addRule('userMail', 'email', _t('电子邮箱格式错误'))
-        ->addRule('userMail', 'maxLength', _t('邮箱长度超过限制, 请不要超过 200 个字符'), 200)
+        ->addRule('userUrl', 'required', _t('Please fill in the site address'))
+        ->addRule('userUrl', 'url', _t('Please enter a valid URL address'))
+        ->addRule('userName', 'required', _t('You must enter a username.'))
+        ->addRule('userName', 'xssCheck', _t('Please do not include special characters in username.'))
+        ->addRule('userName', 'maxLength', _t('Your username is too long, please limit it within 32 characters'), 32)
+        ->addRule('userMail', 'required', _t('You must enter an email address.'))
+        ->addRule('userMail', 'email', _t('Invalid Email address'))
+        ->addRule('userMail', 'maxLength', _t('Your email address is too long, please limit it within 200 characters'), 200)
         ->run($config);
 
     if (!empty($error)) {
@@ -1315,10 +1315,10 @@ function install_step_3_perform()
         $installDb->query(
             $installDb->insert('table.metas')
                 ->rows([
-                    'name' => _t('默认分类'),
+                    'name' => _t('default category'),
                     'slug' => 'default',
                     'type' => 'category',
-                    'description' => _t('只是一个默认分类'),
+                    'description' => _t('this is only a default category'),
                     'count' => 1
                 ])
         );
@@ -1328,10 +1328,10 @@ function install_step_3_perform()
         // write first page and post
         $installDb->query(
             $installDb->insert('table.contents')->rows([
-                'title' => _t('欢迎使用 Typecho'),
+                'title' => _t('Welcome to Typecho'),
                 'slug' => 'start', 'created' => \Typecho\Date::time(),
                 'modified' => \Typecho\Date::time(),
-                'text' => '<!--markdown-->' . _t('如果您看到这篇文章,表示您的 blog 已经安装成功.'),
+                'text' => '<!--markdown-->' . _t('If you can see this post, your blog is successfully installed.'),
                 'authorId' => 1,
                 'type' => 'post',
                 'status' => 'publish',
@@ -1345,11 +1345,11 @@ function install_step_3_perform()
 
         $installDb->query(
             $installDb->insert('table.contents')->rows([
-                'title' => _t('关于'),
+                'title' => _t('About'),
                 'slug' => 'start-page',
                 'created' => \Typecho\Date::time(),
                 'modified' => \Typecho\Date::time(),
-                'text' => '<!--markdown-->' . _t('本页面由 Typecho 创建, 这只是个测试页面.'),
+                'text' => '<!--markdown-->' . _t('This page is created by Typecho, it's a test page only.'),
                 'authorId' => 1,
                 'order' => 0,
                 'type' => 'page',
@@ -1371,7 +1371,7 @@ function install_step_3_perform()
                 'url' => 'https://typecho.org',
                 'ip' => '127.0.0.1',
                 'agent' => $options->generator,
-                'text' => _t('欢迎加入 Typecho 大家族'),
+                'text' => _t('Welcome to the Typecho family'),
                 'type' => 'comment',
                 'status' => 'approved',
                 'parent' => 0
@@ -1484,7 +1484,7 @@ function install_dispatch()
 <head>
     <meta charset="<?php _e('UTF-8'); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title><?php _e('Typecho 安装程序'); ?></title>
+    <title><?php _e('Typecho Installer'); ?></title>
     <link rel="stylesheet" type="text/css" href="<?php $options->adminStaticUrl('css', 'normalize.css') ?>" />
     <link rel="stylesheet" type="text/css" href="<?php $options->adminStaticUrl('css', 'grid.css') ?>" />
     <link rel="stylesheet" type="text/css" href="<?php $options->adminStaticUrl('css', 'style.css') ?>" />

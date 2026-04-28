@@ -9,7 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 use Typecho\Db\Exception as DbException;
 
 /**
- * 数据库连接异常类
+ * Database connection exception class
  *
  * @package Db
  */

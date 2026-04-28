@@ -77,7 +77,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Contents extends Base implements QueryInterface, RowFilterInterface, PrimaryKeyInterface, ParamsDelegateInterface
 {
     /**
-     * @return string 获取主键
+     * @return string Get primary key
      */
     public function getPrimaryKey(): string
     {
@@ -111,7 +111,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 获取查询对象
+     * Get query object
      *
      * @param mixed $fields
      * @return Query
@@ -124,13 +124,13 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     /**
      * 插入内容
      *
-     * @param array $rows 内容数组
+     * @param array $rows Content array
      * @return integer
      * @throws Exception
      */
     public function insert(array $rows): int
     {
-        /** 构建插入结构 */
+        /** Build insert structure */
         $insertStruct = [
             'title'        => !isset($rows['title']) || strlen($rows['title']) === 0
                 ? null : htmlspecialchars($rows['title']),
@@ -154,10 +154,10 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
             $insertStruct['cid'] = $rows['cid'];
         }
 
-        /** 首先插入部分数据 */
+        /** Insert partial data first */
         $insertId = $this->db->query($this->db->insert('table.contents')->rows($insertStruct));
 
-        /** 更新缩略名 */
+        /** Update slug */
         if ($insertId > 0) {
             $this->applySlug(Common::strBy($rows['slug'] ?? null), $insertId, $insertStruct['title']);
         }
@@ -170,7 +170,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
      *
      * @param string|null $slug 缩略名
      * @param mixed $cid 内容id
-     * @param string $title 标题
+     * @param string $title Title
      * @return string
      * @throws Exception
      */
@@ -181,7 +181,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
                 ->from('table.contents')->limit(1))->cid;
         }
 
-        /** 生成一个非空的缩略名 */
+        /** 生成Mon个非空的缩略名 */
         if ((!isset($slug) || strlen($slug) === 0) && preg_match_all("/\w+/", $title, $matches)) {
             $slug = implode('-', $matches[0]);
         }
@@ -216,8 +216,8 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     /**
      * 更新内容
      *
-     * @param array $rows 内容数组
-     * @param Query $condition 更新条件
+     * @param array $rows Content array
+     * @param Query $condition Update condition
      * @return integer
      * @throws Exception
      */
@@ -251,18 +251,18 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
             }
         }
 
-        /** 更新创建时间 */
+        /** Update creation time */
         if (isset($rows['created'])) {
             $updateStruct['created'] = $rows['created'];
         }
 
         $updateStruct['modified'] = $this->options->time;
 
-        /** 首先插入部分数据 */
+        /** Insert partial data first */
         $updateCondition = clone $condition;
         $updateRows = $this->db->query($condition->update('table.contents')->rows($updateStruct));
 
-        /** 更新缩略名 */
+        /** Update slug */
         if ($updateRows > 0 && isset($rows['slug'])) {
             $this->applySlug(strlen($rows['slug']) === 0 ? null : $rows['slug'], $updateCondition);
         }
@@ -284,9 +284,9 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 删除内容
+     * Delete content
      *
-     * @param Query $condition 查询对象
+     * @param Query $condition Query object
      * @return integer
      * @throws Exception
      */
@@ -298,7 +298,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     /**
      * 按照条件计算内容数量
      *
-     * @param Query $condition 查询对象
+     * @param Query $condition Query object
      * @return integer
      * @throws Exception
      */
@@ -333,9 +333,9 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 将每行的值压入堆栈
+     * Push each row value onto the stack
      *
-     * @param array $value 每行的值
+     * @param array $value Row values
      * @return array
      */
     public function push(array $value): array
@@ -345,14 +345,14 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 通用过滤器
+     * General filter
      *
-     * @param array $row 需要过滤的行数据
+     * @param array $row Row data to filter
      * @return array
      */
     public function filter(array $row): array
     {
-        /** 处理默认空值 */
+        /** Handle default empty value */
         $row['title'] = $row['title'] ?? '';
         $row['text'] = $row['text'] ?? '';
         $row['slug'] = $row['slug'] ?? '';
@@ -363,9 +363,9 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 输出文章发布日期
+     * Output post publication date
      *
-     * @param string|null $format 日期格式
+     * @param string|null $format Date format
      */
     public function date(?string $format = null)
     {
@@ -373,7 +373,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 输出文章内容
+     * Output post content
      *
      * @param mixed $more 文章截取后缀
      */
@@ -388,8 +388,8 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     /**
      * 输出文章摘要
      *
-     * @param integer $length 摘要截取长度
-     * @param string $trim 摘要后缀
+     * @param integer $length Excerpt length
+     * @param string $trim Excerpt suffix
      */
     public function excerpt(int $length = 100, string $trim = '...')
     {
@@ -397,9 +397,9 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 输出标题
+     * 输出Title
      *
-     * @param integer $length 标题截取长度
+     * @param integer $length Title截取长度
      * @param string $trim 截取后缀
      */
     public function title(int $length = 0, string $trim = '...')
@@ -413,7 +413,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 输出文章评论数
+     * Output post comment count
      *
      * @param ...$args
      */
@@ -462,9 +462,9 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     /**
      * 输出文章分类
      *
-     * @param string $split 多个分类之间分隔符
-     * @param boolean $link 是否输出链接
-     * @param string|null $default 如果没有则输出
+     * @param string $split Separator between multiple categories
+     * @param boolean $link Whether to output link
+     * @param string|null $default Output if none
      */
     public function category(string $split = ',', bool $link = true, ?string $default = null)
     {
@@ -484,9 +484,9 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     /**
      * 输出文章多级分类
      *
-     * @param string $split 多个分类之间分隔符
-     * @param boolean $link 是否输出链接
-     * @param string|null $default 如果没有则输出
+     * @param string $split Separator between multiple categories
+     * @param boolean $link Whether to output link
+     * @param string|null $default Output if none
      * @throws Widget\Exception
      */
     public function directory(string $split = '/', bool $link = true, ?string $default = null)
@@ -510,11 +510,11 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 输出文章标签
+     * 输出文章Label
      *
-     * @param string $split 多个标签之间分隔符
-     * @param boolean $link 是否输出链接
-     * @param string|null $default 如果没有则输出
+     * @param string $split 多个Label之间分隔符
+     * @param boolean $link Whether to output link
+     * @param string|null $default Output if none
      */
     public function tags(string $split = ',', bool $link = true, ?string $default = null)
     {
@@ -548,7 +548,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
      */
     protected function ___title(): string
     {
-        return $this->hidden ? _t('此内容被密码保护') : $this->row['title'];
+        return $this->hidden ? _t('This content is password-protected') : $this->row['title'];
     }
 
     /**
@@ -567,10 +567,10 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
         } elseif ($this->hidden) {
             return '<form class="protected" action="' . $this->security->getTokenUrl($this->permalink)
                 . '" method="post">' .
-                '<p class="word">' . _t('请输入密码访问') . '</p>' .
+                '<p class="word">' . _t('Please enter the password to access:') . '</p>' .
                 '<p><input type="password" class="text" name="protectPassword" />
             <input type="hidden" name="protectCID" value="' . $this->cid . '" />
-            <input type="submit" class="submit" value="' . _t('提交') . '" /></p>' .
+            <input type="submit" class="submit" value="' . _t('Submit') . '" /></p>' .
                 '</form>';
         }
 
@@ -708,7 +708,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 获取词义化日期
+     * 获取词义化Sun期
      *
      * @return string
      */
@@ -718,7 +718,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 对文章的简短纯文本描述
+     * Short plain-text description of the post
      *
      * @deprecated
      * @return string|null
@@ -770,7 +770,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 获取文章内容摘要
+     * Get post content摘要
      *
      * @return string|null
      */
@@ -787,7 +787,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 对文章的简短纯文本描述
+     * Short plain-text description of the post
      *
      * @return string|null
      */
@@ -839,7 +839,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 获取文章内容
+     * Get post content
      *
      * @return string|null
      */
@@ -860,7 +860,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 输出文章的第一行作为摘要
+     * 输出文章的第Mon行作为摘要
      *
      * @return string|null
      */
@@ -876,7 +876,7 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 锚点id
+     * Anchor ID
      *
      * @return string
      */
@@ -896,14 +896,14 @@ class Contents extends Base implements QueryInterface, RowFilterInterface, Prima
     }
 
     /**
-     * 评论地址
+     * Comment URL
      *
      * @return string
      */
     protected function ___commentUrl(): string
     {
-        /** 生成反馈地址 */
-        /** 评论 */
+        /** Generate feedback URL */
+        /** Comment */
         return Router::url(
             'feedback',
             ['type' => 'comment', 'permalink' => $this->path],

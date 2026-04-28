@@ -9,7 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 文字输入表单项帮手类
+ * Text input form element helper class
  *
  * @category typecho
  * @package Widget

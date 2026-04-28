@@ -7,21 +7,21 @@ use Typecho\Router\Parser;
 use Typecho\Router\Exception as RouterException;
 
 /**
- * Typecho组件基类
+ * TypechoWidget base class
  *
  * @package Router
  */
 class Router
 {
     /**
-     * 当前路由名称
+     * Current route name
      *
      * @var string
      */
     public static string $current;
 
     /**
-     * 已经解析完毕的路由表配置
+     * Parsed routing table configuration
      *
      * @var array
      */
@@ -39,7 +39,7 @@ class Router
      *
      * @param string $pathInfo 全路径
      * @param mixed $parameter 输入参数
-     * @param bool $once 是否只匹配一次
+     * @param bool $once 是否只匹配Mon次
      * @return false|Widget
      * @throws \Exception
      */
@@ -106,9 +106,9 @@ class Router
     /**
      * 路由反解析函数
      *
-     * @param string $name 路由配置表名称
+     * @param string $name Route configuration表名称
      * @param mixed $value 路由填充值
-     * @param string|null $prefix 最终合成路径的前缀
+     * @param string|null $prefix 最终合成路径的Prefix
      * @return string
      */
     public static function url(
@@ -122,7 +122,7 @@ class Router
 
         $route = self::$routingTable[$name];
 
-        //交换数组键值
+        //交换数组Key value
         $pattern = [];
         foreach ($route['params'] as $param) {
             if (is_array($value) && isset($value[$param])) {
@@ -140,7 +140,7 @@ class Router
     /**
      * 设置路由器默认配置
      *
-     * @param mixed $routes 配置信息
+     * @param mixed $routes Configuration value
      * @return void
      */
     public static function setRoutes($routes)
@@ -148,16 +148,16 @@ class Router
         if (isset($routes[0])) {
             self::$routingTable = $routes[0];
         } else {
-            /** 解析路由配置 */
+            /** Parse route配置 */
             $parser = new Parser($routes);
             self::$routingTable = $parser->parse();
         }
     }
 
     /**
-     * 获取路由信息
+     * Get route信息
      *
-     * @param string $routeName 路由名称
+     * @param string $routeName Route name
      * @return mixed
      */
     public static function get(string $routeName)

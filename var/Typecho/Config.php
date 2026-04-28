@@ -3,7 +3,7 @@
 namespace Typecho;
 
 /**
- * 配置管理类
+ * Configuration manager
  *
  * @category typecho
  * @package Config
@@ -13,7 +13,7 @@ namespace Typecho;
 class Config extends \stdClass implements \Iterator, \ArrayAccess
 {
     /**
-     * 当前配置
+     * Current configuration
      *
      * @access private
      * @var array
@@ -21,23 +21,23 @@ class Config extends \stdClass implements \Iterator, \ArrayAccess
     private array $currentConfig = [];
 
     /**
-     * 实例化一个当前配置
+     * 实例化Mon个Current configuration
      *
      * @access public
-     * @param array|string|null $config 配置列表
+     * @param array|string|null $config Configuration list
      */
     public function __construct($config = [])
     {
-        /** 初始化参数 */
+        /** Initialization parameters */
         $this->setDefault($config);
     }
 
     /**
-     * 工厂模式实例化一个当前配置
+     * 工厂模式实例化Mon个Current configuration
      *
      * @access public
      *
-     * @param array|string|null $config 配置列表
+     * @param array|string|null $config Configuration list
      *
      * @return Config
      */
@@ -51,7 +51,7 @@ class Config extends \stdClass implements \Iterator, \ArrayAccess
      *
      * @access public
      *
-     * @param mixed $config 配置信息
+     * @param mixed $config Configuration value
      * @param boolean $replace 是否替换已经存在的信息
      *
      * @return void
@@ -62,7 +62,7 @@ class Config extends \stdClass implements \Iterator, \ArrayAccess
             return;
         }
 
-        /** 初始化参数 */
+        /** Initialization parameters */
         if (is_string($config)) {
             parse_str($config, $params);
         } else {
@@ -109,7 +109,7 @@ class Config extends \stdClass implements \Iterator, \ArrayAccess
     }
 
     /**
-     * 指针后移一位
+     * 指针后移Mon位
      *
      * @access public
      * @return void
@@ -143,10 +143,10 @@ class Config extends \stdClass implements \Iterator, \ArrayAccess
     }
 
     /**
-     * 魔术函数获取一个配置值
+     * 魔术函数获取Mon个配置值
      *
      * @access public
-     * @param string $name 配置名称
+     * @param string $name Configuration name
      * @return mixed
      */
     public function __get(string $name)
@@ -155,10 +155,10 @@ class Config extends \stdClass implements \Iterator, \ArrayAccess
     }
 
     /**
-     * 魔术函数设置一个配置值
+     * 魔术函数设置Mon个配置值
      *
      * @access public
-     * @param string $name 配置名称
+     * @param string $name Configuration name
      * @param mixed $value 配置值
      * @return void
      */
@@ -171,7 +171,7 @@ class Config extends \stdClass implements \Iterator, \ArrayAccess
      * 直接输出默认配置值
      *
      * @access public
-     * @param string $name 配置名称
+     * @param string $name Configuration name
      * @param array|null $args 参数
      * @return void
      */
@@ -181,10 +181,10 @@ class Config extends \stdClass implements \Iterator, \ArrayAccess
     }
 
     /**
-     * 判断当前配置值是否存在
+     * 判断Current configuration值是否存在
      *
      * @access public
-     * @param string $name 配置名称
+     * @param string $name Configuration name
      * @return boolean
      */
     public function __isSet(string $name): bool
@@ -193,7 +193,7 @@ class Config extends \stdClass implements \Iterator, \ArrayAccess
     }
 
     /**
-     * 魔术方法,打印当前配置数组
+     * 魔术方法,打印当前Configuration array
      *
      * @access public
      * @return string

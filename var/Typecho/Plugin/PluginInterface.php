@@ -5,7 +5,7 @@ namespace Typecho\Plugin;
 use Typecho\Widget\Helper\Form;
 
 /**
- * 插件接口
+ * Plugin interface
  *
  * @package Plugin
  * @abstract
@@ -13,7 +13,7 @@ use Typecho\Widget\Helper\Form;
 interface PluginInterface
 {
     /**
-     * 启用插件方法,如果启用失败,直接抛出异常
+     * Enable plugin方法,如果启用失败,直接抛出异常
      *
      * @static
      * @access public
@@ -22,7 +22,7 @@ interface PluginInterface
     public static function activate();
 
     /**
-     * 禁用插件方法,如果禁用失败,直接抛出异常
+     * Plugin deactivation method; throws exception on failure
      *
      * @static
      * @access public
@@ -31,14 +31,14 @@ interface PluginInterface
     public static function deactivate();
 
     /**
-     * 获取插件配置面板
+     * Get plugin configuration panel
      *
-     * @param Form $form 配置面板
+     * @param Form $form Configuration panel
      */
     public static function config(Form $form);
 
     /**
-     * 个人用户的配置面板
+     * Personal user configuration panel
      *
      * @param Form $form
      */

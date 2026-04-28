@@ -9,7 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 执行模块
+ * Action module
  *
  * @package Widget
  */
@@ -48,7 +48,7 @@ class Action extends Widget
     ];
 
     /**
-     * 入口函数,初始化路由器
+     * Entry point, initialize router
      *
      * @throws Widget\Exception
      */
@@ -73,6 +73,6 @@ class Action extends Widget
             }
         }
 
-        throw new Widget\Exception(_t('请求的地址不存在'), 404);
+        throw new Widget\Exception(_t('Requested URL does not exist.'), 404);
     }
 }

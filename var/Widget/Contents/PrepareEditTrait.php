@@ -61,7 +61,7 @@ trait PrepareEditTrait
             }
 
             if (!$this->allow('edit')) {
-                throw new Exception(_t('没有编辑权限'), 403);
+                throw new Exception(_t('Edit not permitted.'), 403);
             }
         }
 
@@ -74,13 +74,13 @@ trait PrepareEditTrait
     abstract public function prepare(): self;
 
     /**
-     * 获取网页标题
+     * Get page title
      *
      * @return string
      */
     public function getMenuTitle(): string
     {
-        return _t('编辑 %s', $this->prepare()->title);
+        return _t('Edit %s', $this->prepare()->title);
     }
 
     /**

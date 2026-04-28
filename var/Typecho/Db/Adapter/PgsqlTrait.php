@@ -24,10 +24,10 @@ trait PgsqlTrait
     private ?string $lastInsertTable = null;
 
     /**
-     * 清空数据表
+     * Clear data table
      *
      * @param string $table
-     * @param resource $handle 连接对象
+     * @param resource $handle Connection handle
      * @throws SQLException
      */
     public function truncate(string $table, $handle)
@@ -36,10 +36,10 @@ trait PgsqlTrait
     }
 
     /**
-     * 合成查询语句
+     * Build query statement
      *
      * @access public
-     * @param array $sql 查询对象词法数组
+     * @param array $sql Query lexical array
      * @return string
      */
     public function parseSelect(array $sql): string
@@ -48,7 +48,7 @@ trait PgsqlTrait
     }
 
     /**
-     * 对象引号过滤
+     * Object quote filter
      *
      * @access public
      * @param string $string
@@ -104,10 +104,10 @@ WHERE
     }
 
     /**
-     * 取出最后一次插入返回的主键值
+     * Get the primary key value returned by the last insert
      *
-     * @param resource $resource 查询的资源数据
-     * @param resource $handle 连接对象
+     * @param resource $resource Query resource data
+     * @param resource $handle Connection handle
      * @return integer
      * @throws SQLException
      */

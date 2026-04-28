@@ -3,7 +3,7 @@
 namespace IXR;
 
 /**
- * IXR请求体
+ * IXRRequest body
  *
  * @package IXR
  */

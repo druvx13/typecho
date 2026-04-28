@@ -12,7 +12,7 @@
             <li>Доступ к текущей странице невозможен, возможно, у нее нет разрешения или она была удалена.</li>
             <li>This page is unavailable. It may have been removed or you may not have permission to access it.</li>
         </ul>
-        <p class="text-center"><a href="<?php $this->options->siteUrl(); ?>" role="button" class="outline"><?php _e('回Home'); ?></a></p>
+        <p class="text-center"><a href="<?php $this->options->siteUrl(); ?>" role="button" class="outline"><?php _e('Back to home'); ?></a></p>
     </div>
 </main>
 

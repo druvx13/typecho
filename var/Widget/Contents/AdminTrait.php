@@ -9,21 +9,21 @@ use Typecho\Widget\Exception;
 use Typecho\Widget\Helper\PageNavigator\Box;
 
 /**
- * 文章管理列表组件
+ * Post admin list widget
  *
  * @property-read array? $revision
  */
 trait AdminTrait
 {
     /**
-     * 所有文章个数
+     * Total post count
      *
      * @var integer|null
      */
     private ?int $total;
 
     /**
-     * 当前页
+     * Current page
      *
      * @var integer
      */
@@ -69,7 +69,7 @@ trait AdminTrait
     }
 
     /**
-     * 输出分页
+     * Output pagination
      *
      * @throws Exception
      * @throws DbException
@@ -78,7 +78,7 @@ trait AdminTrait
     {
         $query = $this->request->makeUriByRequest('page={page}');
 
-        /** 使用盒状分页 */
+        /** Use box-style pagination */
         $nav = new Box(
             $this->total,
             $this->currentPage,

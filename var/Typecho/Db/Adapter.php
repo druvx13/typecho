@@ -6,7 +6,7 @@ use Typecho\Config;
 use Typecho\Db;
 
 /**
- * Typecho数据库适配器
+ * Typecho database adapter
  * 定义通用的数据库适配接口
  *
  * @package Db
@@ -14,7 +14,7 @@ use Typecho\Db;
 interface Adapter
 {
     /**
-     * 判断适配器是否可用
+     * Check whether the adapter is available
      *
      * @access public
      * @return boolean
@@ -22,15 +22,15 @@ interface Adapter
     public static function isAvailable(): bool;
 
     /**
-     * 数据库连接函数
+     * Database connection function
      *
-     * @param Config $config 数据库配置
+     * @param Config $config Database configuration
      * @return mixed
      */
     public function connect(Config $config);
 
     /**
-     * 获取数据库版本
+     * Get database version
      *
      * @param mixed $handle
      * @return string
@@ -45,59 +45,59 @@ interface Adapter
     public function getDriver(): string;
 
     /**
-     * 清空数据表
+     * Clear data table
      *
      * @param string $table 数据表名
-     * @param mixed $handle 连接对象
+     * @param mixed $handle Connection handle
      */
     public function truncate(string $table, $handle);
 
     /**
-     * 执行数据库查询
+     * Execute database query
      *
-     * @param string $query 数据库查询SQL字符串
-     * @param mixed $handle 连接对象
-     * @param integer $op 数据库读写状态
-     * @param string|null $action 数据库动作
-     * @param string|null $table 数据表
+     * @param string $query Database SQL query string
+     * @param mixed $handle Connection handle
+     * @param integer $op Database read/write mode
+     * @param string|null $action Database action
+     * @param string|null $table Database table
      * @return resource
      */
     public function query(string $query, $handle, int $op = Db::READ, ?string $action = null, ?string $table = null);
 
     /**
-     * 将数据查询的其中一行作为数组取出,其中字段名对应数组键值
+     * Fetch one row from the query result as an array, keyed by column name
      *
-     * @param resource $resource 查询的资源数据
+     * @param resource $resource Query resource data
      * @return array|null
      */
     public function fetch($resource): ?array;
 
     /**
-     * 将数据查询的结果作为数组全部取出,其中字段名对应数组键值
+     * Fetch all query results as an array, keyed by column name
      *
-     * @param resource $resource 查询的资源数据
+     * @param resource $resource Query resource data
      * @return array
      */
     public function fetchAll($resource): array;
 
     /**
-     * 将数据查询的其中一行作为对象取出,其中字段名对应对象属性
+     * Fetch one row from the query result as an object, with column names as properties
      *
-     * @param resource $resource 查询的资源数据
+     * @param resource $resource Query resource data
      * @return \stdClass|null
      */
     public function fetchObject($resource): ?\stdClass;
 
     /**
-     * 引号转义函数
+     * Quote escaping function
      *
-     * @param mixed $string 需要转义的字符串
+     * @param mixed $string String to escape
      * @return string
      */
     public function quoteValue($string): string;
 
     /**
-     * 对象引号过滤
+     * Object quote filter
      *
      * @access public
      * @param string $string
@@ -106,28 +106,28 @@ interface Adapter
     public function quoteColumn(string $string): string;
 
     /**
-     * 合成查询语句
+     * Build query statement
      *
      * @access public
-     * @param array $sql 查询对象词法数组
+     * @param array $sql Query lexical array
      * @return string
      */
     public function parseSelect(array $sql): string;
 
     /**
-     * 取出最后一次查询影响的行数
+     * Get the number of rows affected by the last query
      *
-     * @param resource $resource 查询的资源数据
-     * @param mixed $handle 连接对象
+     * @param resource $resource Query resource data
+     * @param mixed $handle Connection handle
      * @return integer
      */
     public function affectedRows($resource, $handle): int;
 
     /**
-     * 取出最后一次插入返回的主键值
+     * Get the primary key value returned by the last insert
      *
-     * @param resource $resource 查询的资源数据
-     * @param mixed $handle 连接对象
+     * @param resource $resource Query resource data
+     * @param mixed $handle Connection handle
      * @return integer
      */
     public function lastInsertId($resource, $handle): int;

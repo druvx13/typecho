@@ -5,7 +5,7 @@ namespace IXR;
 use Typecho\Widget\Exception as WidgetException;
 
 /**
- * IXR服务器
+ * IXR server
  *
  * @package IXR
  */
@@ -31,7 +31,7 @@ class Server
     private Hook $hook;
 
     /**
-     * 构造函数
+     * Constructor
      *
      * @param array $callbacks 回调函数
      */
@@ -67,7 +67,7 @@ class Server
     }
 
     /**
-     * 一次处理多个请求
+     * Mon次处理多个请求
      *
      * @param array $methodcalls
      * @return array
@@ -130,7 +130,7 @@ class Server
      * 呼叫内部方法
      *
      * @param string $methodName 方法名
-     * @param array $args 参数
+     * @param array $args Arguments
      * @return mixed
      */
     private function call(string $methodName, array $args)

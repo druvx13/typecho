@@ -32,8 +32,8 @@ namespace {
     /**
      * I18n function
      *
-     * @param string $string 需要翻译的文字
-     * @param mixed ...$args 参数
+     * @param string $string String to translate
+     * @param mixed ...$args Arguments
      *
      * @return string
      */
@@ -49,8 +49,8 @@ namespace {
     /**
      * I18n function, translate and echo
      *
-     * @param string $string 需要翻译的文字
-     * @param mixed ...$args 参数
+     * @param string $string String to translate
+     * @param mixed ...$args Arguments
      */
     function _e(string $string, ...$args)
     {
@@ -59,11 +59,11 @@ namespace {
     }
 
     /**
-     * 针对复数形式的翻译函数
+     * Translation function for plural forms
      *
-     * @param string $single 单数形式的翻译
-     * @param string $plural 复数形式的翻译
-     * @param integer $number 数字
+     * @param string $single Singular form translation
+     * @param string $plural Plural form translation
+     * @param integer $number Number
      *
      * @return string
      */
@@ -158,7 +158,7 @@ namespace Typecho {
     });
 
     /**
-     * Typecho公用方法
+     * Typecho common methods
      *
      * @category typecho
      * @package Common
@@ -167,16 +167,16 @@ namespace Typecho {
      */
     class Common
     {
-        /** 程序版本 */
+        /** Application version */
         public const VERSION = '1.3.0';
 
         /**
-         * 将路径转化为链接
+         * Convert path to link
          *
          * @access public
          *
-         * @param string|null $path 路径
-         * @param string|null $prefix 前缀
+         * @param string|null $path Path
+         * @param string|null $prefix Prefix
          *
          * @return string
          */
@@ -189,7 +189,7 @@ namespace Typecho {
         }
 
         /**
-         * 程序初始化方法
+         * Application initialization method
          *
          * @access public
          * @return void
@@ -204,7 +204,7 @@ namespace Typecho {
                 return $content;
             });
 
-            /** 设置异常截获函数 */
+            /** Set exception handler */
             set_exception_handler(function (\Throwable $exception) {
                 echo '<pre><code>';
                 echo '<h1>' . htmlspecialchars($exception->getMessage()) . '</h1>';
@@ -215,9 +215,9 @@ namespace Typecho {
         }
 
         /**
-         * 输出错误页面
+         * Output error page
          *
-         * @param \Throwable $exception 错误信息
+         * @param \Throwable $exception Error info
          */
         public static function error(\Throwable $exception)
         {
@@ -227,7 +227,7 @@ namespace Typecho {
             if ($exception instanceof \Typecho\Db\Exception) {
                 $code = 500;
 
-                //覆盖原始错误信息
+                // Override original error message
                 $message = 'Database Server Error';
 
                 if ($exception instanceof \Typecho\Db\Adapter\ConnectionException) {
@@ -242,7 +242,7 @@ namespace Typecho {
                 $message = 'Server Error';
             }
 
-            /** 设置http code */
+            /** Set HTTP status code */
             if (is_numeric($code) && $code > 200) {
                 Response::getInstance()->setStatus($code);
             }
@@ -302,7 +302,7 @@ EOF;
         }
 
         /**
-         * @param string $className 类名
+         * @param string $className Class name
          * @return boolean
          * @deprecated
          */
@@ -334,7 +334,7 @@ EOF;
         }
 
         /**
-         * 根据count数目来输出字符
+         * Output characters based on count
          * <code>
          * echo splitByCount(20, 10, 20, 30, 40, 50);
          * </code>
@@ -355,20 +355,20 @@ EOF;
         }
 
         /**
-         * 自闭合html修复函数
-         * 使用方法:
+         * Self-closing HTML fix function
+         * Usage:
          * <code>
-         * $input = '这是一段被截断的html文本<a href="#"';
+         * \$input = 'This is a truncated HTML string<a href="#"';
          * echo Common::fixHtml($input);
-         * //output: 这是一段被截断的html文本
+         * //output: This is a truncated HTML text string
          * </code>
          *
-         * @param string|null $string 需要修复处理的字符串
+         * @param string|null $string String to repair
          * @return string|null
          */
         public static function fixHtml(?string $string): ?string
         {
-            //关闭自闭合标签
+            // Close self-closing label
             $startPos = strrpos($string, "<");
 
             if (false == $startPos) {
@@ -381,7 +381,7 @@ EOF;
                 $string = substr($string, 0, $startPos);
             }
 
-            //非自闭合html标签列表
+            // Non-self-closing HTML tag list
             preg_match_all("/<([_0-9a-zA-Z-:]+)\s*([^>]*)>/is", $string, $startTags);
             preg_match_all("/<\/([_0-9a-zA-Z-:]+)>/is", $string, $closeTags);
 
@@ -394,7 +394,7 @@ EOF;
                         continue;
                     }
 
-                    // 白名单
+                    // Allowlist
                     if (
                         preg_match(
                             "/^(area|base|br|col|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)$/i",
@@ -418,8 +418,8 @@ EOF;
         }
 
         /**
-         * 去掉字符串中的html标签
-         * 使用方法:
+         * Strip HTML labels from string
+         * Usage:
          * <code>
          * $input = '<a href="http://test/test.php" title="example">hello</a>';
          * $output = Common::stripTags($input, <a href="">);
@@ -427,8 +427,8 @@ EOF;
          * //display: '<a href="http://test/test.php">hello</a>'
          * </code>
          *
-         * @param string|null $html 需要处理的字符串
-         * @param string|null $allowableTags 需要忽略的html标签
+         * @param string|null $html String to process
+         * @param string|null $allowableTags HTML tags to ignore
          * @return string
          */
         public static function stripTags(?string $html, ?string $allowableTags = null): string
@@ -476,11 +476,11 @@ EOF;
         }
 
         /**
-         * 过滤用于搜索的字符串
+         * Filter string used for search
          *
          * @access public
          *
-         * @param string|null $query 搜索字符串
+         * @param string|null $query Search string
          *
          * @return string
          */
@@ -490,13 +490,13 @@ EOF;
         }
 
         /**
-         * 生成缩略名
+         * Generate slug
          *
          * @access public
          *
-         * @param string|null $str 需要生成缩略名的字符串
-         * @param string $default 默认的缩略名
-         * @param integer $maxLength 缩略名最大长度
+         * @param string|null $str String to generate slug from
+         * @param string $default Default slug
+         * @param integer $maxLength Maximum slug length
          *
          * @return string
          */
@@ -528,19 +528,19 @@ EOF;
         }
 
         /**
-         * 将url中的非法字符串
+         * Remove illegal characters from URL
          *
-         * @param string $url 需要过滤的url
+         * @param string $url URL to filter
          *
          * @return string
          */
         public static function safeUrl($url)
         {
-            //~ 针对location的xss过滤, 因为其特殊性无法使用removeXSS函数
+            //~ XSS filter for location; removeXSS cannot be used due to its special nature
             //~ fix issue 66
             $params = parse_url(str_replace(["\r", "\n", "\t", ' '], '', $url));
 
-            /** 禁止非法的协议跳转 */
+            /** Disallow illegal protocol redirects */
             if (isset($params['scheme'])) {
                 if (!in_array($params['scheme'], ['http', 'https'])) {
                     return '/';
@@ -563,9 +563,9 @@ EOF;
         }
 
         /**
-         * 根据parse_url的结果重新组合url
+         * Reassemble URL from parse_url result
          *
-         * @param array $params 解析后的参数
+         * @param array $params Parsed parameters
          *
          * @return string
          */
@@ -582,9 +582,9 @@ EOF;
         }
 
         /**
-         * 处理XSS跨站攻击的过滤函数
+         * Filter function to handle XSS attacks
          *
-         * @param string|null $val 需要处理的字符串
+         * @param string|null $val String to process
          * @return string
          */
         public static function removeXSS(?string $val): string
@@ -661,12 +661,12 @@ EOF;
         }
 
         /**
-         * 宽字符串截字函数
+         * Wide-character string truncation function
          *
-         * @param string $str 需要截取的字符串
-         * @param integer $start 开始截取的位置
-         * @param integer $length 需要截取的长度
-         * @param string $trim 截取后的截断标示符
+         * @param string $str String to truncate
+         * @param integer $start Start position
+         * @param integer $length Length to extract
+         * @param string $trim Truncation indicator
          *
          * @return string
          */
@@ -684,7 +684,7 @@ EOF;
         }
 
         /**
-         * 判断两个字符串是否为空并依次返回
+         * Check whether two strings are empty and return them in order
          *
          * @param string|null $a
          * @param string|null $b
@@ -696,9 +696,9 @@ EOF;
         }
 
         /**
-         * 获取宽字符串长度函数
+         * Wide-character string length function
          *
-         * @param string $str 需要获取长度的字符串
+         * @param string $str String to measure
          * @return integer
          */
         public static function strLen(string $str): int
@@ -707,12 +707,12 @@ EOF;
         }
 
         /**
-         * 判断hash值是否相等
+         * Check whether hash values are equal
          *
          * @access public
          *
-         * @param string|null $from 源字符串
-         * @param string|null $to 目标字符串
+         * @param string|null $from Source string
+         * @param string|null $to Target string
          *
          * @return boolean
          */
@@ -731,12 +731,12 @@ EOF;
         }
 
         /**
-         * 对字符串进行hash加密
+         * Hash-encrypt a string
          *
          * @access public
          *
-         * @param string|null $string 需要hash的字符串
-         * @param string|null $salt 扰码
+         * @param string|null $string String to hash
+         * @param string|null $salt Salt
          *
          * @return string
          */
@@ -746,7 +746,7 @@ EOF;
                 return '';
             }
 
-            /** 生成随机字符串 */
+            /** Generate random string */
             $salt = empty($salt) ? self::randString(9) : $salt;
             $length = strlen($string);
 
@@ -758,9 +758,9 @@ EOF;
             $last = ord($string[$length - 1]);
             $pos = 0;
 
-            /** 判断扰码长度 */
+            /** Check salt length */
             if (strlen($salt) != 9) {
-                /** 如果不是9直接返回 */
+                /** Return directly if length is not 9 */
                 return '';
             }
 
@@ -775,12 +775,12 @@ EOF;
         }
 
         /**
-         * 生成随机字符串
+         * Generate random string
          *
          * @access public
          *
-         * @param integer $length 字符串长度
-         * @param boolean $specialChars 是否有特殊字符
+         * @param integer $length String length
+         * @param boolean $specialChars Whether to include special characters
          *
          * @return string
          */
@@ -800,7 +800,7 @@ EOF;
         }
 
         /**
-         * 创建一个会过期的Token
+         * Create an expiring token
          *
          * @param $secret
          * @return string
@@ -811,7 +811,7 @@ EOF;
         }
 
         /**
-         * 在时间范围内验证token
+         * Validate token within time window
          *
          * @param $token
          * @param $secret
@@ -833,7 +833,7 @@ EOF;
         }
 
         /**
-         * 获取gravatar头像地址
+         * Get Gravatar avatar URL
          *
          * @param string|null $mail
          * @param int $size
@@ -875,7 +875,7 @@ EOF;
         }
 
         /**
-         * 给javascript赋值加入扰码设计
+         * Assign JavaScript value with salt obfuscation
          *
          * @param string $value
          *
@@ -925,7 +925,7 @@ EOF;
         }
 
         /**
-         * 创建备份文件缓冲
+         * Create backup file buffer
          *
          * @param string $type
          * @param string $header
@@ -945,7 +945,7 @@ EOF;
         }
 
         /**
-         * 从备份文件中解压
+         * Extract from backup file
          *
          * @param resource $fp
          * @param int|null $offset
@@ -998,7 +998,7 @@ EOF;
         }
 
         /**
-         * 检查是否是一个安全的主机名
+         * Check whether this is a safe hostname
          *
          * @param string $host
          * @return bool
@@ -1013,7 +1013,7 @@ EOF;
             $inet = inet_pton($address);
 
             if (false === $inet) {
-                // 有可能是ipv6的地址
+                // May be an IPv6 address
                 $records = dns_get_record($host, DNS_AAAA);
 
                 if (empty($records)) {
@@ -1041,17 +1041,17 @@ EOF;
         }
 
         /**
-         * 获取图片
+         * Get image
          *
          * @access public
          *
-         * @param string $fileName 文件名
+         * @param string $fileName File name
          *
          * @return string
          */
         public static function mimeContentType(string $fileName): string
         {
-            //改为并列判断
+            // Changed to parallel check
             if (function_exists('mime_content_type')) {
                 return mime_content_type($fileName);
             }
@@ -1397,11 +1397,11 @@ EOF;
         }
 
         /**
-         * 寻找匹配的mime图标
+         * Find matching MIME icon
          *
          * @access public
          *
-         * @param string $mime mime类型
+         * @param string $mime MIME type
          *
          * @return string
          */
@@ -1439,9 +1439,9 @@ EOF;
         }
 
         /**
-         * 解析属性
+         * Parse attributes
          *
-         * @param string $attrs 属性字符串
+         * @param string $attrs Attribute string
          * @return array
          */
         private static function parseAttrs(string $attrs): array
@@ -1458,7 +1458,7 @@ EOF;
                 if ('=' != $attrs[$i] && !ctype_space($attrs[$i]) && -1 == $pos) {
                     $key .= $attrs[$i];
 
-                    /** 最后一个 */
+                    /** Last item */
                     if ($i == $len - 1) {
                         if ('' != ($key = trim($key))) {
                             $result[$key] = '';
@@ -1499,7 +1499,7 @@ EOF;
         }
 
         /**
-         * IDN转UTF8
+         * Convert IDN to UTF-8
          *
          * @param string $url
          * @return string

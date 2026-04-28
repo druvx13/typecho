@@ -3,7 +3,7 @@
 namespace Typecho\Widget\Helper;
 
 /**
- * widget对象帮手,用于处理空对象方法
+ * Widget object helper for handling empty object methods
  *
  * @category typecho
  * @package Widget
@@ -13,7 +13,7 @@ namespace Typecho\Widget\Helper;
 class EmptyClass
 {
     /**
-     * 单例句柄
+     * Singleton handle
      *
      * @access private
      * @var EmptyClass
@@ -21,7 +21,7 @@ class EmptyClass
     private static ?EmptyClass $instance = null;
 
     /**
-     * 获取单例句柄
+     * Get singleton handle
      *
      * @access public
      * @return EmptyClass
@@ -40,7 +40,7 @@ class EmptyClass
      *
      * @access public
      * @param string $name 方法名
-     * @param array $args 参数列表
+     * @param array $args Arguments列表
      * @return $this
      */
     public function __call(string $name, array $args)

@@ -36,7 +36,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Metas extends Base implements QueryInterface, RowFilterInterface, PrimaryKeyInterface, ParamsDelegateInterface
 {
     /**
-     * @return string 获取主键
+     * @return string Get primary key
      */
     public function getPrimaryKey(): string
     {
@@ -62,9 +62,9 @@ class Metas extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 获取记录总数
+     * Get total record count
      *
-     * @param Query $condition 计算条件
+     * @param Query $condition Count condition
      * @return integer
      * @throws Exception
      */
@@ -74,9 +74,9 @@ class Metas extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 将每行的值压入堆栈
+     * Push each row value onto the stack
      *
-     * @param array $value 每行的值
+     * @param array $value Row values
      * @return array
      */
     public function push(array $value): array
@@ -86,9 +86,9 @@ class Metas extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 通用过滤器
+     * General filter
      *
-     * @param array $row 需要过滤的行数据
+     * @param array $row Row data to filter
      * @return array
      */
     public function filter(array $row): array
@@ -97,10 +97,10 @@ class Metas extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 更新记录
+     * Update record
      *
-     * @param array $rows 记录更新值
-     * @param Query $condition 更新条件
+     * @param array $rows Record update values
+     * @param Query $condition Update condition
      * @return integer
      * @throws Exception
      */
@@ -110,7 +110,7 @@ class Metas extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 获取原始查询对象
+     * Get raw query object
      *
      * @param mixed $fields
      * @return Query
@@ -122,9 +122,9 @@ class Metas extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 删除记录
+     * Delete record
      *
-     * @param Query $condition 删除条件
+     * @param Query $condition Delete condition
      * @return integer
      * @throws Exception
      */
@@ -134,9 +134,9 @@ class Metas extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 插入一条记录
+     * Insert one record
      *
-     * @param array $rows 记录插入值
+     * @param array $rows Record insert values
      * @return integer
      * @throws Exception
      */
@@ -148,7 +148,7 @@ class Metas extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     /**
      * 根据tag获取ID
      *
-     * @param mixed $inputTags 标签名
+     * @param mixed $inputTags Label名
      * @return array|int
      * @throws Exception
      */
@@ -187,7 +187,7 @@ class Metas extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 锚点id
+     * Anchor ID
      *
      * @access protected
      * @return string

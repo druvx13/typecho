@@ -17,7 +17,7 @@ use Typecho\Exception as TypechoException;
  */
 
 /**
- * 插件异常
+ * Plugin exception
  *
  * @package Plugin
  */

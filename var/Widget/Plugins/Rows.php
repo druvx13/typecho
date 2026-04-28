@@ -21,7 +21,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Rows extends Widget
 {
     /**
-     * 已启用插件
+     * 已Enable plugin
      *
      * @access public
      * @var array
@@ -29,18 +29,18 @@ class Rows extends Widget
     public array $activatedPlugins = [];
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @access public
      * @return void
      */
     public function execute()
     {
-        /** 列出插件目录 */
+        /** 列出Plugin directory */
         $pluginDirs = $this->getPlugins();
         $this->parameter->setDefault(['activated' => null]);
 
-        /** 获取已启用插件 */
+        /** Get enabled plugins */
         $plugins = Plugin::export();
         $this->activatedPlugins = $plugins['activated'];
 
@@ -93,7 +93,7 @@ class Rows extends Widget
     protected function getPlugin(string $plugin): ?array
     {
         if (is_dir($plugin)) {
-            /** 获取插件名称 */
+            /** Get plugin name */
             $pluginName = basename($plugin);
 
             /** 获取插件主文件 */

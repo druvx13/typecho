@@ -7,7 +7,7 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
 <link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css', true) . '">
 <link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css', true) . '">';
 
-/** 注册一个初始化插件 */
+/** Register an initialization hook */
 $header = \Typecho\Plugin::factory('admin/header.php')->filter('header', $header);
 
 ?><!DOCTYPE HTML>

@@ -9,7 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 use Typecho\Exception as TypechoException;
 
 /**
- * 路由异常类
+ * Router exception class
  *
  * @package Router
  */

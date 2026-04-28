@@ -6,7 +6,7 @@ use Typecho\Db;
 use Widget\Options;
 
 /**
- * 升级程序
+ * Upgrade routine
  *
  * @category typecho
  * @package Upgrade

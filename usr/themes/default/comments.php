@@ -2,7 +2,7 @@
 <div id="comments">
     <?php $this->comments()->to($comments); ?>
     <?php if ($comments->have()): ?>
-        <h3><?php $this->commentsNum(_t('No comments yet'), _t('1 comment'), _t('已有 %d comments')); ?></h3>
+        <h3><?php $this->commentsNum(_t('No comments yet'), _t('1 comment'), _t('%d comments')); ?></h3>
 
         <?php $comments->listComments(); ?>
 
@@ -19,7 +19,7 @@
             <h3 id="response"><?php _e('Leave a comment'); ?></h3>
             <form method="post" action="<?php $this->commentUrl() ?>" id="comment-form" role="form">
                 <?php if ($this->user->hasLogin()): ?>
-                    <p><?php _e('Log in身份'); ?>: <a
+                    <p><?php _e('Logged in as'); ?>: <a
                             href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a>. <a
                             href="<?php $this->options->logoutUrl(); ?>" title="Logout"><?php _e('Log out'); ?> &raquo;</a>
                     </p>

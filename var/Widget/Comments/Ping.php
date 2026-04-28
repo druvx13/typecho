@@ -84,7 +84,7 @@ class Ping extends Comments
     public function listPings($singlePingOptions = null)
     {
         if ($this->have()) {
-            //初始化一些变量
+            // Initialize some variables
             $parsedSinglePingOptions = Config::factory($singlePingOptions);
             $parsedSinglePingOptions->setDefault([
                 'before'      => '<ol class="ping-list">',
@@ -138,7 +138,7 @@ class Ping extends Comments
     }
 
     /**
-     * 重载内容获取
+     * Override content fetch
      *
      * @return array|null
      */

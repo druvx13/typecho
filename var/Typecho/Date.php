@@ -3,7 +3,7 @@
 namespace Typecho;
 
 /**
- * 日期处理
+ * Date processing
  *
  * @author qining
  * @category typecho
@@ -28,7 +28,7 @@ class Date
     public static int $serverTimezoneOffset = 0;
 
     /**
-     * 当前的服务器时间戳
+     * 当前的服务器Timestamp
      *
      * @access public
      * @var integer
@@ -36,7 +36,7 @@ class Date
     public static int $serverTimeStamp = 0;
 
     /**
-     * 可以被直接转换的时间戳
+     * 可以被直接转换的Timestamp
      *
      * @access public
      * @var integer
@@ -59,9 +59,9 @@ class Date
     public string $day;
 
     /**
-     * 初始化参数
+     * Initialization parameters
      *
-     * @param integer|null $time 时间戳
+     * @param integer|null $time Timestamp
      */
     public function __construct(?int $time = null)
     {
@@ -85,7 +85,7 @@ class Date
     }
 
     /**
-     * 获取格式化时间
+     * Get formatted time
      *
      * @param string $format 时间格式
      * @return string

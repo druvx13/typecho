@@ -37,7 +37,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Users extends Base implements QueryInterface, RowFilterInterface, PrimaryKeyInterface, ParamsDelegateInterface
 {
     /**
-     * @return string 获取主键
+     * @return string Get primary key
      */
     public function getPrimaryKey(): string
     {
@@ -45,9 +45,9 @@ class Users extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 将每行的值压入堆栈
+     * Push each row value onto the stack
      *
-     * @param array $value 每行的值
+     * @param array $value Row values
      * @return array
      */
     public function push(array $value): array
@@ -57,9 +57,9 @@ class Users extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 通用过滤器
+     * General filter
      *
-     * @param array $row 需要过滤的行数据
+     * @param array $row Row data to filter
      * @return array
      */
     public function filter(array $row): array
@@ -82,7 +82,7 @@ class Users extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 查询方法
+     * Query method
      *
      * @param mixed $fields
      * @return Query
@@ -94,9 +94,9 @@ class Users extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 获得所有记录数
+     * Get total record count
      *
-     * @param Query $condition 查询对象
+     * @param Query $condition Query object
      * @return integer
      * @throws Exception
      */
@@ -106,9 +106,9 @@ class Users extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 增加记录方法
+     * Add record method
      *
-     * @param array $rows 字段对应值
+     * @param array $rows Field values
      * @return integer
      * @throws Exception
      */
@@ -118,10 +118,10 @@ class Users extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 更新记录方法
+     * Update record method
      *
-     * @param array $rows 字段对应值
-     * @param Query $condition 查询对象
+     * @param array $rows Field values
+     * @param Query $condition Query object
      * @return integer
      * @throws Exception
      */
@@ -131,9 +131,9 @@ class Users extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 删除记录方法
+     * Delete record method
      *
-     * @param Query $condition 查询对象
+     * @param Query $condition Query object
      * @return integer
      * @throws Exception
      */
@@ -143,11 +143,11 @@ class Users extends Base implements QueryInterface, RowFilterInterface, PrimaryK
     }
 
     /**
-     * 调用gravatar输出用户头像
+     * Call Gravatar to output user avatar
      *
-     * @param integer $size 头像尺寸
+     * @param integer $size Avatar size
      * @param string $rating 头像评级
-     * @param string|null $default 默认输出头像
+     * @param string|null $default Default avatar
      * @param string|null $class 默认css class
      */
     public function gravatar(int $size = 40, string $rating = 'X', ?string $default = null, ?string $class = null)

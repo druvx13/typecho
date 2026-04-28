@@ -17,9 +17,9 @@ $this->need('header.php');
         <?php if (!($this->is('index')) && !($this->is('post'))): ?>
             <h6 class="text-center text-muted">
                 <?php $this->archiveTitle([
-                    'category' => _t('Categories %s 下的文章'),
+                    'category' => _t('Posts in category %s'),
                     'search'   => _t('Posts containing keyword %s'),
-                    'tag'      => _t('Tags %s 下的文章'),
+                    'tag'      => _t('Posts tagged %s'),
                     'author'   => _t('Posts published by %s')
                 ], '', ''); ?>
             </h6>

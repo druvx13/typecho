@@ -12,7 +12,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 按日期归档列表组件
+ * 按Sun期归档列表组件
  *
  * @author qining
  * @category typecho
@@ -29,13 +29,13 @@ class Date extends Base
     }
 
     /**
-     * 初始化函数
+     * Initialization function
      *
      * @return void
      */
     public function execute()
     {
-        /** 设置参数默认值 */
+        /** 设置参数Default value */
         $this->parameter->setDefault('format=Y-m&type=month&limit=0');
 
         $resource = $this->db->query($this->db->select('created')->from('table.contents')

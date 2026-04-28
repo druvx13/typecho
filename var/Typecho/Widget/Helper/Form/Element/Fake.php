@@ -10,7 +10,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 虚拟域帮手类
+ * Virtual field helper class
  *
  * @category typecho
  * @package Widget
@@ -20,33 +20,33 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Fake extends Element
 {
     /**
-     * 构造函数
+     * Constructor
      *
      * @param string $name 表单输入项名称
-     * @param mixed $value 表单默认值
+     * @param mixed $value Form default value
      */
     public function __construct(string $name, $value)
     {
         $this->name = $name;
         self::$uniqueId++;
 
-        /** 运行自定义初始函数 */
+        /** Run custom initialization function */
         $this->init();
 
-        /** 初始化表单项 */
+        /** Initialize form item */
         $this->input = $this->input($name);
 
-        /** 初始化表单值 */
+        /** Initialize form value */
         if (null !== $value) {
             $this->value($value);
         }
     }
 
     /**
-     * 初始化当前输入项
+     * Initialize current input element
      *
-     * @param string|null $name 表单元素名称
-     * @param array|null $options 选择项
+     * @param string|null $name Form element name
+     * @param array|null $options Options array
      * @return Layout|null
      */
     public function input(?string $name = null, ?array $options = null): ?Layout
@@ -57,9 +57,9 @@ class Fake extends Element
     }
 
     /**
-     * 设置表单项默认值
+     * Set form item default value
      *
-     * @param mixed $value 表单项默认值
+     * @param mixed $value Form item default value
      */
     protected function inputValue($value)
     {

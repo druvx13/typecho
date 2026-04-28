@@ -92,24 +92,24 @@ $(document).ready(function() {
     }
 
     function fileUploadError (type, file) {
-        let word = '<?php _e('上传出现错误'); ?>';
+        let word = '<?php _e('Error while uploading'); ?>';
         
         switch (type) {
             case 'size':
-                word = '<?php _e('文件大小超过限制'); ?>';
+                word = '<?php _e('File size exceeds limit'); ?>';
                 break;
             case 'type':
-                word = '<?php _e('文件扩展名不被支持'); ?>';
+                word = '<?php _e('File extension not supported'); ?>';
                 break;
             case 'duplicate':
-                word = '<?php _e('文件已经上传过'); ?>';
+                word = '<?php _e('The file has been uploaded.'); ?>';
                 break;
             case 'network':
             default:
                 break;
         }
 
-        var fileError = '<?php _e('%s 上传失败'); ?>'.replace('%s', file.name),
+        var fileError = '<?php _e('%s Upload failed'); ?>'.replace('%s', file.name),
             li, exist = $('#' + file.id);
 
         if (exist.length > 0) {
@@ -128,11 +128,11 @@ $(document).ready(function() {
             .data('url', attachment.url)
             .data('image', attachment.isImage)
             .html('<input type="hidden" name="attachment[]" value="' + attachment.cid + '" />'
-                + '<a class="insert" target="_blank" href="###" title="<?php _e('点击插入文件'); ?>">'
+                + '<a class="insert" target="_blank" href="###" title="<?php _e('Click to insert a file.'); ?>">'
                 + attachment.title + '</a><div class="info">' + attachment.bytes
                 + ' <a class="file" target="_blank" href="<?php $options->adminUrl('media.php'); ?>?cid=' 
-                + attachment.cid + '" title="<?php _e('编辑'); ?>"><i class="i-edit"></i></a>'
-                + ' <a class="delete" href="###" title="<?php _e('删除'); ?>"><i class="i-delete"></i></a></div>')
+                + attachment.cid + '" title="<?php _e('Editors'); ?>"><i class="i-edit"></i></a>'
+                + ' <a class="delete" href="###" title="<?php _e('Delete'); ?>"><i class="i-delete"></i></a></div>')
             .effect('highlight', 1000);
 
         attachInsertEvent(li);
@@ -221,7 +221,7 @@ $(document).ready(function() {
     function attachDeleteEvent (el) {
         var file = $('a.insert', el).text();
         $('.delete', el).click(function () {
-            if (confirm('<?php _e('确认要删除文件 %s 吗?'); ?>'.replace('%s', file))) {
+            if (confirm('<?php _e('Are you sure to delete file %s ?'); ?>'.replace('%s', file))) {
                 var cid = $(this).parents('li').data('cid');
                 $.post('<?php $security->index('/action/contents-attachment-edit'); ?>',
                     {'do' : 'delete', 'cid' : cid},

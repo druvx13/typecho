@@ -6,18 +6,18 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title><?php $this->archiveTitle([
-            'category' => _t('Categories %s 下的文章'),
+            'category' => _t('Posts in category %s'),
             'search'   => _t('Posts containing keyword %s'),
-            'tag'      => _t('Tags %s 下的文章'),
+            'tag'      => _t('Posts tagged %s'),
             'author'   => _t('Posts published by %s')
         ], '', ' - '); ?><?php $this->options->title(); ?></title>
 
-    <!-- 使用url函数转换相关路径 -->
+    <!-- Convert paths using the url helper -->
     <link rel="stylesheet" href="<?php $this->options->themeUrl('normalize.css'); ?>">
     <link rel="stylesheet" href="<?php $this->options->themeUrl('grid.css'); ?>">
     <link rel="stylesheet" href="<?php $this->options->themeUrl('style.css'); ?>">
 
-    <!-- 通过自有函数输出HTML头部信息 -->
+    <!-- Output HTML head metadata via built-in functions -->
     <?php $this->header(); ?>
 </head>
 <body>

@@ -15,7 +15,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 编辑用户组件
+ * Edit user widget
  *
  * @link typecho
  * @package Widget
@@ -27,7 +27,7 @@ class Edit extends Users implements ActionInterface
     use EditTrait;
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @return void
      * @throws Exception|\Typecho\Db\Exception
@@ -37,25 +37,25 @@ class Edit extends Users implements ActionInterface
         /** 管理员以上权限 */
         $this->user->pass('administrator');
 
-        /** 更新模式 */
+        /** Update mode */
         if (($this->request->is('uid') && 'delete' != $this->request->get('do')) || $this->request->is('do=update')) {
             $this->db->fetchRow($this->select()
                 ->where('uid = ?', $this->request->get('uid'))->limit(1), [$this, 'push']);
 
             if (!$this->have()) {
-                throw new Exception(_t('用户不存在'), 404);
+                throw new Exception(_t('This user does not exist.'), 404);
             }
         }
     }
 
     /**
-     * 获取菜单标题
+     * Get menu title
      *
      * @return string
      */
     public function getMenuTitle(): string
     {
-        return _t('编辑用户 %s', $this->name);
+        return _t('Edit %s', $this->name);
     }
 
     /**
@@ -87,81 +87,81 @@ class Edit extends Users implements ActionInterface
 
         $hasher = new PasswordHash(8, true);
 
-        /** 取出数据 */
+        /** Fetch data */
         $user = $this->request->from('name', 'mail', 'screenName', 'password', 'url', 'group');
         $user['screenName'] = empty($user['screenName']) ? $user['name'] : $user['screenName'];
         $user['password'] = $hasher->hashPassword($user['password']);
         $user['created'] = $this->options->time;
 
-        /** 插入数据 */
+        /** Insert data */
         $user['uid'] = $this->insert($user);
 
-        /** 设置高亮 */
+        /** Set highlight */
         Notice::alloc()->highlight('user-' . $user['uid']);
 
-        /** 提示信息 */
-        Notice::alloc()->set(_t('用户 %s 已经被增加', $user['screenName']), 'success');
+        /** Notice message */
+        Notice::alloc()->set(_t('User %s added.', $user['screenName']), 'success');
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->redirect(Common::url('manage-users.php', $this->options->adminUrl));
     }
 
     /**
-     * 生成表单
+     * Generate form
      *
      * @access public
-     * @param string|null $action 表单动作
+     * @param string|null $action Form action
      * @return Form
      */
     public function form(?string $action = null): Form
     {
-        /** 构建表格 */
+        /** Build form */
         $form = new Form($this->security->getIndex('/action/users-edit'), Form::POST_METHOD);
 
         /** 用户名称 */
-        $name = new Form\Element\Text('name', null, null, _t('用户名') . ' *', _t('此用户名将作为用户登录时所用的名称.')
-            . '<br />' . _t('请不要与系统中现有的用户名重复.'));
+        $name = new Form\Element\Text('name', null, null, _t('username') . ' *', _t('This username will be used in login.')
+            . '<br />' . _t('Please do not use an existent username.'));
         $form->addInput($name);
 
-        /** 电子邮箱地址 */
-        $mail = new Form\Element\Text('mail', null, null, _t('邮件地址') . ' *', _t('电子邮箱地址将作为此用户的主要联系方式.')
-            . '<br />' . _t('请不要与系统中现有的电子邮箱地址重复.'));
+        /** Email address */
+        $mail = new Form\Element\Text('mail', null, null, _t('email address') . ' *', _t('Email address will be used for contact.')
+            . '<br />' . _t('Please do not use an an existent email address.'));
         $form->addInput($mail);
 
-        /** 用户昵称 */
-        $screenName = new Form\Element\Text('screenName', null, null, _t('用户昵称'), _t('用户昵称可以与用户名不同, 用于前台显示.')
-            . '<br />' . _t('如果你将此项留空, 将默认使用用户名.'));
+        /** User screen name */
+        $screenName = new Form\Element\Text('screenName', null, null, _t('Nickname'), _t('Nickname can be different from username. It will be shown on website front end.')
+            . '<br />' . _t('If you leave this blank, typecho will use your username by default.'));
         $form->addInput($screenName);
 
-        /** 用户密码 */
-        $password = new Form\Element\Password('password', null, null, _t('用户密码'), _t('为此用户分配一个密码.')
-            . '<br />' . _t('建议使用特殊字符与字母、数字的混编样式,以增加系统安全性.'));
+        /** User password */
+        $password = new Form\Element\Password('password', null, null, _t('User password.'), _t('Give this user a password.')
+            . '<br />' . _t('For security reasons, we recommend you use a password combining special characters and alphanumeric.'));
         $password->input->setAttribute('class', 'w-60');
         $form->addInput($password);
 
-        /** 用户密码确认 */
-        $confirm = new Form\Element\Password('confirm', null, null, _t('用户密码确认'), _t('请确认你的密码, 与上面输入的密码保持一致.'));
+        /** User password confirmation */
+        $confirm = new Form\Element\Password('confirm', null, null, _t('Confirm your password.'), _t('Please confirm your password. It should be the same as the one you typed above.'));
         $confirm->input->setAttribute('class', 'w-60');
         $form->addInput($confirm);
 
-        /** 个人主页地址 */
-        $url = new Form\Element\Text('url', null, null, _t('个人主页地址'), _t('此用户的个人主页地址, 请用 <code>https://</code> 开头.'));
+        /** Personal homepage URL */
+        $url = new Form\Element\Text('url', null, null, _t('Homepage'), _t('Personal homepage URL for this user. Must start with <code>https://</code>.'));
         $form->addInput($url);
 
         /** 用户组 */
         $group = new Form\Element\Select(
             'group',
             [
-                'subscriber'  => _t('关注者'),
-                'contributor' => _t('贡献者'), 'editor' => _t('编辑'), 'administrator' => _t('管理员')
+                'subscriber'  => _t('Followers'),
+                'contributor' => _t('Contributors'), 'editor' => _t('Editors'), 'administrator' => _t('Admin')
             ],
             null,
-            _t('用户组'),
-            _t('不同的用户组拥有不同的权限.') . '<br />' . _t('具体的权限分配表请<a href="https://docs.typecho.org/develop/acl">参考这里</a>.')
+            _t('User groups'),
+            _t('Different user groups have different permissions.') . '<br />' . _t('See the <a href="https://docs.typecho.org/develop/acl">permission reference</a> for details.')
         );
         $form->addInput($group);
 
-        /** 用户动作 */
+        /** User action */
         $do = new Form\Element\Hidden('do');
         $form->addInput($do);
 
@@ -169,13 +169,13 @@ class Edit extends Users implements ActionInterface
         $uid = new Form\Element\Hidden('uid');
         $form->addInput($uid);
 
-        /** 提交按钮 */
+        /** Submit button */
         $submit = new Form\Element\Submit();
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
 
         if ($this->request->is('uid')) {
-            $submit->value(_t('编辑用户'));
+            $submit->value(_t('Edit a user'));
             $name->value($this->name);
             $screenName->value($this->screenName);
             $url->value($this->url);
@@ -185,7 +185,7 @@ class Edit extends Users implements ActionInterface
             $uid->value($this->uid);
             $_action = 'update';
         } else {
-            $submit->value(_t('增加用户'));
+            $submit->value(_t('Add a user'));
             $do->value('insert');
             $_action = 'insert';
         }
@@ -194,38 +194,38 @@ class Edit extends Users implements ActionInterface
             $action = $_action;
         }
 
-        /** 给表单增加规则 */
+        /** Add validation rule to form */
         if ('insert' == $action || 'update' == $action) {
-            $screenName->addRule([$this, 'screenNameExists'], _t('昵称已经存在'));
-            $screenName->addRule('xssCheck', _t('请不要在昵称中使用特殊字符'));
-            $url->addRule('url', _t('个人主页地址格式错误'));
-            $mail->addRule('required', _t('必须填写电子邮箱'));
-            $mail->addRule([$this, 'mailExists'], _t('电子邮箱地址已经存在'));
-            $mail->addRule('email', _t('电子邮箱格式错误'));
-            $password->addRule('minLength', _t('为了保证账户安全, 请输入至少六位的密码'), 6);
-            $confirm->addRule('confirm', _t('两次输入的密码不一致'), 'password');
+            $screenName->addRule([$this, 'screenNameExists'], _t('Nickname already exists.'));
+            $screenName->addRule('xssCheck', _t('Please do not use special characters in usernames'));
+            $url->addRule('url', _t('Invalid omepage URL format'));
+            $mail->addRule('required', _t('You must enter an email address.'));
+            $mail->addRule([$this, 'mailExists'], _t('Email address already exists.'));
+            $mail->addRule('email', _t('Invalid Email address'));
+            $password->addRule('minLength', _t('For the security of your account, please choose a password containing at least 6 characters.'), 6);
+            $confirm->addRule('confirm', _t('Passwords do not match.'), 'password');
         }
 
         if ('insert' == $action) {
-            $name->addRule('required', _t('必须填写用户名称'));
-            $name->addRule('xssCheck', _t('请不要在用户名中使用特殊字符'));
-            $name->addRule([$this, 'nameExists'], _t('用户名已经存在'));
-            $password->label(_t('用户密码') . ' *');
-            $confirm->label(_t('用户密码确认') . ' *');
-            $password->addRule('required', _t('必须填写密码'));
+            $name->addRule('required', _t('You must enter a username.'));
+            $name->addRule('xssCheck', _t('Please do not include special characters in username.'));
+            $name->addRule([$this, 'nameExists'], _t('Username already exist.'));
+            $password->label(_t('User password.') . ' *');
+            $confirm->label(_t('Confirm your password.') . ' *');
+            $password->addRule('required', _t('You must enter a password.'));
         }
 
         if ('update' == $action) {
             $name->input->setAttribute('disabled', 'disabled');
-            $uid->addRule('required', _t('用户主键不存在'));
-            $uid->addRule([$this, 'userExists'], _t('用户不存在'));
+            $uid->addRule('required', _t('User key does not exist.'));
+            $uid->addRule([$this, 'userExists'], _t('This user does not exist.'));
         }
 
         return $form;
     }
 
     /**
-     * 更新用户
+     * Update user
      *
      * @throws \Typecho\Db\Exception
      */
@@ -235,7 +235,7 @@ class Edit extends Users implements ActionInterface
             $this->response->goBack();
         }
 
-        /** 取出数据 */
+        /** Fetch data */
         $user = $this->request->from('mail', 'screenName', 'password', 'url', 'group');
         $user['screenName'] = empty($user['screenName']) ? $user['name'] : $user['screenName'];
         if (empty($user['password'])) {
@@ -245,22 +245,22 @@ class Edit extends Users implements ActionInterface
             $user['password'] = $hasher->hashPassword($user['password']);
         }
 
-        /** 更新数据 */
+        /** Update data */
         $this->update($user, $this->db->sql()->where('uid = ?', $this->request->get('uid')));
 
-        /** 设置高亮 */
+        /** Set highlight */
         Notice::alloc()->highlight('user-' . $this->request->get('uid'));
 
-        /** 提示信息 */
-        Notice::alloc()->set(_t('用户 %s 已经被更新', $user['screenName']), 'success');
+        /** Notice message */
+        Notice::alloc()->set(_t('User %s updated.', $user['screenName']), 'success');
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->redirect(Common::url('manage-users.php?' .
             $this->getPageOffsetQuery($this->request->get('uid')), $this->options->adminUrl));
     }
 
     /**
-     * 获取页面偏移的URL Query
+     * Get page offset URL query
      *
      * @param integer $uid 用户id
      * @return string
@@ -272,7 +272,7 @@ class Edit extends Users implements ActionInterface
     }
 
     /**
-     * 删除用户
+     * Delete user
      *
      * @throws \Typecho\Db\Exception
      */
@@ -292,18 +292,18 @@ class Edit extends Users implements ActionInterface
             }
         }
 
-        /** 提示信息 */
+        /** Notice message */
         Notice::alloc()->set(
-            $deleteCount > 0 ? _t('用户已经删除') : _t('没有用户被删除'),
+            $deleteCount > 0 ? _t('User deleted.') : _t('No user to delete.'),
             $deleteCount > 0 ? 'success' : 'notice'
         );
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->redirect(Common::url('manage-users.php', $this->options->adminUrl));
     }
 
     /**
-     * 入口函数
+     * Entry point
      *
      * @access public
      * @return void

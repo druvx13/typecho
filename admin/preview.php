@@ -2,20 +2,20 @@
 
 include 'common.php';
 
-/** 获取内容 Widget */
+/** Retrieve content Widget */
 \Widget\Archive::alloc('type=single&checkPermalink=0&preview=1')->to($content);
 
-/** 检测是否存在 */
+/** Check whether content exists */
 if (!$content->have()) {
     $response->redirect($options->adminUrl);
 }
 
-/** 检测权限 */
+/** Check permissions */
 if (!$user->pass('editor', true) && $content->authorId != $user->uid) {
     $response->redirect($options->adminUrl);
 }
 
-/** 输出内容 */
+/** Output content */
 $content->render();
 ?>
 <script>

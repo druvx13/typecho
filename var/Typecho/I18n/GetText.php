@@ -182,7 +182,7 @@ class GetText
     }
 
     /**
-     * 关闭文件句柄
+     * Close file handle
      *
      * @access public
      * @return void

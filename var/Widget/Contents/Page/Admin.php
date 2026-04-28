@@ -33,7 +33,7 @@ class Admin extends Contents
     private int $parentId = 0;
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @access public
      * @return void
@@ -59,7 +59,7 @@ class Admin extends Contents
     }
 
     /**
-     * 向上的返回链接
+     * Upward return link
      *
      * @throws Db\Exception
      */
@@ -87,7 +87,7 @@ class Admin extends Contents
     }
 
     /**
-     * 获取菜单标题
+     * Get menu title
      *
      * @return string|null
      * @throws Db\Exception|Exception
@@ -104,11 +104,11 @@ class Admin extends Contents
             return null;
         }
 
-        throw new Exception(_t('页面不存在'), 404);
+        throw new Exception(_t('Page does not exist.'), 404);
     }
 
     /**
-     * 获取菜单标题
+     * Get menu title
      *
      * @return string
      */

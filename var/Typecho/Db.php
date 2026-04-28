@@ -7,65 +7,65 @@ use Typecho\Db\Query;
 use Typecho\Db\Exception as DbException;
 
 /**
- * 包含获取数据支持方法的类.
- * 必须定义__TYPECHO_DB_HOST__, __TYPECHO_DB_PORT__, __TYPECHO_DB_NAME__,
+ * Class containing data retrieval helper methods.
+ * Requires __TYPECHO_DB_HOST__, __TYPECHO_DB_PORT__, __TYPECHO_DB_NAME__,
  * __TYPECHO_DB_USER__, __TYPECHO_DB_PASS__, __TYPECHO_DB_CHAR__
  *
  * @package Db
  */
 class Db
 {
-    /** 读取数据库 */
+    /** Read from database */
     public const READ = 1;
 
-    /** 写入数据库 */
+    /** Write to database */
     public const WRITE = 2;
 
-    /** 升序方式 */
+    /** Ascending order */
     public const SORT_ASC = 'ASC';
 
-    /** 降序方式 */
+    /** Descending order */
     public const SORT_DESC = 'DESC';
 
-    /** 表内连接方式 */
+    /** Inner join */
     public const INNER_JOIN = 'INNER';
 
-    /** 表外连接方式 */
+    /** Outer join */
     public const OUTER_JOIN = 'OUTER';
 
-    /** 表左连接方式 */
+    /** Left join */
     public const LEFT_JOIN = 'LEFT';
 
-    /** 表右连接方式 */
+    /** Right join */
     public const RIGHT_JOIN = 'RIGHT';
 
-    /** 数据库查询操作 */
+    /** Database read operation */
     public const SELECT = 'SELECT';
 
-    /** 数据库更新操作 */
+    /** Database write operation */
     public const UPDATE = 'UPDATE';
 
-    /** 数据库插入操作 */
+    /** Database insert operation */
     public const INSERT = 'INSERT';
 
-    /** 数据库删除操作 */
+    /** Database delete operation */
     public const DELETE = 'DELETE';
 
     /**
-     * 数据库适配器
+     * Database adapter
      * @var Adapter
      */
     private Adapter $adapter;
 
     /**
-     * 默认配置
+     * Default configuration
      *
      * @var array
      */
     private array $config;
 
     /**
-     * 已经连接
+     * Already connected
      *
      * @access private
      * @var array
@@ -73,7 +73,7 @@ class Db
     private array $connectedPool;
 
     /**
-     * 前缀
+     * Prefix
      *
      * @access private
      * @var string
@@ -81,7 +81,7 @@ class Db
     private string $prefix;
 
     /**
-     * 适配器名称
+     * Adapter name
      *
      * @access private
      * @var string
@@ -89,26 +89,26 @@ class Db
     private string $adapterName;
 
     /**
-     * 实例化的数据库对象
+     * Instantiated database object
      * @var Db
      */
     private static Db $instance;
 
     /**
-     * 数据库类构造函数
+     * Database class constructor
      *
-     * @param mixed $adapterName 适配器名称
-     * @param string $prefix 前缀
+     * @param mixed $adapterName Adapter name
+     * @param string $prefix Prefix
      *
      * @throws DbException
      */
     public function __construct($adapterName, string $prefix = 'typecho_')
     {
-        /** 获取适配器名称 */
+        /** Get adapter name */
         $adapterName = $adapterName == 'Mysql' ? 'Mysqli' : $adapterName;
         $this->adapterName = $adapterName;
 
-        /** 数据库适配器 */
+        /** Database adapter */
         $adapterName = '\Typecho\Db\Adapter\\' . str_replace('_', '\\', $adapterName);
 
         if (!call_user_func([$adapterName, 'isAvailable'])) {
@@ -117,7 +117,7 @@ class Db
 
         $this->prefix = $prefix;
 
-        /** 初始化内部变量 */
+        /** Initialize internal variables */
         $this->connectedPool = [];
 
         $this->config = [
@@ -125,7 +125,7 @@ class Db
             self::WRITE => []
         ];
 
-        //实例化适配器对象
+        // Instantiate adapter object
         $this->adapter = new $adapterName();
     }
 
@@ -138,7 +138,7 @@ class Db
     }
 
     /**
-     * 获取适配器名称
+     * Get adapter name
      *
      * @access public
      * @return string
@@ -149,7 +149,7 @@ class Db
     }
 
     /**
-     * 获取表前缀
+     * Get table prefix
      *
      * @access public
      * @return string
@@ -194,7 +194,7 @@ class Db
     }
 
     /**
-     * 重置连接池
+     * Reset connection pool
      *
      * @return void
      */
@@ -204,7 +204,7 @@ class Db
     }
 
     /**
-     * 选择数据库
+     * Select database
      *
      * @param int $op
      *
@@ -223,7 +223,7 @@ class Db
     }
 
     /**
-     * 获取SQL词法构建器实例化对象
+     * Get SQL lexical builder instance
      *
      * @return Query
      */
@@ -233,11 +233,11 @@ class Db
     }
 
     /**
-     * 为多数据库提供支持
+     * Provide support for multiple databases
      *
      * @access public
-     * @param array $config 数据库实例
-     * @param integer $op 数据库操作
+     * @param array $config Database instance
+     * @param integer $op Database operation
      * @return void
      */
     public function addServer(array $config, int $op)
@@ -247,7 +247,7 @@ class Db
     }
 
     /**
-     * 获取版本
+     * Get version
      *
      * @param int $op
      *
@@ -260,10 +260,10 @@ class Db
     }
 
     /**
-     * 设置默认数据库对象
+     * Set default database object
      *
      * @access public
-     * @param Db $db 数据库对象
+     * @param Db $db Database object
      * @return void
      */
     public static function set(Db $db)
@@ -272,8 +272,8 @@ class Db
     }
 
     /**
-     * 获取数据库实例化对象
-     * 用静态变量存储实例化的数据库对象,可以保证数据连接仅进行一次
+     * Get database instance object
+     * Use static variable to store database instance; ensures connection is made only once
      *
      * @return Db
      * @throws DbException
@@ -289,7 +289,7 @@ class Db
     }
 
     /**
-     * 选择查询字段
+     * Select query fields
      *
      * @param ...$ags
      *
@@ -305,9 +305,9 @@ class Db
     }
 
     /**
-     * 更新记录操作(UPDATE)
+     * Update record operation (UPDATE)
      *
-     * @param string $table 需要更新记录的表
+     * @param string $table Table to update
      *
      * @return Query
      * @throws DbException
@@ -320,9 +320,9 @@ class Db
     }
 
     /**
-     * 删除记录操作(DELETE)
+     * Delete record operation (DELETE)
      *
-     * @param string $table 需要删除记录的表
+     * @param string $table Table to delete from
      *
      * @return Query
      * @throws DbException
@@ -335,9 +335,9 @@ class Db
     }
 
     /**
-     * 插入记录操作(INSERT)
+     * Insert record operation (INSERT)
      *
-     * @param string $table 需要插入记录的表
+     * @param string $table Table to insert into
      *
      * @return Query
      * @throws DbException
@@ -360,11 +360,11 @@ class Db
     }
 
     /**
-     * 执行查询语句
+     * Execute query statement
      *
-     * @param mixed $query 查询语句或者查询对象
-     * @param int $op 数据库读写状态
-     * @param string $action 操作动作
+     * @param mixed $query Query string or query object
+     * @param int $op Database read/write mode
+     * @param string $action Operation action
      *
      * @return mixed
      * @throws DbException
@@ -373,28 +373,28 @@ class Db
     {
         $table = null;
 
-        /** 在适配器中执行查询 */
+        /** Execute query in adapter */
         if ($query instanceof Query) {
             $action = $query->getAttribute('action');
             $table = $query->getAttribute('table');
             $op = (self::UPDATE == $action || self::DELETE == $action
                 || self::INSERT == $action) ? self::WRITE : self::READ;
         } elseif (!is_string($query)) {
-            /** 如果query不是对象也不是字符串,那么将其判断为查询资源句柄,直接返回 */
+            /** If query is neither object nor string, treat as query resource handle and return directly */
             return $query;
         }
 
-        /** 选择连接池 */
+        /** Select connection pool */
         $handle = $this->selectDb($op);
 
-        /** 如果是查询对象,则将其转换为查询语句 */
+        /** If query object, convert to query string */
         $sql = $query instanceof Query ? $query->prepare($query) : $query;
 
-        /** 提交查询 */
+        /** Submit query */
         $resource = $this->adapter->query($sql, $handle, $op, $action, $table);
 
         if ($action) {
-            //根据查询动作返回相应资源
+            // Return corresponding resource based on query action
             switch ($action) {
                 case self::UPDATE:
                 case self::DELETE:
@@ -406,23 +406,23 @@ class Db
                     return $resource;
             }
         } else {
-            //如果直接执行查询语句则返回资源
+            // If query string is given directly, return resource
             return $resource;
         }
     }
 
     /**
-     * 一次取出所有行
+     * Fetch all rows at once
      *
-     * @param mixed $query 查询对象
-     * @param callable|null $filter 行过滤器函数,将查询的每一行作为第一个参数传入指定的过滤器中
+     * @param mixed $query Query object
+     * @param callable|null $filter Row filter function; each row is passed as the first argument
      *
      * @return array
      * @throws DbException
      */
     public function fetchAll($query, ?callable $filter = null): array
     {
-        //执行查询
+        //Execute query
         $resource = $this->query($query);
         $result = $this->adapter->fetchAll($resource);
 
@@ -430,10 +430,10 @@ class Db
     }
 
     /**
-     * 一次取出一行
+     * Fetch one row at a time
      *
-     * @param mixed $query 查询对象
-     * @param callable|null $filter 行过滤器函数,将查询的每一行作为第一个参数传入指定的过滤器中
+     * @param mixed $query Query object
+     * @param callable|null $filter Row filter function; each row is passed as the first argument
      * @return array|null
      * @throws DbException
      */
@@ -447,10 +447,10 @@ class Db
     }
 
     /**
-     * 一次取出一个对象
+     * Fetch one object at a time
      *
-     * @param mixed $query 查询对象
-     * @param array|null $filter 行过滤器函数,将查询的每一行作为第一个参数传入指定的过滤器中
+     * @param mixed $query Query object
+     * @param array|null $filter Row filter function; each row is passed as the first argument
      * @return \stdClass|null
      * @throws DbException
      */

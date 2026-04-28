@@ -20,7 +20,7 @@ class Mysql extends Pdo
     use MysqlTrait;
 
     /**
-     * 判断适配器是否可用
+     * Check whether the adapter is available
      *
      * @access public
      * @return boolean
@@ -31,7 +31,7 @@ class Mysql extends Pdo
     }
 
     /**
-     * 对象引号过滤
+     * Object quote filter
      *
      * @access public
      * @param string $string
@@ -43,9 +43,9 @@ class Mysql extends Pdo
     }
 
     /**
-     * 初始化数据库
+     * Initialize database
      *
-     * @param Config $config 数据库配置
+     * @param Config $config Database configuration
      * @access public
      * @return \PDO
      */
@@ -90,9 +90,9 @@ class Mysql extends Pdo
     }
 
     /**
-     * 引号转义函数
+     * Quote escaping function
      *
-     * @param mixed $string 需要转义的字符串
+     * @param mixed $string String to escape
      * @return string
      */
     public function quoteValue($string): string

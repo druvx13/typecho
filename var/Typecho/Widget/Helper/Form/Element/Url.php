@@ -10,7 +10,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * Url 表单项帮手类
+ * URL form element helper class
  *
  * @category typecho
  * @package Widget

@@ -5,14 +5,14 @@ namespace Typecho;
 use Typecho\I18n\GetTextMulti;
 
 /**
- * 国际化字符翻译
+ * Internationalization string translation
  *
  * @package I18n
  */
 class I18n
 {
     /**
-     * 是否已经载入的标志位
+     * Flag indicating whether loaded
      *
      * @access private
      * @var GetTextMulti|null
@@ -20,7 +20,7 @@ class I18n
     private static ?GetTextMulti $loaded = null;
 
     /**
-     * 语言文件
+     * Language file
      *
      * @access private
      * @var string|null
@@ -28,11 +28,11 @@ class I18n
     private static ?string $lang = null;
 
     /**
-     * 翻译文字
+     * Translate string
      *
      * @access public
      *
-     * @param string $string 待翻译的文字
+     * @param string $string String to be translated
      *
      * @return string
      */
@@ -43,24 +43,24 @@ class I18n
     }
 
     /**
-     * 初始化语言文件
+     * Initialize language file
      *
      * @access private
      */
     private static function init()
     {
-        /** GetText支持 */
+        /** GetText support */
         if (!isset(self::$loaded) && self::$lang && file_exists(self::$lang)) {
             self::$loaded = new GetTextMulti(self::$lang);
         }
     }
 
     /**
-     * 针对复数形式的翻译函数
+     * Translation function for plural forms
      *
-     * @param string $single 单数形式的翻译
-     * @param string $plural 复数形式的翻译
-     * @param integer $number 数字
+     * @param string $single Singular form translation
+     * @param string $plural Plural form translation
+     * @param integer $number Number
      * @return string
      */
     public static function ngettext(string $single, string $plural, int $number): string
@@ -70,12 +70,12 @@ class I18n
     }
 
     /**
-     * 词义化时间
+     * Human-readable time
      *
      * @access public
      *
-     * @param int $from 起始时间
-     * @param int $now 终止时间
+     * @param int $from Start time
+     * @param int $now End time
      *
      * @return string
      */
@@ -83,57 +83,57 @@ class I18n
     {
         $between = $now - $from;
 
-        /** 如果是一天 */
+        /** If within the same day */
         if ($between >= 0 && $between < 86400 && date('d', $from) == date('d', $now)) {
-            /** 如果是一小时 */
+            /** If within the same hour */
             if ($between < 3600) {
-                /** 如果是一分钟 */
+                /** If within the same minute */
                 if ($between < 60) {
                     if (0 == $between) {
-                        return _t('刚刚');
+                        return _t('right now');
                     } else {
-                        return str_replace('%d', $between, _n('一秒前', '%d秒前', $between));
+                        return str_replace('%d', $between, _n('1 second ago', '%d seconds ago', $between));
                     }
                 }
 
                 $min = floor($between / 60);
-                return str_replace('%d', $min, _n('一分钟前', '%d分钟前', $min));
+                return str_replace('%d', $min, _n('1 minute ago', '%d minutes ago', $min));
             }
 
             $hour = floor($between / 3600);
-            return str_replace('%d', $hour, _n('一小时前', '%d小时前', $hour));
+            return str_replace('%d', $hour, _n('1 hour ago', '%d hours ago', $hour));
         }
 
-        /** 如果是昨天 */
+        /** If yesterday */
         if (
             $between > 0
             && $between < 172800
-            && (date('z', $from) + 1 == date('z', $now)                             // 在同一年的情况
+            && (date('z', $from) + 1 == date('z', $now)                             // Same year case
                 || date('z', $from) + 1 == date('L') + 365 + date('z', $now))
-        ) {    // 跨年的情况
-            return _t('昨天 %s', date('H:i', $from));
+        ) {    // Cross-year case
+            return _t('yesterday %s', date('H:i', $from));
         }
 
-        /** 如果是一个星期 */
+        /** If within the same week */
         if ($between > 0 && $between < 604800) {
             $day = floor($between / 86400);
-            return str_replace('%d', $day, _n('一天前', '%d天前', $day));
+            return str_replace('%d', $day, _n('Mon天前', '%d days ago', $day));
         }
 
-        /** 如果是 */
+        /** If */
         if (date('Y', $from) == date('Y', $now)) {
-            return date(_t('n月j日'), $from);
+            return date(_t('n - j'), $from);
         }
 
-        return date(_t('Y年m月d日'), $from);
+        return date(_t('m - d - Y'), $from);
     }
 
     /**
-     * 增加语言项
+     * Add language entry
      *
      * @access public
      *
-     * @param string $lang 语言名称
+     * @param string $lang Language name
      *
      * @return void
      */
@@ -143,7 +143,7 @@ class I18n
     }
 
     /**
-     * 获取语言项
+     * Get language setting
      *
      * @access public
      * @return string
@@ -154,11 +154,11 @@ class I18n
     }
 
     /**
-     * 设置语言项
+     * Set language setting
      *
      * @access public
      *
-     * @param string $lang 配置信息
+     * @param string $lang Configuration value
      *
      * @return void
      */

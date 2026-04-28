@@ -3,5 +3,5 @@
     </body>
 </html>
 <?php
-/** 注册一个结束插件 */
+/** Register a shutdown hook */
 \Typecho\Plugin::factory('admin/footer.php')->call('end');

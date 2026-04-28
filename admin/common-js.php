@@ -5,7 +5,7 @@
 <script>
     (function () {
         $(document).ready(function() {
-            // 处理消息机制
+            // Message handling
             (function () {
                 var prefix = '<?php echo \Typecho\Cookie::getPrefix(); ?>',
                     cookies = {

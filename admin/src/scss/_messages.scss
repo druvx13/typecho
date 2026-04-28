@@ -1,6 +1,6 @@
 
 /**
-* 提示信息框
+* Alert/message box
 */
 .message {
   padding: 8px 10px;
@@ -35,7 +35,7 @@
 }
 
 
-// 气泡
+// Tooltip bubble
 .balloon {
   display: inline-block;
   padding: 0 4px;
@@ -51,7 +51,7 @@
   border-radius: 20px;
 }
 
-/** 顶部消息样式 by 70 */
+/** Top message style */
 .popup {
   display: none;
   position: sticky;

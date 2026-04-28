@@ -5,7 +5,7 @@ namespace Typecho;
 use Typecho\Plugin\Exception as PluginException;
 
 /**
- * 插件处理类
+ * Plugin handler class
  *
  * @category typecho
  * @package Plugin
@@ -36,7 +36,7 @@ class Plugin
     private static array $tmp = [];
 
     /**
-     * 唯一句柄
+     * 唯Mon句柄
      *
      * @var string
      */
@@ -57,9 +57,9 @@ class Plugin
     private bool $signal = false;
 
     /**
-     * 插件初始化
+     * Plugin initialization
      *
-     * @param string $handle 插件
+     * @param string $handle Plugin
      */
     public function __construct(string $handle)
     {
@@ -72,7 +72,7 @@ class Plugin
     }
 
     /**
-     * 插件初始化
+     * Plugin initialization
      *
      * @param array $plugins 插件列表
      */
@@ -88,7 +88,7 @@ class Plugin
     /**
      * 获取实例化插件对象
      *
-     * @param string $handle 插件
+     * @param string $handle Plugin
      * @return Plugin
      */
     public static function factory(string $handle): Plugin
@@ -97,9 +97,9 @@ class Plugin
     }
 
     /**
-     * 启用插件
+     * Enable plugin
      *
-     * @param string $pluginName 插件名称
+     * @param string $pluginName Plugin name
      */
     public static function activate(string $pluginName)
     {
@@ -108,9 +108,9 @@ class Plugin
     }
 
     /**
-     * 禁用插件
+     * Disable plugin
      *
-     * @param string $pluginName 插件名称
+     * @param string $pluginName Plugin name
      */
     public static function deactivate(string $pluginName)
     {
@@ -165,7 +165,7 @@ class Plugin
     /**
      * 获取插件文件的头信息
      *
-     * @param string $pluginFile 插件文件路径
+     * @param string $pluginFile 插件File path
      * @return array
      */
     public static function parseInfo(string $pluginFile): array
@@ -307,12 +307,12 @@ class Plugin
     }
 
     /**
-     * 获取插件路径和类名
-     * 返回值为一个数组
-     * 第一项为插件路径,第二项为类名
+     * 获取插件路径和Class name
+     * 返回值为Mon个数组
+     * 第Mon项为插件路径,第Tue项为Class name
      *
      * @param string $pluginName 插件名
-     * @param string $path 插件目录
+     * @param string $path Plugin directory
      * @return array
      * @throws PluginException
      */
@@ -349,9 +349,9 @@ class Plugin
     }
 
     /**
-     * 判断插件是否存在
+     * Check whether plugin exists
      *
-     * @param string $pluginName 插件名称
+     * @param string $pluginName Plugin name
      * @return bool
      */
     public static function exists(string $pluginName): bool
@@ -375,7 +375,7 @@ class Plugin
     /**
      * 通过魔术函数设置当前组件位置
      *
-     * @param string $component 当前组件
+     * @param string $component Current widget
      * @return Plugin
      */
     public function __get(string $component)
@@ -387,7 +387,7 @@ class Plugin
     /**
      * 设置回调函数
      *
-     * @param string $component 当前组件
+     * @param string $component Current widget
      * @param callable $value 回调函数
      */
     public function __set(string $component, callable $value)
@@ -429,8 +429,8 @@ class Plugin
     /**
      * 回调处理函数
      *
-     * @param string $component 当前组件
-     * @param array $args 参数
+     * @param string $component Current widget
+     * @param array $args Arguments
      * @return mixed
      */
     public function call(string $component, ...$args)
@@ -454,9 +454,9 @@ class Plugin
     /**
      * 过滤处理函数
      *
-     * @param string $component 当前组件
+     * @param string $component Current widget
      * @param mixed $value 值
-     * @param array $args 参数
+     * @param array $args Arguments
      * @return mixed
      */
     public function filter(string $component, $value, ...$args)

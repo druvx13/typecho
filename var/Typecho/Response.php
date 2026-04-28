@@ -5,7 +5,7 @@ namespace Typecho;
 use Typecho\Widget\Terminal;
 
 /**
- * Typecho公用方法
+ * Typecho common methods
  *
  * @category typecho
  * @package Response
@@ -65,7 +65,7 @@ class Response
 
     //默认的字符编码
     /**
-     * 单例句柄
+     * Singleton handle
      *
      * @access private
      * @var Response
@@ -123,7 +123,7 @@ class Response
     }
 
     /**
-     * 获取单例句柄
+     * Get singleton handle
      *
      * @return Response
      */
@@ -268,11 +268,11 @@ class Response
     }
 
     /**
-     * 设置指定的COOKIE值
+     * Set specified cookie value
      *
-     * @param string $key 指定的参数
-     * @param mixed $value 设置的值
-     * @param integer $timeout 过期时间,默认为0,表示随会话时间结束
+     * @param string $key Specified parameter
+     * @param mixed $value Value to set
+     * @param integer $timeout Expiry time,默认为0,表示随会话时间结束
      * @param string $path 路径信息
      * @param string|null $domain 域名信息
      * @param bool $secure 是否仅可通过安全的 HTTPS 连接传给客户端
@@ -296,7 +296,7 @@ class Response
     }
 
     /**
-     * 在http头部请求中声明类型和字符集
+     * 在http头部请求中声明类型和Character set
      *
      * @param string $contentType 文档类型
      * @return $this
@@ -312,7 +312,7 @@ class Response
     }
 
     /**
-     * 获取字符集
+     * Get character set
      *
      * @return string
      */
@@ -322,9 +322,9 @@ class Response
     }
 
     /**
-     * 设置默认回执编码
+     * Set default response encoding
      *
-     * @param string $charset 字符集
+     * @param string $charset Character set
      * @return $this
      */
     public function setCharset(string $charset): Response

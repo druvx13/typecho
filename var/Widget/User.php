@@ -14,7 +14,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 当前登录用户
+ * Currently logged-in user
  *
  * @category typecho
  * @package Widget
@@ -59,7 +59,7 @@ class User extends Users
     }
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @throws DbException
      */
@@ -136,21 +136,21 @@ class User extends Users
      *
      * @access public
      * @param string $name 用户名
-     * @param string $password 密码
+     * @param string $password Password
      * @param boolean $temporarily 是否为临时登录
-     * @param integer $expire 过期时间
+     * @param integer $expire Expiry time
      * @return boolean
      * @throws DbException
      */
     public function login(string $name, string $password, bool $temporarily = false, int $expire = 0): bool
     {
-        //插件接口
+        //Plugin interface
         $result = self::pluginHandle()->trigger($loginPluggable)->call('login', $name, $password, $temporarily, $expire);
         if ($loginPluggable) {
             return $result;
         }
 
-        /** 开始验证用户 **/
+        /** Begin user validation **/
         $user = $this->db->fetchRow($this->db->select()
             ->from('table.users')
             ->where('name = ?', $name)
@@ -222,7 +222,7 @@ class User extends Users
      *
      * @param int | array $uid 用户id或者用户数据数组
      * @param boolean $temporarily 是否为临时登录，默认为临时登录以兼容以前的方法
-     * @param integer $expire 过期时间
+     * @param integer $expire Expiry time
      * @return boolean
      * @throws DbException
      */
@@ -258,7 +258,7 @@ class User extends Users
      * 判断用户权限
      *
      * @access public
-     * @param string $group 用户组
+     * @param string $group User group
      * @param boolean $return 是否为返回模式
      * @return boolean
      * @throws DbException|Widget\Exception
@@ -273,7 +273,7 @@ class User extends Users
             if ($return) {
                 return false;
             } else {
-                //防止循环重定向
+                //防止循环Redirect
                 $this->response->redirect(defined('__TYPECHO_ADMIN__') ? $this->options->loginUrl .
                     (0 === strpos($this->request->getReferer() ?? '', $this->options->loginUrl) ? '' :
                         '?referer=' . urlencode($this->request->makeUriByRequest())) : $this->options->siteUrl);
@@ -283,7 +283,7 @@ class User extends Users
         if ($return) {
             return false;
         } else {
-            throw new Widget\Exception(_t('禁止访问'), 403);
+            throw new Widget\Exception(_t('Access denied.'), 403);
         }
     }
 }

@@ -18,7 +18,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 编辑用户组件
+ * Edit user widget
  *
  * @link typecho
  * @package Widget
@@ -30,7 +30,7 @@ class Profile extends Users implements ActionInterface
     use EditTrait;
 
     /**
-     * 执行函数
+     * Execute action
      */
     public function execute()
     {
@@ -40,43 +40,43 @@ class Profile extends Users implements ActionInterface
     }
 
     /**
-     * 输出表单结构
+     * Output form structure
      *
      * @access public
      * @return Form
      */
     public function optionsForm(): Form
     {
-        /** 构建表格 */
+        /** Build form */
         $form = new Form($this->security->getIndex('/action/users-profile'), Form::POST_METHOD);
 
         /** 撰写设置 */
         $markdown = new Form\Element\Radio(
             'markdown',
-            ['0' => _t('关闭'), '1' => _t('打开')],
+            ['0' => _t('Close.'), '1' => _t('Open')],
             $this->options->markdown,
-            _t('使用 Markdown 语法编辑和解析内容'),
-            _t('使用 <a href="https://daringfireball.net/projects/markdown/">Markdown</a> 语法能够使您的撰写过程更加简便直观.')
-            . '<br />' . _t('此功能开启不会影响以前没有使用 Markdown 语法编辑的内容.')
+            _t('Edit and parse content in Markdown syntax'),
+            _t('Using <a href="https://daringfireball.net/projects/markdown/">Markdown</a> syntax makes writing simpler and more intuitive.')
+            . '<br />' . _t('Enabling this function will not affect contents previously edited without Markdown syntax.')
         );
         $form->addInput($markdown);
 
         $xmlrpcMarkdown = new Form\Element\Radio(
             'xmlrpcMarkdown',
-            ['0' => _t('关闭'), '1' => _t('打开')],
+            ['0' => _t('Close.'), '1' => _t('Open')],
             $this->options->xmlrpcMarkdown,
-            _t('在 XMLRPC 接口中使用 Markdown 语法'),
-            _t('对于完全支持 <a href="https://daringfireball.net/projects/markdown/">Markdown</a> 语法写作的离线编辑器, 打开此选项后将避免内容被转换为 HTML.')
+            _t('Use Markdown syntax in the XMLRPC interface'),
+            _t('For offline editors that fully support <a href="https://daringfireball.net/projects/markdown/">Markdown</a>, enabling this option prevents content from being converted to HTML.')
         );
         $form->addInput($xmlrpcMarkdown);
 
         /** 自动保存 */
         $autoSave = new Form\Element\Radio(
             'autoSave',
-            ['0' => _t('关闭'), '1' => _t('打开')],
+            ['0' => _t('Close.'), '1' => _t('Open')],
             $this->options->autoSave,
-            _t('自动保存'),
-            _t('自动保存功能可以更好地保护你的文章不会丢失.')
+            _t('Auto save.'),
+            _t('Auto saving can protect your post from accidents.')
         );
         $form->addInput($autoSave);
 
@@ -96,19 +96,19 @@ class Profile extends Users implements ActionInterface
 
         $defaultAllow = new Form\Element\Checkbox(
             'defaultAllow',
-            ['comment' => _t('可以被评论'), 'ping' => _t('可以被引用'), 'feed' => _t('出现在聚合中')],
+            ['comment' => _t('Commentable'), 'ping' => _t('Citable'), 'feed' => _t('Shown in aggregation.')],
             $allow,
-            _t('默认允许'),
-            _t('设置你经常使用的默认允许权限')
+            _t('Allow by default.'),
+            _t('Set default allowed permissions you use regularly.')
         );
         $form->addInput($defaultAllow);
 
-        /** 用户动作 */
+        /** User action */
         $do = new Form\Element\Hidden('do', null, 'options');
         $form->addInput($do);
 
-        /** 提交按钮 */
-        $submit = new Form\Element\Submit('submit', null, _t('保存设置'));
+        /** Submit button */
+        $submit = new Form\Element\Submit('submit', null, _t('Save settings.'));
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
 
@@ -145,15 +145,15 @@ class Profile extends Users implements ActionInterface
      * 输出自定义设置选项
      *
      * @access public
-     * @param string $pluginName 插件名称
-     * @param string $className 类名称
-     * @param string $pluginFileName 插件文件名
-     * @param string|null $group 用户组
+     * @param string $pluginName Plugin name
+     * @param string $className Class name称
+     * @param string $pluginFileName 插件File name
+     * @param string|null $group User group
      * @throws Plugin\Exception
      */
     public function personalForm(string $pluginName, string $className, string $pluginFileName, ?string &$group): Form
     {
-        /** 构建表格 */
+        /** Build form */
         $form = new Form($this->security->getIndex('/action/users-profile'), Form::POST_METHOD);
         $form->setAttribute('name', $pluginName);
         $form->setAttribute('id', $pluginName);
@@ -172,14 +172,14 @@ class Profile extends Users implements ActionInterface
 
         $form->addItem(new Form\Element\Hidden('do', null, 'personal'));
         $form->addItem(new Form\Element\Hidden('plugin', null, $pluginName));
-        $submit = new Form\Element\Submit('submit', null, _t('保存设置'));
+        $submit = new Form\Element\Submit('submit', null, _t('Save settings.'));
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
         return $form;
     }
 
     /**
-     * 更新用户
+     * Update user
      *
      * @throws Exception
      */
@@ -189,53 +189,53 @@ class Profile extends Users implements ActionInterface
             $this->response->goBack();
         }
 
-        /** 取出数据 */
+        /** Fetch data */
         $user = $this->request->from('mail', 'screenName', 'url');
         $user['screenName'] = empty($user['screenName']) ? $user['name'] : $user['screenName'];
 
-        /** 更新数据 */
+        /** Update data */
         $this->update($user, $this->db->sql()->where('uid = ?', $this->user->uid));
 
-        /** 设置高亮 */
+        /** Set highlight */
         Notice::alloc()->highlight('user-' . $this->user->uid);
 
-        /** 提示信息 */
-        Notice::alloc()->set(_t('您的档案已经更新'), 'success');
+        /** Notice message */
+        Notice::alloc()->set(_t('Your profile has been updated.'), 'success');
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->goBack();
     }
 
     /**
-     * 生成表单
+     * Generate form
      *
      * @return Form
      */
     public function profileForm(): Form
     {
-        /** 构建表格 */
+        /** Build form */
         $form = new Form($this->security->getIndex('/action/users-profile'), Form::POST_METHOD);
 
-        /** 用户昵称 */
-        $screenName = new Form\Element\Text('screenName', null, null, _t('昵称'), _t('用户昵称可以与用户名不同, 用于前台显示.')
-            . '<br />' . _t('如果你将此项留空, 将默认使用用户名.'));
+        /** User screen name */
+        $screenName = new Form\Element\Text('screenName', null, null, _t('Nickname'), _t('Nickname can be different from username. It will be shown on website front end.')
+            . '<br />' . _t('If you leave this blank, typecho will use your username by default.'));
         $form->addInput($screenName);
 
-        /** 个人主页地址 */
-        $url = new Form\Element\Url('url', null, null, _t('个人主页地址'), _t('此用户的个人主页地址, 请用 <code>https://</code> 开头.'));
+        /** Personal homepage URL */
+        $url = new Form\Element\Url('url', null, null, _t('Homepage'), _t('Personal homepage URL for this user. Must start with <code>https://</code>.'));
         $form->addInput($url);
 
-        /** 电子邮箱地址 */
-        $mail = new Form\Element\Text('mail', null, null, _t('邮件地址') . ' *', _t('电子邮箱地址将作为此用户的主要联系方式.')
-            . '<br />' . _t('请不要与系统中现有的电子邮箱地址重复.'));
+        /** Email address */
+        $mail = new Form\Element\Text('mail', null, null, _t('email address') . ' *', _t('Email address will be used for contact.')
+            . '<br />' . _t('Please do not use an an existent email address.'));
         $form->addInput($mail);
 
-        /** 用户动作 */
+        /** User action */
         $do = new Form\Element\Hidden('do', null, 'profile');
         $form->addInput($do);
 
-        /** 提交按钮 */
-        $submit = new Form\Element\Submit('submit', null, _t('更新我的档案'));
+        /** Submit button */
+        $submit = new Form\Element\Submit('submit', null, _t('Update my profile.'));
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
 
@@ -243,19 +243,19 @@ class Profile extends Users implements ActionInterface
         $url->value($this->user->url);
         $mail->value($this->user->mail);
 
-        /** 给表单增加规则 */
-        $screenName->addRule([$this, 'screenNameExists'], _t('昵称已经存在'));
-        $screenName->addRule('xssCheck', _t('请不要在昵称中使用特殊字符'));
-        $url->addRule('url', _t('个人主页地址格式错误'));
-        $mail->addRule('required', _t('必须填写电子邮箱'));
-        $mail->addRule([$this, 'mailExists'], _t('电子邮箱地址已经存在'));
-        $mail->addRule('email', _t('电子邮箱格式错误'));
+        /** Add validation rule to form */
+        $screenName->addRule([$this, 'screenNameExists'], _t('Nickname already exists.'));
+        $screenName->addRule('xssCheck', _t('Please do not use special characters in usernames'));
+        $url->addRule('url', _t('Invalid omepage URL format'));
+        $mail->addRule('required', _t('You must enter an email address.'));
+        $mail->addRule([$this, 'mailExists'], _t('Email address already exists.'));
+        $mail->addRule('email', _t('Invalid Email address'));
 
         return $form;
     }
 
     /**
-     * 执行更新动作
+     * Execute update action
      *
      * @throws Exception
      */
@@ -289,7 +289,7 @@ class Profile extends Users implements ActionInterface
             }
         }
 
-        Notice::alloc()->set(_t("设置已经保存"), 'success');
+        Notice::alloc()->set(_t("Your settings have been saved."), 'success');
         $this->response->goBack();
     }
 
@@ -300,7 +300,7 @@ class Profile extends Users implements ActionInterface
      */
     public function updatePassword()
     {
-        /** 验证格式 */
+        /** Validate form */
         if ($this->passwordForm()->validate()) {
             $this->response->goBack();
         }
@@ -308,55 +308,55 @@ class Profile extends Users implements ActionInterface
         $hasher = new PasswordHash(8, true);
         $password = $hasher->hashPassword($this->request->password);
 
-        /** 更新数据 */
+        /** Update data */
         $this->update(
             ['password' => $password],
             $this->db->sql()->where('uid = ?', $this->user->uid)
         );
 
-        /** 设置高亮 */
+        /** Set highlight */
         Notice::alloc()->highlight('user-' . $this->user->uid);
 
-        /** 提示信息 */
-        Notice::alloc()->set(_t('密码已经成功修改'), 'success');
+        /** Notice message */
+        Notice::alloc()->set(_t('Password has been edited successfully.'), 'success');
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->goBack();
     }
 
     /**
-     * 生成表单
+     * Generate form
      *
      * @return Form
      */
     public function passwordForm(): Form
     {
-        /** 构建表格 */
+        /** Build form */
         $form = new Form($this->security->getIndex('/action/users-profile'), Form::POST_METHOD);
 
-        /** 用户密码 */
-        $password = new Form\Element\Password('password', null, null, _t('用户密码'), _t('为此用户分配一个密码.')
-            . '<br />' . _t('建议使用特殊字符与字母、数字的混编样式,以增加系统安全性.'));
+        /** User password */
+        $password = new Form\Element\Password('password', null, null, _t('User password.'), _t('Give this user a password.')
+            . '<br />' . _t('For security reasons, we recommend you use a password combining special characters and alphanumeric.'));
         $password->input->setAttribute('class', 'w-60');
         $form->addInput($password);
 
-        /** 用户密码确认 */
-        $confirm = new Form\Element\Password('confirm', null, null, _t('用户密码确认'), _t('请确认你的密码, 与上面输入的密码保持一致.'));
+        /** User password confirmation */
+        $confirm = new Form\Element\Password('confirm', null, null, _t('Confirm your password.'), _t('Please confirm your password. It should be the same as the one you typed above.'));
         $confirm->input->setAttribute('class', 'w-60');
         $form->addInput($confirm);
 
-        /** 用户动作 */
+        /** User action */
         $do = new Form\Element\Hidden('do', null, 'password');
         $form->addInput($do);
 
-        /** 提交按钮 */
-        $submit = new Form\Element\Submit('submit', null, _t('更新密码'));
+        /** Submit button */
+        $submit = new Form\Element\Submit('submit', null, _t('Update your password.'));
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
 
-        $password->addRule('required', _t('必须填写密码'));
-        $password->addRule('minLength', _t('为了保证账户安全, 请输入至少六位的密码'), 6);
-        $confirm->addRule('confirm', _t('两次输入的密码不一致'), 'password');
+        $password->addRule('required', _t('You must enter a password.'));
+        $password->addRule('minLength', _t('For the security of your account, please choose a password containing at least 6 characters.'), 6);
+        $confirm->addRule('confirm', _t('Passwords do not match.'), 'password');
 
         return $form;
     }
@@ -368,14 +368,14 @@ class Profile extends Users implements ActionInterface
      */
     public function updatePersonal()
     {
-        /** 获取插件名称 */
+        /** Get plugin name */
         $pluginName = $this->request->get('plugin');
 
-        /** 获取已启用插件 */
+        /** Get enabled plugins */
         $plugins = Plugin::export();
         $activatedPlugins = $plugins['activated'];
 
-        /** 获取插件入口 */
+        /** Get plugin entry point */
         [$pluginFileName, $className] = Plugin::portal(
             $pluginName,
             __TYPECHO_ROOT_DIR__ . '/' . __TYPECHO_PLUGIN_DIR__
@@ -383,13 +383,13 @@ class Profile extends Users implements ActionInterface
         $info = Plugin::parseInfo($pluginFileName);
 
         if (!$info['personalConfig'] || !isset($activatedPlugins[$pluginName])) {
-            throw new \Typecho\Widget\Exception(_t('无法配置插件'), 500);
+            throw new \Typecho\Widget\Exception(_t('Cannot configure plugin.'), 500);
         }
 
         $form = $this->personalForm($pluginName, $className, $pluginFileName, $group);
         $this->user->pass($group);
 
-        /** 验证表单 */
+        /** Validate form */
         if ($form->validate()) {
             $this->response->goBack();
         }
@@ -417,19 +417,19 @@ class Profile extends Users implements ActionInterface
             }
         }
 
-        /** 提示信息 */
-        Notice::alloc()->set(_t("%s 设置已经保存", $info['title']), 'success');
+        /** Notice message */
+        Notice::alloc()->set(_t("Settings of %s  saved.", $info['title']), 'success');
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->redirect(Common::url('profile.php', $this->options->adminUrl));
     }
 
     /**
-     * 用自有函数处理自定义配置信息
+     * Process custom configuration value with own function
      *
      * @access public
-     * @param string $className 类名
-     * @param array $settings 配置值
+     * @param string $className Class name
+     * @param array $settings Configuration values
      * @return boolean
      */
     public function personalConfigHandle(string $className, array $settings): bool
@@ -443,7 +443,7 @@ class Profile extends Users implements ActionInterface
     }
 
     /**
-     * 入口函数
+     * Entry point
      *
      * @access public
      * @return void

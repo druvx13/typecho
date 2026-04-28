@@ -38,7 +38,7 @@ class Files extends Base
     private string $currentFile;
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @throws Widget\Exception
      */
@@ -93,13 +93,13 @@ class Files extends Base
     }
 
     /**
-     * 获取菜单标题
+     * Get menu title
      *
      * @return string
      */
     public function getMenuTitle(): string
     {
-        return _t('编辑文件 %s', $this->currentFile);
+        return _t('Edit file %s', $this->currentFile);
     }
 
     /**

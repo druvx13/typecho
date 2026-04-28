@@ -32,7 +32,7 @@ class Recent extends Comments
     }
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @throws Exception
      */

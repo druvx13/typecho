@@ -5,7 +5,7 @@
 
     <div class="error-page">
         <h2 class="post-title">404 - <?php _e('Page not found'); ?></h2>
-        <p><?php _e('你想查看的页面已被转移或删除了, 要不要Search看看: '); ?></p>
+        <p><?php _e('The page you were looking for has been moved or deleted. Try searching:'); ?></p>
         <form method="post">
             <p><input type="text" name="s" class="text" autofocus/></p>
             <p>

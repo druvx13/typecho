@@ -3,14 +3,14 @@
 namespace Typecho;
 
 /**
- * 服务器请求处理类
+ * Server request processing class
  *
  * @package Request
  */
 class Request
 {
     /**
-     * 单例句柄
+     * Singleton handle
      *
      * @access private
      * @var Request
@@ -74,14 +74,14 @@ class Request
     private ?string $ip = null;
 
     /**
-     * 域名前缀
+     * 域名Prefix
      *
      * @var string|null
      */
     private ?string $urlPrefix = null;
 
     /**
-     * 获取单例句柄
+     * Get singleton handle
      *
      * @access public
      * @return Request
@@ -140,7 +140,7 @@ class Request
     /**
      * 获取实际传递参数
      *
-     * @param string $key 指定参数
+     * @param string $key Specified parameter
      * @param mixed $default 默认参数 (default: NULL)
      * @param bool|null $exists detect exists
      * @return mixed
@@ -192,10 +192,10 @@ class Request
     }
 
     /**
-     * 获取实际传递参数(magic)
+     * Get actual passed parameters (magic)
      *
      * @deprecated ^1.3.0
-     * @param string $key 指定参数
+     * @param string $key Specified parameter
      * @return mixed
      */
     public function __get(string $key)
@@ -204,10 +204,10 @@ class Request
     }
 
     /**
-     * 判断参数是否存在
+     * Check whether parameter exists
      *
      * @deprecated ^1.3.0
-     * @param string $key 指定参数
+     * @param string $key Specified parameter
      * @return boolean
      */
     public function __isset(string $key)
@@ -217,7 +217,7 @@ class Request
     }
 
     /**
-     * 获取一个数组
+     * 获取Mon个数组
      *
      * @param $key
      * @return array
@@ -283,9 +283,9 @@ class Request
     }
 
     /**
-     * 根据当前uri构造指定参数的uri
+     * Build a URI with specified parameters from the current URI
      *
-     * @param mixed $parameter 指定的参数
+     * @param mixed $parameter Specified parameter
      * @return string
      */
     public function makeUriByRequest($parameter = null): string
@@ -294,7 +294,7 @@ class Request
         $requestUri = $this->getRequestUrl();
         $parts = parse_url($requestUri);
 
-        /** 初始化参数 */
+        /** Initialization parameters */
         if (is_string($parameter)) {
             parse_str($parameter, $args);
         } elseif (is_array($parameter)) {
@@ -315,7 +315,7 @@ class Request
     }
 
     /**
-     * 获取当前pathinfo
+     * Get current path info
      *
      * @return string
      */
@@ -329,7 +329,7 @@ class Request
         //参考Zend Framework对pathinfo的处理, 更好的兼容性
         $pathInfo = null;
 
-        //处理requestUri
+        // Process request URI
         $requestUri = $this->getRequestUri();
         $finalBaseUrl = $this->getBaseUrl();
 
@@ -361,7 +361,7 @@ class Request
     }
 
     /**
-     * 获取请求的内容类型
+     * Get request content type
      *
      * @return string|null
      */
@@ -371,9 +371,9 @@ class Request
     }
 
     /**
-     * 获取环境变量
+     * Get environment variable
      *
-     * @param string $name 获取环境变量名
+     * @param string $name Environment variable name
      * @param string|null $default
      * @return string|null
      */
@@ -383,7 +383,7 @@ class Request
     }
 
     /**
-     * 获取ip地址
+     * Get IP address
      *
      * @return string
      */
@@ -428,7 +428,7 @@ class Request
     }
 
     /**
-     * 获取客户端
+     * Get client
      *
      * @return string
      */
@@ -438,7 +438,7 @@ class Request
     }
 
     /**
-     * 获取客户端
+     * Get client
      *
      * @return string|null
      */
@@ -448,7 +448,7 @@ class Request
     }
 
     /**
-     * 判断是否为https
+     * Check whether request is HTTPS
      *
      * @return bool
      */
@@ -471,7 +471,7 @@ class Request
     }
 
     /**
-     * 判断是否为get方法
+     * Check whether request method is GET
      *
      * @return boolean
      */
@@ -481,7 +481,7 @@ class Request
     }
 
     /**
-     * 判断是否为post方法
+     * Check whether request method is POST
      *
      * @return boolean
      */
@@ -491,7 +491,7 @@ class Request
     }
 
     /**
-     * 判断是否为put方法
+     * Check whether request method is PUT
      *
      * @return boolean
      */
@@ -501,7 +501,7 @@ class Request
     }
 
     /**
-     * 判断是否为ajax
+     * Check whether request is Ajax
      *
      * @return boolean
      */
@@ -524,9 +524,9 @@ class Request
     }
 
     /**
-     * 判断输入是否满足要求
+     * Check whether input meets requirements
      *
-     * @param mixed $query 条件
+     * @param mixed $query Condition
      * @return boolean
      */
     public function is($query): bool
@@ -557,7 +557,7 @@ class Request
     }
 
     /**
-     * 获取请求资源地址
+     * Get request resource URL
      *
      * @return string|null
      */
@@ -567,7 +567,7 @@ class Request
             return $this->requestUri;
         }
 
-        //处理requestUri
+        // Process request URI
         $requestUri = '/';
 
         if (isset($_SERVER['HTTP_X_REWRITE_URL'])) { // check this first so IIS will catch
@@ -604,7 +604,7 @@ class Request
     }
 
     /**
-     * 获取url前缀
+     * Get URL prefix
      *
      * @return string|null
      */

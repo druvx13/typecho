@@ -22,7 +22,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Plugin implements PluginInterface
 {
     /**
-     * 激活插件方法,如果激活失败,直接抛出异常
+     * Plugin activation method; throws exception on failure
      */
     public static function activate()
     {
@@ -30,26 +30,26 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 禁用插件方法,如果禁用失败,直接抛出异常
+     * Plugin deactivation method; throws exception on failure
      */
     public static function deactivate()
     {
     }
 
     /**
-     * 获取插件配置面板
+     * Get plugin configuration panel
      *
-     * @param Form $form 配置面板
+     * @param Form $form Configuration panel
      */
     public static function config(Form $form)
     {
-        /** 分类名称 */
-        $name = new Text('word', null, 'Hello World', _t('说点什么'));
+        /** Category name */
+        $name = new Text('word', null, 'Hello World', _t('Say something'));
         $form->addInput($name);
     }
 
     /**
-     * 个人用户的配置面板
+     * Personal user configuration panel
      *
      * @param Form $form
      */
@@ -58,7 +58,7 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 插件实现方法
+     * Plugin implementation method
      *
      * @access public
      * @return void

@@ -3,7 +3,7 @@
 namespace IXR;
 
 /**
- * IXR错误
+ * IXR error
  *
  * @package IXR
  */
@@ -18,7 +18,7 @@ class Error
     public int $code;
 
     /**
-     * 错误消息
+     * Error message
      *
      * @access public
      * @var string|null
@@ -26,10 +26,10 @@ class Error
     public ?string $message;
 
     /**
-     * 构造函数
+     * Constructor
      *
      * @param integer $code 错误代码
-     * @param string $message 错误消息
+     * @param string $message Error message
      */
     public function __construct(int $code, string $message)
     {

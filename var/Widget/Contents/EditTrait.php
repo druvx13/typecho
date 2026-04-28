@@ -12,12 +12,12 @@ use Widget\Base\Contents;
 use Widget\Base\Metas;
 
 /**
- * 内容编辑组件
+ * Content editing widget
  */
 trait EditTrait
 {
     /**
-     * 删除自定义字段
+     * Delete custom fields
      *
      * @param integer $cid
      * @return integer
@@ -30,7 +30,7 @@ trait EditTrait
     }
 
     /**
-     * 保存自定义字段
+     * Save custom fields
      *
      * @param array $fields
      * @param mixed $cid
@@ -75,7 +75,7 @@ trait EditTrait
     }
 
     /**
-     * 检查字段名是否符合要求
+     * Check whether field name meets requirements
      *
      * @param string $name
      * @return boolean
@@ -86,7 +86,7 @@ trait EditTrait
     }
 
     /**
-     * 设置单个字段
+     * Set a single field
      *
      * @param string $name
      * @param string $type
@@ -131,7 +131,7 @@ trait EditTrait
     }
 
     /**
-     * 自增一个整形字段
+     * Auto-increment an integer field
      *
      * @param string $name
      * @param integer $value
@@ -288,7 +288,7 @@ trait EditTrait
     }
 
     /**
-     * 获取自定义字段的hook名称
+     * Get hook name for custom fields
      *
      * @return string
      */
@@ -330,9 +330,9 @@ trait EditTrait
     }
 
     /**
-     * 删除内容
+     * Delete content
      *
-     * @param integer $cid 草稿id
+     * @param integer $cid Draft ID
      * @throws DbException
      */
     protected function deleteContent(int $cid, bool $hasMetas = true)
@@ -340,16 +340,16 @@ trait EditTrait
         $this->delete($this->db->sql()->where('cid = ?', $cid));
 
         if ($hasMetas) {
-            /** 删除草稿分类 */
+            /** Delete draft category */
             $this->setCategories($cid, [], false, false);
 
-            /** 删除标签 */
+            /** Delete label */
             $this->setTags($cid, null, false, false);
         }
     }
 
     /**
-     * 根据提交值获取created字段值
+     * Get created field value from submitted data
      *
      * @return integer
      */
@@ -378,10 +378,10 @@ trait EditTrait
             $created = mktime($hour, $min, $second, $month, $day, $year)
                 - $this->options->timezone + $this->options->serverTimezone;
         } elseif ($this->have() && $this->created > 0) {
-            //如果是修改文章
+            // If modifying post
             $created = $this->created;
         } elseif ($this->request->is('do=save')) {
-            // 如果是草稿而且没有任何输入则保持原状
+            // If draft with no input, leave unchanged
             $created = 0;
         }
 
@@ -389,19 +389,19 @@ trait EditTrait
     }
 
     /**
-     * 设置分类
+     * Set categories
      *
-     * @param integer $cid 内容id
-     * @param array $categories 分类id的集合数组
-     * @param boolean $beforeCount 是否参与计数
-     * @param boolean $afterCount 是否参与计数
+     * @param integer $cid Content ID
+     * @param array $categories Array of category IDs
+     * @param boolean $beforeCount Whether to include in count (before)
+     * @param boolean $afterCount Whether to include in count (after)
      * @throws DbException
      */
     protected function setCategories(int $cid, array $categories, bool $beforeCount = true, bool $afterCount = true)
     {
         $categories = array_unique(array_map('trim', $categories));
 
-        /** 取出已有category */
+        /** Retrieve existing categories */
         $existCategories = array_column(
             $this->db->fetchAll(
                 $this->db->select('table.metas.mid')
@@ -413,7 +413,7 @@ trait EditTrait
             'mid'
         );
 
-        /** 删除已有category */
+        /** Delete existing categories */
         if ($existCategories) {
             foreach ($existCategories as $category) {
                 $this->db->query($this->db->delete('table.relationships')
@@ -459,12 +459,12 @@ trait EditTrait
     }
 
     /**
-     * 设置内容标签
+     * 设置内容Label
      *
      * @param integer $cid
      * @param string|null $tags
-     * @param boolean $beforeCount 是否参与计数
-     * @param boolean $afterCount 是否参与计数
+     * @param boolean $beforeCount Whether to include in count (before)
+     * @param boolean $afterCount Whether to include in count (after)
      * @throws DbException
      */
     protected function setTags(int $cid, ?string $tags, bool $beforeCount = true, bool $afterCount = true)
@@ -532,7 +532,7 @@ trait EditTrait
     /**
      * 同步附件
      *
-     * @param integer $cid 内容id
+     * @param integer $cid Content ID
      * @throws DbException
      */
     protected function attach(int $cid)
@@ -552,7 +552,7 @@ trait EditTrait
     /**
      * 取消附件关联
      *
-     * @param integer $cid 内容id
+     * @param integer $cid Content ID
      * @throws DbException
      */
     protected function unAttach(int $cid)
@@ -564,16 +564,16 @@ trait EditTrait
     /**
      * 发布内容
      *
-     * @param array $contents 内容结构
-     * @param boolean $hasMetas 是否有metas
+     * @param array $contents Content structure
+     * @param boolean $hasMetas Whether there are metas
      * @throws DbException|Exception
      */
     protected function publish(array $contents, bool $hasMetas = true)
     {
-        /** 发布内容, 检查是否具有直接发布的权限 */
+        /** Publish content; check direct publish permission */
         $this->checkStatus($contents);
 
-        /** 真实的内容id */
+        /** Actual content ID */
         $realId = 0;
 
         /** 是否是从草稿状态发布 */
@@ -593,18 +593,18 @@ trait EditTrait
                 $this->deleteFields($cid);
             }
 
-            /** 直接将草稿状态更改 */
+            /** Directly change draft status */
             if ($this->update($contents, $this->db->sql()->where('cid = ?', $this->cid))) {
                 $realId = $this->cid;
             }
         } else {
-            /** 发布一个新内容 */
+            /** Publish a new content item */
             $realId = $this->insert($contents);
         }
 
         if ($realId > 0) {
             if ($hasMetas) {
-                /** 插入分类 */
+                /** Insert category */
                 if (array_key_exists('category', $contents)) {
                     $this->setCategories(
                         $realId,
@@ -615,16 +615,16 @@ trait EditTrait
                     );
                 }
 
-                /** 插入标签 */
+                /** Insert label */
                 if (array_key_exists('tags', $contents)) {
                     $this->setTags($realId, $contents['tags'], !$isDraftToPublish && $isBeforePublish, $isAfterPublish);
                 }
             }
 
-            /** 同步附件 */
+            /** Sync attachments */
             $this->attach($realId);
 
-            /** 保存自定义字段 */
+            /** Save custom fields */
             $this->applyFields($this->getFields(), $realId);
 
             $this->db->fetchRow($this->select()
@@ -636,17 +636,17 @@ trait EditTrait
     /**
      * 保存内容
      *
-     * @param array $contents 内容结构
-     * @param boolean $hasMetas 是否有metas
+     * @param array $contents Content structure
+     * @param boolean $hasMetas Whether there are metas
      * @return integer
      * @throws DbException|Exception
      */
     protected function save(array $contents, bool $hasMetas = true): int
     {
-        /** 发布内容, 检查是否具有直接发布的权限 */
+        /** Publish content; check direct publish permission */
         $this->checkStatus($contents);
 
-        /** 真实的内容id */
+        /** Actual content ID */
         $realId = 0;
 
         /** 如果草稿已经存在 */
@@ -657,7 +657,7 @@ trait EditTrait
                 $contents['type'] = 'revision';
             }
 
-            /** 直接将草稿状态更改 */
+            /** Directly change draft status */
             if ($this->update($contents, $this->db->sql()->where('cid = ?', $this->draft['cid']))) {
                 $realId = $this->draft['cid'];
             }
@@ -667,7 +667,7 @@ trait EditTrait
                 $contents['type'] = 'revision';
             }
 
-            /** 发布一个新内容 */
+            /** Publish a new content item */
             $realId = $this->insert($contents);
 
             if (!$this->have()) {
@@ -680,22 +680,22 @@ trait EditTrait
 
         if ($realId > 0) {
             if ($hasMetas) {
-                /** 插入分类 */
+                /** Insert category */
                 if (array_key_exists('category', $contents)) {
                     $this->setCategories($realId, !empty($contents['category']) && is_array($contents['category']) ?
                         $contents['category'] : [$this->options->defaultCategory], false, false);
                 }
 
-                /** 插入标签 */
+                /** Insert label */
                 if (array_key_exists('tags', $contents)) {
                     $this->setTags($realId, $contents['tags'], false, false);
                 }
             }
 
-            /** 同步附件 */
+            /** Sync attachments */
             $this->attach($this->cid);
 
-            /** 保存自定义字段 */
+            /** Save custom fields */
             $this->applyFields($this->getFields(), $realId);
 
             return $realId;
@@ -705,14 +705,14 @@ trait EditTrait
     }
 
     /**
-     * 获取页面偏移
+     * Get page offset
      *
-     * @param string $column 字段名
-     * @param integer $offset 偏移值
-     * @param string $type 类型
-     * @param string|null $status 状态值
+     * @param string $column Field name
+     * @param integer $offset Offset value
+     * @param string $type Type
+     * @param string|null $status Status值
      * @param integer $authorId 作者
-     * @param integer $pageSize 分页值
+     * @param integer $pageSize Pagination size
      * @return integer
      * @throws DbException
      */

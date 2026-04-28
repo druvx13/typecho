@@ -1,6 +1,6 @@
 /* vim: set et sw=2 ts=2 sts=2 fdm=marker ff=unix fenc=utf8 */
 /**
-* Typecho 后台样式
+* Typecho admin styles
 *
 * @author  Typecho Team
 * @since   2008-09-26
@@ -11,7 +11,7 @@
 
 
 /**
-* Typecho 全局样式
+* Typecho global styles
 */
 
 html {
@@ -56,7 +56,7 @@ a.balloon-button {
   text-align: center;
   text-decoration: none;
   
-  /** 修正ie中文不对齐 */
+  /** Fix Chinese text alignment in IE */
   zoom:1;
   
   border-radius: 30px;
@@ -84,13 +84,13 @@ a.button:hover, a.balloon-button:hover {
 @import "footer";
 
 /**
-* logo 的样式
+* Logo styles
 */
 .logo {
 }
 
 /**
-* 载入状态
+* Loading state
 */
 .loading {
   padding-left: 20px !important;
@@ -107,11 +107,11 @@ a.button:hover, a.balloon-button:hover {
   border-radius: 10px;
 }
 
-/** 增加配置面板内部的错误样式 by 70 */
+/** Add error styles inside config panel */
 
 
 /**
-* 欢迎界面
+* Welcome screen
 */
 
 #typecho-welcome {
@@ -171,7 +171,7 @@ a.button:hover, a.balloon-button:hover {
 }
 
 /**
-* 登录框
+* Login box
 */
 .typecho-login-wrap {
   display: table;
@@ -201,7 +201,7 @@ a.button:hover, a.balloon-button:hover {
 }
 
 /**
-* 标题
+* Title
 */
 .typecho-page-title {
   width: 100%;
@@ -229,12 +229,12 @@ a.button:hover, a.balloon-button:hover {
 }
 
 /**
-* 后台页面主体
+* Admin page body
 */
 
 
 /**
-* 主页主体
+* Homepage body
 */
 .typecho-dashboard {
   ul {
@@ -248,7 +248,7 @@ a.button:hover, a.balloon-button:hover {
 }
 
 /**
-* 评论管理
+* Comment management
 */
 
 .comment-reply-content {
@@ -293,7 +293,7 @@ a.button:hover, a.balloon-button:hover {
 }
 
 /**
-* 评论回复
+* Comment reply
 */
 #typecho-respond {
   padding: 10px;
@@ -301,7 +301,7 @@ a.button:hover, a.balloon-button:hover {
 }
 
 /**
-* 模板列表
+* Theme list
 */
 .typecho-theme-list {
   img {
@@ -322,7 +322,7 @@ a.button:hover, a.balloon-button:hover {
 
 
 /**
-* 编辑模板（编辑详情）
+* Edit theme (edit details)
 */
 
 .typecho-edit-theme {
@@ -410,11 +410,11 @@ a.button:hover, a.balloon-button:hover {
 
 
 /**
-* 附件管理
+* Media management
 */
 .edit-media button { margin-right: 6px; }
 
-/* 拖动排序 */
+/* Drag to sort */
 .tDnD_whileDrag {
   background-color: #FFFBCC;
 }
@@ -433,7 +433,7 @@ a.button:hover, a.balloon-button:hover {
 }
 
 /**
-* 导入扩展样式
+* Import extension styles
 */
 
 @import "icons";

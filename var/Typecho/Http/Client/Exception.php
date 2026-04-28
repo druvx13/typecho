@@ -9,7 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * Http客户端异常类
+ * HTTP client exception class
  *
  * @package Http
  */

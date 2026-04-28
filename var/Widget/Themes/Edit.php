@@ -27,7 +27,7 @@ class Edit extends Options implements ActionInterface
     /**
      * 更换外观
      *
-     * @param string $theme 外观名称
+     * @param string $theme Theme name
      * @throws Exception
      * @throws \Typecho\Db\Exception
      */
@@ -41,7 +41,7 @@ class Edit extends Options implements ActionInterface
 
             $this->update(['value' => $theme], $this->db->sql()->where('name = ?', 'theme'));
 
-            /** 解除首页关联 */
+            /** Dissociate homepage */
             if (0 === strpos($this->options->frontPage, 'file:')) {
                 $this->update(['value' => 'recent'], $this->db->sql()->where('name = ?', 'frontPage'));
             }
@@ -69,18 +69,18 @@ class Edit extends Options implements ActionInterface
             }
 
             Notice::alloc()->highlight('theme-' . $theme);
-            Notice::alloc()->set(_t("外观已经改变"), 'success');
+            Notice::alloc()->set(_t("Appearance changed."), 'success');
             $this->response->goBack();
         } else {
-            throw new Exception(_t('您选择的风格不存在'));
+            throw new Exception(_t('The chosen style does not exist.'));
         }
     }
 
     /**
-     * 用自有函数处理配置信息
+     * Process configuration value with own function
      *
-     * @param array $settings 配置值
-     * @param boolean $isInit 是否为初始化
+     * @param array $settings Configuration values
+     * @param boolean $isInit Whether this is initialization
      * @return boolean
      */
     public function configHandle(array $settings, bool $isInit): bool
@@ -96,8 +96,8 @@ class Edit extends Options implements ActionInterface
     /**
      * 编辑外观文件
      *
-     * @param string $theme 外观名称
-     * @param string $file 文件名
+     * @param string $theme Theme name
+     * @param string $file File name
      * @throws Exception
      */
     public function editThemeFile(string $theme, string $file)
@@ -111,18 +111,18 @@ class Edit extends Options implements ActionInterface
             $handle = fopen($path, 'wb');
             if ($handle && fwrite($handle, $this->request->get('content'))) {
                 fclose($handle);
-                Notice::alloc()->set(_t("文件 %s 的更改已经保存", $file), 'success');
+                Notice::alloc()->set(_t("File %s saved.", $file), 'success');
             } else {
-                Notice::alloc()->set(_t("文件 %s 无法被写入", $file), 'error');
+                Notice::alloc()->set(_t("Cannot write file %s.", $file), 'error');
             }
             $this->response->goBack();
         } else {
-            throw new Exception(_t('您编辑的文件不存在'));
+            throw new Exception(_t('The file you are editing does not exist.'));
         }
     }
 
     /**
-     * 配置外观
+     * Configure theme
      *
      * @param string $theme 外观名
      * @throws \Typecho\Db\Exception
@@ -132,7 +132,7 @@ class Edit extends Options implements ActionInterface
         // 已经载入了外观函数
         $form = Config::alloc()->config();
 
-        /** 验证表单 */
+        /** Validate form */
         if (!Config::isExists($theme) || $form->validate()) {
             $this->response->goBack();
         }
@@ -154,18 +154,18 @@ class Edit extends Options implements ActionInterface
             }
         }
 
-        /** 设置高亮 */
+        /** Set highlight */
         Notice::alloc()->highlight('theme-' . $theme);
 
-        /** 提示信息 */
-        Notice::alloc()->set(_t("外观设置已经保存"), 'success');
+        /** Notice message */
+        Notice::alloc()->set(_t("Appearance settings saved."), 'success');
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->redirect(Common::url('options-theme.php', $this->options->adminUrl));
     }
 
     /**
-     * 绑定动作
+     * Bind action
      *
      * @throws Exception|\Typecho\Db\Exception
      */

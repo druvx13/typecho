@@ -5,7 +5,7 @@ namespace Widget\Users;
 use Typecho\Db\Exception;
 
 /**
- * 编辑用户组件
+ * Edit user widget
  */
 trait EditTrait
 {
@@ -56,7 +56,7 @@ trait EditTrait
     /**
      * 判断用户昵称是否存在
      *
-     * @param string $screenName 昵称
+     * @param string $screenName Screen name
      * @return boolean
      * @throws Exception
      */
@@ -76,12 +76,12 @@ trait EditTrait
     }
 
     /**
-     * 获取页面偏移
+     * Get page offset
      *
-     * @param string $column 字段名
-     * @param integer $offset 偏移值
-     * @param string|null $group 用户组
-     * @param integer $pageSize 分页值
+     * @param string $column Field name
+     * @param integer $offset Offset value
+     * @param string|null $group User group
+     * @param integer $pageSize Pagination size
      * @return integer
      * @throws Exception
      */

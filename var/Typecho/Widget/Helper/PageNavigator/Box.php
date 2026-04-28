@@ -9,7 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 盒状分页样式
+ * Box-style pagination
  *
  * @author qining
  * @category typecho
@@ -20,13 +20,13 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Box extends PageNavigator
 {
     /**
-     * 输出盒装样式分页栏
+     * 输出盒装样式Pagination栏
      *
      * @access public
-     * @param string $prevWord 上一页文字
-     * @param string $nextWord 下一页文字
-     * @param int $splitPage 分割范围
-     * @param string $splitWord 分割字符
+     * @param string $prevWord Previous page text
+     * @param string $nextWord Next page text
+     * @param int $splitPage Split range
+     * @param string $splitWord Split character
      * @param array $template
      * @return void
      */
@@ -78,7 +78,7 @@ class Box extends PageNavigator
         $from = max(1, $this->currentPage - $splitPage);
         $to = min($this->totalPage, $this->currentPage + $splitPage);
 
-        //输出上一页
+        // Output previous page
         if ($this->currentPage > 1) {
             echo $itemPrevBegin . sprintf(
                 $linkPrevBegin,
@@ -87,7 +87,7 @@ class Box extends PageNavigator
                 . $prevWord . $linkEnd . $itemEnd;
         }
 
-        //输出第一页
+        //输出第Mon页
         if ($from > 1) {
             echo $itemBegin
                 . sprintf($linkBegin, str_replace($this->pageHolder, 1, $this->pageTemplate) . $this->anchor)
@@ -124,7 +124,7 @@ class Box extends PageNavigator
                 . $this->totalPage . $linkEnd . $itemEnd;
         }
 
-        //输出下一页
+        // Output next page
         if ($this->currentPage < $this->totalPage) {
             echo $itemNextBegin . sprintf(
                 $linkNextBegin,

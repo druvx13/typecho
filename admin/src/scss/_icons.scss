@@ -93,7 +93,7 @@
 }
 
 
-// 大号上传按钮
+// Large upload button
 
 .i-upload {
   @extend %i-24;
@@ -105,7 +105,7 @@
   @include icons-sprite(icon-upload-active);
 }
 
-// 小箭头
+// Small arrow
 .i-caret-up, .i-caret-down, .i-caret-left, .i-caret-right {
   display: inline-block;
   border-style: solid;
@@ -131,7 +131,7 @@
 }
 
 
-/* 文件类型图标 */
+/* File type icons */
 
 .mime-office {
   @extend %i-16;
@@ -184,7 +184,7 @@
 }
 
 
-/* Logo 图标 */
+/* Logo icon */
 .i-logo, .i-logo-s {
   width: 169px;
   height: 40px;

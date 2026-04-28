@@ -88,13 +88,13 @@ class Pingback
      */
     public function getContent(): string
     {
-        /** 干掉html tag，只留下<a>*/
+        /** Strip HTML tags, keeping only <a>*/
         $text = Common::stripTags($this->html, '<a href="">');
 
         /** 此处将$target quote,留着后面用*/
         $pregLink = preg_quote($this->target);
 
-        /** 找出含有target链接的最长的一行作为$finalText*/
+        /** 找出含有target链接的最长的Mon行作为$finalText*/
         $finalText = null;
         $lines = explode("\n", $text);
 

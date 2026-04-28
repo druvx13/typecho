@@ -11,11 +11,11 @@ namespace Utils;
  */
 class AutoP
 {
-    // 作为段落的标签
+    // Tags that act as paragraphs
     private const BLOCK = 'p|pre|div|blockquote|form|ul|ol|dd|table|ins|h1|h2|h3|h4|h5|h6';
 
     /**
-     * 唯一id
+     * Unique ID
      *
      * @access private
      * @var integer
@@ -23,7 +23,7 @@ class AutoP
     private int $uniqueId = 0;
 
     /**
-     * 存储的段落
+     * Stored paragraphs
      *
      * @access private
      * @var array
@@ -31,9 +31,9 @@ class AutoP
     private array $blocks = [];
 
     /**
-     * 替换段落的回调函数
+     * Callback for replacing paragraphs
      *
-     * @param array $matches 匹配值
+     * @param array $matches Match values
      * @return string
      */
     public function replaceBlockCallback(array $matches): string
@@ -42,14 +42,14 @@ class AutoP
         $text = $matches[4];
 
         switch (true) {
-            /** 用br处理换行 */
+            /** Handle line breaks with <br> */
             case false !== strpos(
                 '|li|dd|dt|td|p|a|span|cite|strong|sup|sub|small|del|u|i|b|ins|h1|h2|h3|h4|h5|h6|',
                 $tagMatch
             ):
                 $text = nl2br(trim($text));
                 break;
-            /** 用段落处理换行 */
+            /** Handle line breaks with paragraphs */
             case false !== strpos('|div|blockquote|form|', $tagMatch):
                 $text = $this->cutByBlock($text);
                 if (false !== strpos($text, '</p><p>')) {
@@ -60,7 +60,7 @@ class AutoP
                 break;
         }
 
-        /** 没有段落能力的标签 */
+        /** Tags that cannot contain paragraphs */
         if (false !== strpos('|a|span|font|code|cite|strong|sup|sub|small|del|u|i|b|', $tagMatch)) {
             $key = '<b' . $matches[2] . '/>';
         } else {
@@ -72,7 +72,7 @@ class AutoP
     }
 
     /**
-     * 用段落方法处理换行
+     * Process line breaks using paragraph method
      *
      * @param string $text
      * @return string
@@ -93,7 +93,7 @@ class AutoP
     }
 
     /**
-     * 修复段落开头和结尾
+     * Fix paragraph start and end
      *
      * @param string $text
      * @return string
@@ -113,21 +113,21 @@ class AutoP
     }
 
     /**
-     * 自动分段
+     * Auto-paragraph
      *
      * @param string $text
      * @return string
      */
     public function parse(string $text): string
     {
-        /** 重置计数器 */
+        /** Reset counter */
         $this->uniqueId = 0;
         $this->blocks = [];
 
-        /** 将已有的段落后面的换行处理掉 */
+        /** Remove trailing line breaks from existing paragraphs */
         $text = preg_replace(["/<\/p>\s+<p(\s*)/is", "/\s*<br\s*\/?>\s*/is"], ["</p><p\\1", "<br />"], trim($text));
 
-        /** 将所有非自闭合标签解析为唯一的字符串 */
+        /** Parse all non-self-closing tags into unique strings */
         $foundTagCount = 0;
         $textLength = strlen($text);
         $uniqueIdList = [];
@@ -192,7 +192,7 @@ class AutoP
     }
 
     /**
-     * 生成唯一的id, 为了速度考虑最多支持1万个tag的处理
+     * Generate unique IDs; supports up to 10,000 tags for performance
      *
      * @return string
      */

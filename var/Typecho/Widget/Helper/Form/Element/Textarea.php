@@ -10,7 +10,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 多行文字域帮手类
+ * Textarea helper class
  *
  * @category typecho
  * @package Widget
@@ -20,10 +20,10 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Textarea extends Element
 {
     /**
-     * 初始化当前输入项
+     * Initialize current input element
      *
-     * @param string|null $name 表单元素名称
-     * @param array|null $options 选择项
+     * @param string|null $name Form element name
+     * @param array|null $options Options array
      * @return Layout|null
      */
     public function input(?string $name = null, ?array $options = null): ?Layout
@@ -37,9 +37,9 @@ class Textarea extends Element
     }
 
     /**
-     * 设置表单项默认值
+     * Set form item default value
      *
-     * @param mixed $value 表单项默认值
+     * @param mixed $value Form item default value
      */
     protected function inputValue($value)
     {

@@ -20,7 +20,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Related extends Contents
 {
     /**
-     * 执行函数
+     * Execute action
      *
      * @access public
      * @return void
@@ -35,13 +35,13 @@ class Related extends Contents
             return;
         }
 
-        /** 构建基础查询 */
+        /** Build base query */
         $select = $this->select()->where('table.contents.type = ?', 'attachment');
 
         //order字段在文件里代表所属文章
         $select->where('table.contents.parent = ?', $this->parameter->parentId);
 
-        /** 提交查询 */
+        /** Submit query */
         $select->order('table.contents.created');
 
         if ($this->parameter->limit > 0) {

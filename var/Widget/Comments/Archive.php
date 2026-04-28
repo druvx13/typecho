@@ -25,7 +25,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Archive extends Comments
 {
     /**
-     * 当前页
+     * Current page
      *
      * @access private
      * @var integer
@@ -33,7 +33,7 @@ class Archive extends Comments
     private int $currentPage;
 
     /**
-     * 所有文章个数
+     * Total post count
      *
      * @access private
      * @var integer
@@ -72,7 +72,7 @@ class Archive extends Comments
     }
 
     /**
-     * 输出文章评论数
+     * Output post comment count
      *
      * @param ...$args
      */
@@ -88,7 +88,7 @@ class Archive extends Comments
     }
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @access public
      * @return void
@@ -118,7 +118,7 @@ class Archive extends Comments
         /** 需要输出的评论列表 */
         $outputComments = [];
 
-        /** 如果开启评论回复 */
+        /** 如果开启Comment reply */
         if ($this->options->commentsThreaded) {
             foreach ($this->stack as $coid => &$comment) {
 
@@ -139,7 +139,7 @@ class Archive extends Comments
                     $comment['order'] = isset($this->threadedComments[$parent])
                         ? count($this->threadedComments[$parent]) + 1 : 1;
 
-                    /** 如果是子节点 */
+                    /** If子节点 */
                     $this->threadedComments[$parent][$coid] = $comment;
                 } else {
                     $outputComments[$coid] = $comment;
@@ -150,16 +150,16 @@ class Archive extends Comments
             $this->stack = $outputComments;
         }
 
-        /** 评论排序 */
+        /** 评论Sort */
         if ('DESC' == $this->options->commentsOrder) {
             $this->stack = array_reverse($this->stack, true);
             $this->threadedComments = array_map('array_reverse', $this->threadedComments);
         }
 
-        /** 评论总数 */
+        /** Total comment count */
         $this->total = count($this->stack);
 
-        /** 对评论进行分页 */
+        /** 对评论进行Pagination */
         if ($this->options->commentsPageBreak) {
             if ('last' == $this->options->commentsPageDisplay && !$this->parameter->commentPage) {
                 $this->currentPage = ceil($this->total / $this->options->commentsPageSize);
@@ -182,9 +182,9 @@ class Archive extends Comments
     }
 
     /**
-     * 将每行的值压入堆栈
+     * Push each row value onto the stack
      *
-     * @param array $value 每行的值
+     * @param array $value Row values
      * @return array
      */
     public function push(array $value): array
@@ -198,7 +198,7 @@ class Archive extends Comments
             $value['levels'] = 0;
         }
 
-        /** 重载push函数,使用coid作为数组键值,便于索引 */
+        /** 重载push函数,使用coid作为数组Key value,便于索引 */
         $this->stack[$value['coid']] = $value;
         $this->length ++;
 
@@ -206,14 +206,14 @@ class Archive extends Comments
     }
 
     /**
-     * 输出分页
+     * Output pagination
      *
      * @access public
-     * @param string $prev 上一页文字
-     * @param string $next 下一页文字
-     * @param int $splitPage 分割范围
-     * @param string $splitWord 分割字符
-     * @param string|array $template 展现配置信息
+     * @param string $prev Previous page text
+     * @param string $next Next page text
+     * @param int $splitPage Split range
+     * @param string $splitWord Split character
+     * @param string|array $template Display configuration value
      * @return void
      * @throws Exception
      */
@@ -256,7 +256,7 @@ class Archive extends Comments
             );
 
             if (!$hasNav && $this->total > $this->options->commentsPageSize) {
-                /** 使用盒状分页 */
+                /** Use box-style pagination */
                 $nav = new Box($this->total, $this->currentPage, $this->options->commentsPageSize, $query);
                 $nav->setPageHolder('commentPage');
                 $nav->setAnchor('comments');
@@ -276,7 +276,7 @@ class Archive extends Comments
      */
     public function listComments($singleCommentOptions = null)
     {
-        //初始化一些变量
+        // Initialize some variables
         $this->singleCommentOptions = Config::factory($singleCommentOptions);
         $this->singleCommentOptions->setDefault([
             'before'        => '<ol class="comment-list">',
@@ -286,8 +286,8 @@ class Archive extends Comments
             'beforeDate'    => '',
             'afterDate'     => '',
             'dateFormat'    => $this->options->commentDateFormat,
-            'replyWord'     => _t('回复'),
-            'commentStatus' => _t('您的评论正等待审核!'),
+            'replyWord'     => _t('Reply'),
+            'commentStatus' => _t('Your comments are awaiting review'),
             'avatarSize'    => 32,
             'defaultAvatar' => null,
             'avatarHighRes' => false
@@ -379,9 +379,9 @@ class Archive extends Comments
     }
 
     /**
-     * 根据深度余数输出
+     * Output based on depth remainder
      *
-     * @param mixed ...$args 需要输出的值
+     * @param mixed ...$args Values to output
      */
     public function levelsAlt(...$args)
     {
@@ -400,14 +400,14 @@ class Archive extends Comments
     }
 
     /**
-     * 评论回复链接
+     * Comment reply链接
      *
      * @param string $word 回复链接文字
      */
     public function reply(string $word = '')
     {
         if ($this->options->commentsThreaded && !$this->isTopLevel && $this->parameter->allowComment) {
-            $word = empty($word) ? _t('回复') : $word;
+            $word = empty($word) ? _t('Reply') : $word;
             self::pluginHandle()->trigger($plugged)->call('reply', $word, $this);
 
             if (!$plugged) {
@@ -419,17 +419,17 @@ class Archive extends Comments
     }
 
     /**
-     * 递归输出评论
+     * Recursively output comments
      */
     public function threadedComments()
     {
         $children = $this->children;
         if ($children) {
-            //缓存变量便于还原
+            // Cache variable for later restoration
             $tmp = $this->row;
             $this->sequence ++;
 
-            //在子评论之前输出
+            // Output before child comments
             echo $this->singleCommentOptions->before;
 
             foreach ($children as $child) {
@@ -438,7 +438,7 @@ class Archive extends Comments
                 $this->row = $tmp;
             }
 
-            //在子评论之后输出
+            // Output after child comments
             echo $this->singleCommentOptions->after;
 
             $this->sequence --;
@@ -446,14 +446,14 @@ class Archive extends Comments
     }
 
     /**
-     * 取消评论回复链接
+     * 取消Comment reply链接
      *
      * @param string $word 取消回复链接文字
      */
     public function cancelReply(string $word = '')
     {
         if ($this->options->commentsThreaded) {
-            $word = empty($word) ? _t('取消回复') : $word;
+            $word = empty($word) ? _t('Cancel the comment') : $word;
             self::pluginHandle()->trigger($plugged)->call('cancelReply', $word, $this);
 
             if (!$plugged) {
@@ -496,7 +496,7 @@ class Archive extends Comments
     }
 
     /**
-     * 重载内容获取
+     * Override content fetch
      *
      * @return Contents
      */

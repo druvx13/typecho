@@ -14,7 +14,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 文章管理列表组件
+ * Post admin list widget
  *
  * @category typecho
  * @package Widget
@@ -26,7 +26,7 @@ class Admin extends Contents
     use AdminTrait;
 
     /**
-     * 获取菜单标题
+     * Get menu title
      *
      * @return string
      * @throws Exception|DbException
@@ -34,15 +34,15 @@ class Admin extends Contents
     public function getMenuTitle(): string
     {
         if ($this->request->is('uid')) {
-            return _t('%s的文章', $this->db->fetchObject($this->db->select('screenName')->from('table.users')
+            return _t('Post by %s.', $this->db->fetchObject($this->db->select('screenName')->from('table.users')
                 ->where('uid = ?', $this->request->filter('int')->get('uid')))->screenName);
         }
 
-        throw new Exception(_t('用户不存在'), 404);
+        throw new Exception(_t('This user does not exist.'), 404);
     }
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @throws DbException
      */
@@ -50,7 +50,7 @@ class Admin extends Contents
     {
         $this->initPage();
 
-        /** 构建基础查询 */
+        /** Build base query */
         $select = $this->select();
 
         /** 如果具有编辑以上权限,可以查看所有文章,反之只能查看自己的文章 */
@@ -91,7 +91,7 @@ class Admin extends Contents
             );
         }
 
-        /** 过滤分类 */
+        /** Filter categories */
         if (null != ($category = $this->request->get('category'))) {
             $select->join('table.relationships', 'table.contents.cid = table.relationships.cid')
                 ->where('table.relationships.mid = ?', $category);
@@ -100,7 +100,7 @@ class Admin extends Contents
         $this->searchQuery($select);
         $this->countTotal($select);
 
-        /** 提交查询 */
+        /** Submit query */
         $select->order('table.contents.cid', Db::SORT_DESC)
             ->page($this->currentPage, $this->parameter->pageSize);
 

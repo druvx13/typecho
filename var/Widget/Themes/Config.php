@@ -24,7 +24,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Config extends BaseOptions
 {
     /**
-     * 绑定动作
+     * Bind action
      *
      * @throws Exception|\Typecho\Db\Exception
      */
@@ -33,7 +33,7 @@ class Config extends BaseOptions
         $this->user->pass('administrator');
 
         if (!self::isExists()) {
-            throw new Exception(_t('外观配置功能不存在'), 404);
+            throw new Exception(_t('Appearance configuration does not exist.'), 404);
         }
     }
 
@@ -61,7 +61,7 @@ class Config extends BaseOptions
     }
 
     /**
-     * 配置外观
+     * Configure theme
      *
      * @return Form
      */
@@ -82,7 +82,7 @@ class Config extends BaseOptions
             }
         }
 
-        $submit = new Submit(null, null, _t('保存设置'));
+        $submit = new Submit(null, null, _t('Save settings.'));
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
         return $form;

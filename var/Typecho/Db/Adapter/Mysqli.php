@@ -21,7 +21,7 @@ class Mysqli implements Adapter
     use MysqlTrait;
 
     /**
-     * 数据库连接字符串标示
+     * 数据库连接String标示
      *
      * @access private
      * @var \mysqli
@@ -29,7 +29,7 @@ class Mysqli implements Adapter
     private \mysqli $dbLink;
 
     /**
-     * 判断适配器是否可用
+     * Check whether the adapter is available
      *
      * @access public
      * @return boolean
@@ -40,9 +40,9 @@ class Mysqli implements Adapter
     }
 
     /**
-     * 数据库连接函数
+     * Database connection function
      *
-     * @param Config $config 数据库配置
+     * @param Config $config Database configuration
      * @return \mysqli
      * @throws ConnectionException
      */
@@ -89,12 +89,12 @@ class Mysqli implements Adapter
             return $this->dbLink;
         }
 
-        /** 数据库异常 */
+        /** Database exception */
         throw new ConnectionException("Couldn't connect to database.", mysqli_connect_errno());
     }
 
     /**
-     * 获取数据库版本
+     * Get database version
      *
      * @param mixed $handle
      * @return string
@@ -105,13 +105,13 @@ class Mysqli implements Adapter
     }
 
     /**
-     * 执行数据库查询
+     * Execute database query
      *
-     * @param string $query 数据库查询SQL字符串
-     * @param mixed $handle 连接对象
-     * @param integer $op 数据库读写状态
-     * @param string|null $action 数据库动作
-     * @param string|null $table 数据表
+     * @param string $query Database SQL query string
+     * @param mixed $handle Connection handle
+     * @param integer $op Database read/write mode
+     * @param string|null $action Database action
+     * @param string|null $table Database table
      * @throws SQLException
      */
     public function query(
@@ -126,16 +126,16 @@ class Mysqli implements Adapter
                 return $resource;
             }
         } catch (mysqli_sql_exception $e) {
-            /** 数据库异常 */
+            /** Database exception */
             throw new SQLException($e->getMessage(), $e->getCode());
         }
 
-        /** 数据库异常 */
+        /** Database exception */
         throw new SQLException($this->dbLink->error, $this->dbLink->errno);
     }
 
     /**
-     * 对象引号过滤
+     * Object quote filter
      *
      * @access public
      * @param string $string
@@ -147,9 +147,9 @@ class Mysqli implements Adapter
     }
 
     /**
-     * 将数据查询的其中一行作为数组取出,其中字段名对应数组键值
+     * Fetch one row from the query result as an array, keyed by column name
      *
-     * @param \mysqli_result $resource 查询返回资源标识
+     * @param \mysqli_result $resource Query result resource
      * @return array|null
      */
     public function fetch($resource): ?array
@@ -158,9 +158,9 @@ class Mysqli implements Adapter
     }
 
     /**
-     * 将数据查询的结果作为数组全部取出,其中字段名对应数组键值
+     * Fetch all query results as an array, keyed by column name
      *
-     * @param \mysqli_result $resource 查询返回资源标识
+     * @param \mysqli_result $resource Query result resource
      * @return array
      */
     public function fetchAll($resource): array
@@ -169,7 +169,7 @@ class Mysqli implements Adapter
     }
 
     /**
-     * 将数据查询的其中一行作为对象取出,其中字段名对应对象属性
+     * Fetch one row from the query result as an object, with column names as properties
      *
      * @param \mysqli_result $resource 查询的资源数据
      * @return \stdClass|null
@@ -180,9 +180,9 @@ class Mysqli implements Adapter
     }
 
     /**
-     * 引号转义函数
+     * Quote escaping function
      *
-     * @param mixed $string 需要转义的字符串
+     * @param mixed $string String to escape
      * @return string
      */
     public function quoteValue($string): string
@@ -191,10 +191,10 @@ class Mysqli implements Adapter
     }
 
     /**
-     * 取出最后一次查询影响的行数
+     * Get the number of rows affected by the last query
      *
-     * @param mixed $resource 查询的资源数据
-     * @param \mysqli $handle 连接对象
+     * @param mixed $resource Query resource data
+     * @param \mysqli $handle Connection handle
      * @return integer
      */
     public function affectedRows($resource, $handle): int
@@ -203,10 +203,10 @@ class Mysqli implements Adapter
     }
 
     /**
-     * 取出最后一次插入返回的主键值
+     * Get the primary key value returned by the last insert
      *
-     * @param mixed $resource 查询的资源数据
-     * @param \mysqli $handle 连接对象
+     * @param mixed $resource Query resource data
+     * @param \mysqli $handle Connection handle
      * @return integer
      */
     public function lastInsertId($resource, $handle): int

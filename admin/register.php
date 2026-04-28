@@ -18,22 +18,22 @@ include 'header.php';
         <h1><a href="https://typecho.org" class="i-logo">Typecho</a></h1>
         <form action="<?php $options->registerAction(); ?>" method="post" name="register" role="form">
             <p>
-                <label for="name" class="sr-only"><?php _e('用户名'); ?></label>
-                <input type="text" id="name" name="name" placeholder="<?php _e('用户名'); ?>" value="<?php echo $rememberName; ?>" class="text-l w-100" autofocus />
+                <label for="name" class="sr-only"><?php _e('username'); ?></label>
+                <input type="text" id="name" name="name" placeholder="<?php _e('username'); ?>" value="<?php echo $rememberName; ?>" class="text-l w-100" autofocus />
             </p>
             <p>
                 <label for="mail" class="sr-only"><?php _e('Email'); ?></label>
                 <input type="email" id="mail" name="mail" placeholder="<?php _e('Email'); ?>" value="<?php echo $rememberMail; ?>" class="text-l w-100" />
             </p>
             <p class="submit">
-                <button type="submit" class="btn btn-l w-100 primary"><?php _e('注册'); ?></button>
+                <button type="submit" class="btn btn-l w-100 primary"><?php _e('Register'); ?></button>
             </p>
         </form>
         
         <p class="more-link">
-            <a href="<?php $options->siteUrl(); ?>"><?php _e('返回首页'); ?></a>
+            <a href="<?php $options->siteUrl(); ?>"><?php _e('Return to index page'); ?></a>
             &bull;
-            <a href="<?php $options->adminUrl('login.php'); ?>"><?php _e('用户登录'); ?></a>
+            <a href="<?php $options->adminUrl('login.php'); ?>"><?php _e('Login'); ?></a>
         </p>
     </div>
 </div>

@@ -14,29 +14,29 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
 
                 <form method="get" class="typecho-list-operate">
                     <div class="operate">
-                        <label><i class="sr-only"><?php _e('全选'); ?></i><input type="checkbox"
+                        <label><i class="sr-only"><?php _e('Select all'); ?></i><input type="checkbox"
                                                                                class="typecho-table-select-all"/></label>
                         <div class="btn-group btn-drop">
                             <button class="btn dropdown-toggle btn-s" type="button"><i
-                                    class="sr-only"><?php _e('操作'); ?></i><?php _e('选中项'); ?> <i
+                                    class="sr-only"><?php _e('Operations'); ?></i><?php _e('Selected'); ?> <i
                                     class="i-caret-down"></i></button>
                             <ul class="dropdown-menu">
-                                <li><a lang="<?php _e('你确认要删除这些文件吗?'); ?>"
-                                       href="<?php $security->index('/action/contents-attachment-edit?do=delete'); ?>"><?php _e('删除'); ?></a>
+                                <li><a lang="<?php _e('Are you sure to delete these files?'); ?>"
+                                       href="<?php $security->index('/action/contents-attachment-edit?do=delete'); ?>"><?php _e('Delete'); ?></a>
                                 </li>
                             </ul>
                             <button class="btn btn-s btn-warn btn-operate"
                                     href="<?php $security->index('/action/contents-attachment-edit?do=clear'); ?>"
-                                    lang="<?php _e('您确认要清理未归档的文件吗?'); ?>"><?php _e('清理未归档文件'); ?></button>
+                                    lang="<?php _e('Are you sure you want to clean up files that are not archived?'); ?>"><?php _e('Clean up archived file'); ?></button>
                         </div>
                     </div>
                     <div class="search" role="search">
                         <?php if ('' != $request->keywords): ?>
-                            <a href="<?php $options->adminUrl('manage-medias.php'); ?>"><?php _e('&laquo; 取消筛选'); ?></a>
+                            <a href="<?php $options->adminUrl('manage-medias.php'); ?>"><?php _e('&laquo; cancel the filtering'); ?></a>
                         <?php endif; ?>
-                        <input type="text" class="text-s" placeholder="<?php _e('请输入关键字'); ?>"
+                        <input type="text" class="text-s" placeholder="<?php _e('Please enter keywords'); ?>"
                                value="<?php echo $request->filter('html')->keywords; ?>"<?php if ('' == $request->keywords): ?> onclick="value='';name='keywords';" <?php else: ?> name="keywords"<?php endif; ?>/>
-                        <button type="submit" class="btn btn-s"><?php _e('筛选'); ?></button>
+                        <button type="submit" class="btn btn-s"><?php _e('Filter'); ?></button>
                     </div>
                 </form>
 
@@ -54,10 +54,10 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                         <tr>
                             <th class="kit-hidden-mb"></th>
                             <th class="kit-hidden-mb"></th>
-                            <th><?php _e('文件名'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('上传者'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('所属文章'); ?></th>
-                            <th><?php _e('发布日期'); ?></th>
+                            <th><?php _e('Filename'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Uploader'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Accompanying post '); ?></th>
+                            <th><?php _e('Publish date'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -76,7 +76,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                                         <i class="mime-<?php echo $mime; ?>"></i>
                                         <a href="<?php $options->adminUrl('media.php?cid=' . $attachments->cid); ?>"><?php $attachments->title(); ?></a>
                                         <a href="<?php $attachments->permalink(); ?>"
-                                           title="<?php _e('浏览 %s', $attachments->title); ?>"><i
+                                           title="<?php _e('View %s', $attachments->title); ?>"><i
                                                 class="i-exlink"></i></a>
                                     </td>
                                     <td class="kit-hidden-mb"><?php $attachments->author(); ?></td>
@@ -84,7 +84,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                                         <?php if ($attachments->parentPost->cid): ?>
                                             <a href="<?php $options->adminUrl('write-' . (0 === strpos($attachments->parentPost->type, 'post') ? 'post' : 'page') . '.php?cid=' . $attachments->parentPost->cid); ?>"><?php $attachments->parentPost->title(); ?></a>
                                         <?php else: ?>
-                                            <span class="description"><?php _e('未归档'); ?></span>
+                                            <span class="description"><?php _e('Unarchived'); ?></span>
                                         <?php endif; ?>
                                     </td>
                                     <td><?php $attachments->dateWord(); ?></td>
@@ -92,7 +92,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="6" class="none"><?php _e('没有任何文件'); ?></td>
+                                <td colspan="6" class="none"><?php _e('No file'); ?></td>
                             </tr>
                         <?php endif; ?>
                         </tbody>
@@ -101,21 +101,21 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
 
                 <form method="get" class="typecho-list-operate">
                     <div class="operate">
-                        <label><i class="sr-only"><?php _e('全选'); ?></i><input type="checkbox"
+                        <label><i class="sr-only"><?php _e('Select all'); ?></i><input type="checkbox"
                                                                                class="typecho-table-select-all"/></label>
                         <div class="btn-group btn-drop">
                             <button class="btn dropdown-toggle btn-s" type="button"><i
-                                    class="sr-only"><?php _e('操作'); ?></i><?php _e('选中项'); ?> <i
+                                    class="sr-only"><?php _e('Operations'); ?></i><?php _e('Selected'); ?> <i
                                     class="i-caret-down"></i></button>
                             <ul class="dropdown-menu">
-                                <li><a lang="<?php _e('你确认要删除这些文件吗?'); ?>"
-                                       href="<?php $security->index('/action/contents-attachment-edit?do=delete'); ?>"><?php _e('删除'); ?></a>
+                                <li><a lang="<?php _e('Are you sure to delete these files?'); ?>"
+                                       href="<?php $security->index('/action/contents-attachment-edit?do=delete'); ?>"><?php _e('Delete'); ?></a>
                                 </li>
                             </ul>
                         </div>
                         <button class="btn btn-s btn-warn btn-operate"
                                 href="<?php $security->index('/action/contents-attachment-edit?do=clear'); ?>"
-                                lang="<?php _e('您确认要清理未归档的文件吗?'); ?>"><?php _e('清理未归档文件'); ?></button>
+                                lang="<?php _e('Are you sure you want to clean up files that are not archived?'); ?>"><?php _e('Clean up archived file'); ?></button>
                     </div>
                     <?php if ($attachments->have()): ?>
                         <ul class="typecho-pager">

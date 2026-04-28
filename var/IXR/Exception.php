@@ -3,7 +3,7 @@
 namespace IXR;
 
 /**
- * IXR异常类
+ * IXR exception class
  *
  * @package IXR
  */

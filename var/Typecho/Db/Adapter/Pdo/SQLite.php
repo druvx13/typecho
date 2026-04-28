@@ -11,7 +11,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 数据库Pdo_SQLite适配器
+ * 数据库Pdo_SQLite adapter
  *
  * @package Db
  */
@@ -20,7 +20,7 @@ class SQLite extends Pdo
     use SQLiteTrait;
 
     /**
-     * 判断适配器是否可用
+     * Check whether the adapter is available
      *
      * @access public
      * @return boolean
@@ -31,9 +31,9 @@ class SQLite extends Pdo
     }
 
     /**
-     * 初始化数据库
+     * Initialize database
      *
-     * @param Config $config 数据库配置
+     * @param Config $config Database configuration
      * @access public
      * @return \PDO
      */
@@ -45,9 +45,9 @@ class SQLite extends Pdo
     }
 
     /**
-     * 将数据查询的其中一行作为对象取出,其中字段名对应对象属性
+     * Fetch one row from the query result as an object, with column names as properties
      *
-     * @param \PDOStatement $resource 查询的资源数据
+     * @param \PDOStatement $resource Query resource data
      * @return \stdClass|null
      */
     public function fetchObject($resource): ?\stdClass
@@ -57,9 +57,9 @@ class SQLite extends Pdo
     }
 
     /**
-     * 将数据查询的其中一行作为数组取出,其中字段名对应数组键值
+     * Fetch one row from the query result as an array, keyed by column name
      *
-     * @param \PDOStatement $resource 查询返回资源标识
+     * @param \PDOStatement $resource Query result resource
      * @return array|null
      */
     public function fetch($resource): ?array
@@ -69,9 +69,9 @@ class SQLite extends Pdo
     }
 
     /**
-     * 将数据查询的结果作为数组全部取出,其中字段名对应数组键值
+     * Fetch all query results as an array, keyed by column name
      *
-     * @param \PDOStatement $resource 查询的资源数据
+     * @param \PDOStatement $resource Query resource data
      * @return array
      */
     public function fetchAll($resource): array

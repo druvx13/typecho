@@ -53,9 +53,9 @@ class Response
     }
 
     /**
-     * 设置默认回执编码
+     * Set default response encoding
      *
-     * @param string $charset 字符集
+     * @param string $charset Character set
      * @return $this
      */
     public function setCharset(string $charset): Response
@@ -164,10 +164,10 @@ class Response
     }
 
     /**
-     * 重定向函数
+     * Redirect函数
      *
-     * @param string $location 重定向路径
-     * @param boolean $isPermanently 是否为永久重定向
+     * @param string $location Redirect路径
+     * @param boolean $isPermanently 是否为永久Redirect
      */
     public function redirect(string $location, bool $isPermanently = false)
     {

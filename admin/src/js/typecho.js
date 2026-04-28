@@ -295,7 +295,7 @@ function scrollableEditor(el, preview) {
 }
 
 (function ($) {
-    // 下拉菜单插件
+    // Dropdown menu插件
     $.fn.dropdownMenu = function (options) {
         this.each(function () {
             var menu = this, s = $.extend({

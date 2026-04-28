@@ -10,7 +10,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 标签云组件
+ * Tag cloud widget
  *
  * @category typecho
  * @package Widget
@@ -20,7 +20,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Admin extends Cloud
 {
     /**
-     * 入口函数
+     * Entry point
      *
      * @throws Db\Exception
      */
@@ -31,7 +31,7 @@ class Admin extends Cloud
     }
 
     /**
-     * 获取菜单标题
+     * Get menu title
      *
      * @return string|null
      * @throws Exception|Db\Exception
@@ -43,12 +43,12 @@ class Admin extends Cloud
                 ->where('type = ? AND mid = ?', 'tag', $this->request->get('mid')));
 
             if (!empty($tag)) {
-                return _t('编辑标签 %s', $tag['name']);
+                return _t('Edit Tag %s', $tag['name']);
             }
         } else {
             return null;
         }
 
-        throw new Exception(_t('标签不存在'), 404);
+        throw new Exception(_t('This tag does not exist.'), 404);
     }
 }

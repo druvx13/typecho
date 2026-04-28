@@ -104,7 +104,7 @@
     }
   }
 
-  // 撰写预览切换 tab
+  // Write/preview toggle tab
   .wmd-edittab {
     font-size: .92857em;
 
@@ -129,16 +129,16 @@
 
 #btn-cancel-preview { display: none }
 
-// 控制被隐藏的 tab，全屏时显示
+// Control hidden tab, show in fullscreen
 .wmd-hidetab {
   display: none;
 }
-// 隐藏编辑器，但占位
+// Hide editor but keep placeholder
 .wmd-visualhide {
   visibility: hidden;
 }
 
-/* 对话框 */
+/* Dialog */
 .wmd-prompt-background {
   background-color: #000;
 }
@@ -163,7 +163,7 @@
 }
 
 #wmd-editarea {
-  /* 拖动调整 textarea 大小 */
+  /* Drag to resize textarea */
   .resize {
     display: block;
     margin: 2px auto 0;
@@ -180,7 +180,7 @@
   }
 }
 
-/* 预览 */
+/* Preview */
 #wmd-preview {
   background: #FFF;
   margin: 1em 0;
@@ -258,13 +258,13 @@
   }
 }
 
-/* 上传面板动画效果 */
+/* Upload panel animation */
 @keyframes fullscreen-upload {
   0%   { opacity: 0; }
   100% { opacity: 1; }
 }
 
-/* 编辑器全屏 */
+/* Editor fullscreen */
 .fullscreen {
   #wmd-button-bar, #text, #wmd-preview, .submit {
     // position: fixed;
@@ -311,7 +311,7 @@
     border-style: solid;
   }
 
-  // 全屏附件上传
+  // Fullscreen attachment upload
   #tab-files {
     position: absolute;
     top: 52px;

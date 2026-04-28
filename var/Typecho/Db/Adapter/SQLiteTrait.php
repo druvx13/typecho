@@ -12,10 +12,10 @@ trait SQLiteTrait
     private bool $isSQLite2 = false;
 
     /**
-     * 清空数据表
+     * Clear data table
      *
      * @param string $table
-     * @param mixed $handle 连接对象
+     * @param mixed $handle Connection handle
      * @throws SQLException
      */
     public function truncate(string $table, $handle)
@@ -24,7 +24,7 @@ trait SQLiteTrait
     }
 
     /**
-     * 对象引号过滤
+     * Object quote filter
      *
      * @param string $string
      * @return string
@@ -35,7 +35,7 @@ trait SQLiteTrait
     }
 
     /**
-     * 过滤字段名
+     * Filter fields名
      *
      * @access private
      *
@@ -83,10 +83,10 @@ trait SQLiteTrait
     }
 
     /**
-     * 合成查询语句
+     * Build query statement
      *
      * @access public
-     * @param array $sql 查询对象词法数组
+     * @param array $sql Query lexical array
      * @return string
      */
     public function parseSelect(array $sql): string

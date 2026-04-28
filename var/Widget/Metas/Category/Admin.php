@@ -26,7 +26,7 @@ class Admin extends Metas
     private int $parentId = 0;
 
     /**
-     * 执行函数
+     * Execute action
      */
     public function execute()
     {
@@ -35,7 +35,7 @@ class Admin extends Metas
     }
 
     /**
-     * 向上的返回链接
+     * Upward return link
      *
      * @throws Db\Exception
      */
@@ -56,14 +56,14 @@ class Admin extends Metas
                 }
 
                 echo '&laquo; ';
-                _e('返回父级分类');
+                _e('Back to parent category');
                 echo '</a>';
             }
         }
     }
 
     /**
-     * 获取菜单标题
+     * Get menu title
      *
      * @return string|null
      * @throws Db\Exception|Exception
@@ -74,17 +74,17 @@ class Admin extends Metas
             $category = $this->getRow($this->parentId);
 
             if (!empty($category)) {
-                return _t('管理 %s 的子分类', $category['name']);
+                return _t('Manage subcategories of %s', $category['name']);
             }
         } else {
             return null;
         }
 
-        throw new Exception(_t('分类不存在'), 404);
+        throw new Exception(_t('This category does not exist.'), 404);
     }
 
     /**
-     * 获取菜单标题
+     * Get menu title
      *
      * @return string
      */

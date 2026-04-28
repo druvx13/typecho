@@ -17,7 +17,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 基本设置组件
+ * Basic settings widget
  *
  * @author qining
  * @category typecho
@@ -86,7 +86,7 @@ RewriteRule ^(.*)$ {$basePath}index.php/$1 [L]
 
             try {
                 if ($client) {
-                    /** 发送一个rewrite地址请求 */
+                    /** Send a rewrite URL request */
                     $client->setData(['do' => 'remoteCallback'])
                         ->setHeader('User-Agent', $this->options->generator)
                         ->setHeader('X-Requested-With', 'XMLHttpRequest')
@@ -113,7 +113,7 @@ RewriteRule . {$basePath}index.php [L]
                     $client = Client::get();
 
                     if ($client) {
-                        /** 发送一个rewrite地址请求 */
+                        /** Send a rewrite URL request */
                         $client->setData(['do' => 'remoteCallback'])
                             ->setHeader('User-Agent', $this->options->generator)
                             ->setHeader('X-Requested-With', 'XMLHttpRequest')
@@ -142,7 +142,7 @@ RewriteRule . {$basePath}index.php [L]
     }
 
     /**
-     * 执行更新动作
+     * Execute update action
      *
      * @throws Exception
      */
@@ -151,7 +151,7 @@ RewriteRule . {$basePath}index.php [L]
         $customPattern = $this->request->get('customPattern');
         $postPattern = $this->request->get('postPattern');
 
-        /** 验证格式 */
+        /** Validate form */
         if ($this->form()->validate()) {
             Cookie::set('__typecho_form_item_postPattern', $customPattern);
             $this->response->goBack();
@@ -184,51 +184,51 @@ RewriteRule . {$basePath}index.php [L]
         }
 
         if ($patternValid) {
-            Notice::alloc()->set(_t("设置已经保存"), 'success');
+            Notice::alloc()->set(_t("Your settings have been saved."), 'success');
         } else {
-            Notice::alloc()->set(_t("自定义链接与现有规则存在冲突! 它可能影响解析效率, 建议你重新分配一个规则."));
+            Notice::alloc()->set(_t("Customized URL conflicts with existent rule. It may affect the parsing efficiency. We recommend that you assign a new rule."));
         }
         $this->response->goBack();
     }
 
     /**
-     * 输出表单结构
+     * Output form structure
      *
      * @return Form
      */
     public function form(): Form
     {
-        /** 构建表格 */
+        /** Build form */
         $form = new Form($this->security->getRootUrl('index.php/action/options-permalink'), Form::POST_METHOD);
 
         if (!defined('__TYPECHO_REWRITE__')) {
             /** 是否使用地址重写功能 */
             $rewrite = new Form\Element\Radio(
                 'rewrite',
-                ['0' => _t('不启用'), '1' => _t('启用')],
+                ['0' => _t('Disable.'), '1' => _t('Enable.')],
                 $this->options->rewrite,
-                _t('是否使用地址重写功能'),
-                _t('地址重写即 rewrite 功能是某些服务器软件提供的优化内部连接的功能.') . '<br />'
-                . _t('打开此功能可以让你的链接看上去完全是静态地址.')
+                _t('Use URL rewrite or not.'),
+                _t('URL rewrite function is provided by certain servers to optimize internal connections.') . '<br />'
+                . _t('By enabling this function you can make your links appear as static path.')
             );
 
             // disable rewrite check when rewrite opened
             if (!$this->options->rewrite && !$this->request->is('enableRewriteAnyway=1')) {
-                $errorStr = _t('重写功能检测失败, 请检查你的服务器设置');
+                $errorStr = _t('Unable to detect the rewrite function, please check your server configuration.');
 
-                /** 如果是apache服务器, 可能存在无法写入.htaccess文件的现象 */
+                /** Ifapache服务器, 可能存在无法写入.htaccess文件的现象 */
                 if (
                     strpos(php_sapi_name(), 'apache') !== false
                     && !file_exists(__TYPECHO_ROOT_DIR__ . '/.htaccess')
                     && !is_writable(__TYPECHO_ROOT_DIR__)
                 ) {
-                    $errorStr .= '<br /><strong>' . _t('我们检测到你使用了apache服务器, 但是程序无法在根目录创建.htaccess文件, 这可能是产生这个错误的原因.')
-                        . _t('请调整你的目录权限, 或者手动创建一个.htaccess文件.') . '</strong>';
+                    $errorStr .= '<br /><strong>' . _t('We detected that you are using Apache, but typecho cannot create .htaccess file under the root directory, which may be the cause of this error.')
+                        . _t('Please adjust your directory permissions, or create a .htaccess file manually.') . '</strong>';
                 }
 
                 $errorStr .=
                     '<br /><input type="checkbox" name="enableRewriteAnyway" id="enableRewriteAnyway" value="1" />'
-                    . ' <label for="enableRewriteAnyway">' . _t('如果你仍然想启用此功能, 请勾选这里') . '</label>';
+                    . ' <label for="enableRewriteAnyway">' . _t('If you still want to enable this feature anyway, please tick this option') . '</label>';
                 $rewrite->addRule([$this, 'checkRewrite'], $errorStr);
             }
 
@@ -236,13 +236,13 @@ RewriteRule . {$basePath}index.php [L]
         }
 
         $patterns = [
-            '/archives/[cid:digital]/'                                        => _t('默认风格')
+            '/archives/[cid:digital]/'                                        => _t('Default style')
                 . ' <code>/archives/{cid}/</code>',
-            '/archives/[slug].html'                                           => _t('wordpress风格')
+            '/archives/[slug].html'                                           => _t('wordpress style')
                 . ' <code>/archives/{slug}.html</code>',
-            '/[year:digital:4]/[month:digital:2]/[day:digital:2]/[slug].html' => _t('按日期归档')
+            '/[year:digital:4]/[month:digital:2]/[day:digital:2]/[slug].html' => _t('Archived by date.')
                 . ' <code>/{year}/{month}/{day}/{slug}.html</code>',
-            '/[category]/[slug].html'                                         => _t('按分类归档')
+            '/[category]/[slug].html'                                         => _t('Archived by categories.')
                 . ' <code>/{category}/{slug}.html</code>'
         ];
 
@@ -257,17 +257,17 @@ RewriteRule . {$basePath}index.php [L]
         } elseif (!isset($patterns[$postPatternValue])) {
             $customPatternValue = $this->decodeRule($postPatternValue);
         }
-        $patterns['custom'] = _t('个性化定义') .
+        $patterns['custom'] = _t('Customization.') .
             ' <input type="text" class="w-50 text-s mono" name="customPattern" value="' . $customPatternValue . '" />';
 
         $postPattern = new Form\Element\Radio(
             'postPattern',
             $patterns,
             $postPatternValue,
-            _t('自定义文章路径'),
-            _t('可用参数: <code>{cid}</code> 日志 ID, <code>{slug}</code> 日志缩略名, <code>{category}</code> 分类, <code>{directory}</code> 多级分类, <code>{year}</code> 年, <code>{month}</code> 月, <code>{day}</code> 日')
-            . '<br />' . _t('选择一种合适的文章静态路径风格, 使得你的网站链接更加友好.')
-            . '<br />' . _t('一旦你选择了某种链接风格请不要轻易修改它.')
+            _t('Customize post path.'),
+            _t('Available parameters: <code>{cid}</code> article ID , <code>{slug}</code> article slug , <code>{category}</code> category , <code>{directory}</code> parent category , <code>{year}</code> year , <code>{month}</code> month , <code>{day}</code> days')
+            . '<br />' . _t('Use a static path style to make links of your site more friendly.')
+            . '<br />' . _t('Do not edit it once a style has been chosen.')
         );
         if ($customPatternValue) {
             $postPattern->value('custom');
@@ -279,27 +279,27 @@ RewriteRule . {$basePath}index.php [L]
             'pagePattern',
             null,
             $this->decodeRule($this->options->routingTable['page']['url']),
-            _t('独立页面路径'),
-            _t('可用参数: <code>{cid}</code> 页面 ID, <code>{slug}</code> 页面缩略名, <code>{directory}</code> 多级页面')
-            . '<br />' . _t('请在路径中至少包含上述的一项参数.')
+            _t('Page path'),
+            _t('Available parameters: <code>{cid}</code> page ID, <code>{slug}</code> page slug, <code>{directory}</code> nested page path')
+            . '<br />' . _t('Please include at least one parameter in path.')
         );
         $pagePattern->input->setAttribute('class', 'mono w-60');
-        $form->addInput($pagePattern->addRule([$this, 'checkPagePattern'], _t('独立页面路径中没有包含 {cid} 或者 {slug} ')));
+        $form->addInput($pagePattern->addRule([$this, 'checkPagePattern'], _t('No {cid} or {slug}  found in page path.')));
 
         /** 分类页面 */
         $categoryPattern = new Form\Element\Text(
             'categoryPattern',
             null,
             $this->decodeRule($this->options->routingTable['category']['url']),
-            _t('分类路径'),
-            _t('可用参数: <code>{mid}</code> 分类 ID, <code>{slug}</code> 分类缩略名, <code>{directory}</code> 多级分类')
-            . '<br />' . _t('请在路径中至少包含上述的一项参数.')
+            _t('Category path'),
+            _t('Available parameters: <code>{mid}</code> Category ID , <code>{slug}</code> Category slug , <code>{directory}</code> Parent category')
+            . '<br />' . _t('Please include at least one parameter in path.')
         );
         $categoryPattern->input->setAttribute('class', 'mono w-60');
-        $form->addInput($categoryPattern->addRule([$this, 'checkCategoryPattern'], _t('分类路径中没有包含 {mid} 或者 {slug} ')));
+        $form->addInput($categoryPattern->addRule([$this, 'checkCategoryPattern'], _t('No {mid} or {slug}  found in category path.')));
 
-        /** 提交按钮 */
-        $submit = new Form\Element\Submit('submit', null, _t('保存设置'));
+        /** Submit button */
+        $submit = new Form\Element\Submit('submit', null, _t('Save settings.'));
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
 
@@ -372,7 +372,7 @@ RewriteRule . {$basePath}index.php [L]
     }
 
     /**
-     * 绑定动作
+     * Bind action
      *
      * @access public
      * @return void

@@ -10,7 +10,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 相关内容组件(根据标签关联)
+ * Related content widget (by tag association)
  *
  * @author qining
  * @category typecho
@@ -21,7 +21,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Author extends Users
 {
     /**
-     * 执行函数,初始化数据
+     * Execute function, initialize data
      *
      * @throws Exception
      */

@@ -11,7 +11,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 纯数据抽象组件
+ * Pure data abstract widget
  *
  * @category typecho
  * @package Widget
@@ -51,7 +51,7 @@ abstract class Base extends Widget
     protected const INIT_NONE = 0;
 
     /**
-     * 全局选项
+     * Global options
      *
      * @var Options
      */
@@ -72,7 +72,7 @@ abstract class Base extends Widget
     protected Security $security;
 
     /**
-     * 数据库对象
+     * Database object
      *
      * @var Db
      */

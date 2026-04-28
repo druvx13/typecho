@@ -14,8 +14,8 @@ use Widget\Security;
 use Widget\Service;
 
 /**
- * 插件帮手将默认出现在所有的typecho发行版中.
- * 因此你可以放心使用它的功能, 以方便你的插件安装在用户的系统里.
+ * The plugin helper ships with all Typecho distributions.
+ * You can safely use its features to help install plugins on user systems.
  *
  * @package Helper
  * @author qining
@@ -25,7 +25,7 @@ use Widget\Service;
 class Helper
 {
     /**
-     * 获取Security对象
+     * Get Security object
      *
      * @return Security
      */
@@ -35,9 +35,9 @@ class Helper
     }
 
     /**
-     * 根据ID获取单个Widget对象
+     * Get a single Widget object by ID
      *
-     * @param string $table 表名, 支持 contents, comments, metas, users
+     * @param string $table Table name; supports: contents, comments, metas, users
      * @param int $pkId
      * @return Widget|null
      */
@@ -70,7 +70,7 @@ class Helper
     }
 
     /**
-     * 请求异步服务
+     * Request async service
      *
      * @param $method
      * @param $params
@@ -81,32 +81,32 @@ class Helper
     }
 
     /**
-     * 强行删除某个插件
+     * Force-delete a plugin
      *
-     * @param string $pluginName 插件名称
+     * @param string $pluginName Plugin name
      */
     public static function removePlugin(string $pluginName)
     {
         try {
-            /** 获取插件入口 */
+            /** Get plugin entry point */
             [$pluginFileName, $className] = Plugin::portal(
                 $pluginName,
                 __TYPECHO_ROOT_DIR__ . '/' . __TYPECHO_PLUGIN_DIR__
             );
 
-            /** 获取已启用插件 */
+            /** Get enabled plugins */
             $plugins = Plugin::export();
             $activatedPlugins = $plugins['activated'];
 
-            /** 载入插件 */
+            /** Load plugin */
             require_once $pluginFileName;
 
-            /** 判断实例化是否成功 */
+            /** Check whether instantiation succeeded */
             if (
                 !isset($activatedPlugins[$pluginName]) || !class_exists($className)
                 || !method_exists($className, 'deactivate')
             ) {
-                throw new Widget\Exception(_t('无法禁用插件'), 500);
+                throw new Widget\Exception(_t('Cannot disable the plugin.'), 500);
             }
 
             call_user_func([$className, 'deactivate']);
@@ -127,7 +127,7 @@ class Helper
     }
 
     /**
-     * 导入语言项
+     * Import language strings
      *
      * @param string $domain
      */
@@ -144,7 +144,7 @@ class Helper
     }
 
     /**
-     * 获取Options对象
+     * Get Options object
      *
      * @return Options
      */
@@ -170,13 +170,13 @@ class Helper
     }
 
     /**
-     * 增加路由
+     * Add route
      *
-     * @param string $name 路由名称
-     * @param string $url 路由路径
-     * @param string $widget 组件名称
-     * @param string|null $action 组件动作
-     * @param string|null $after 在某个路由后面
+     * @param string $name Route name
+     * @param string $url Route path
+     * @param string $widget Widget name
+     * @param string|null $action Widget action
+     * @param string|null $after Insert after this route
      * @return integer
      */
     public static function addRoute(
@@ -215,9 +215,9 @@ class Helper
     }
 
     /**
-     * 移除路由
+     * Remove route
      *
-     * @param string $name 路由名称
+     * @param string $name Route name
      * @return integer
      */
     public static function removeRoute(string $name): int
@@ -232,10 +232,10 @@ class Helper
     }
 
     /**
-     * 增加action扩展
+     * Add action extension
      *
-     * @param string $actionName 需要扩展的action名称
-     * @param string $widgetName 需要扩展的widget名称
+     * @param string $actionName Action name to extend
+     * @param string $widgetName Widget name to extend
      * @return integer
      */
     public static function addAction(string $actionName, string $widgetName): int
@@ -248,7 +248,7 @@ class Helper
     }
 
     /**
-     * 删除action扩展
+     * Remove action extension
      *
      * @param string $actionName
      * @return int
@@ -267,9 +267,9 @@ class Helper
     }
 
     /**
-     * 增加一个菜单
+     * Add a menu
      *
-     * @param string $menuName 菜单名
+     * @param string $menuName Menu name
      * @return integer
      */
     public static function addMenu(string $menuName): int
@@ -285,9 +285,9 @@ class Helper
     }
 
     /**
-     * 移除一个菜单
+     * Remove a menu
      *
-     * @param string $menuName 菜单名
+     * @param string $menuName Menu name
      * @return integer
      */
     public static function removeMenu(string $menuName): int
@@ -305,15 +305,15 @@ class Helper
     }
 
     /**
-     * 增加一个面板
+     * Add a panel
      *
-     * @param integer $index 菜单索引
-     * @param string $fileName 文件名称
-     * @param string $title 面板标题
-     * @param string $subTitle 面板副标题
-     * @param string $level 进入权限
-     * @param boolean $hidden 是否隐藏
-     * @param string $addLink 新增项目链接, 会显示在页面标题之后
+     * @param integer $index Menu index
+     * @param string $fileName File name
+     * @param string $title Panel title
+     * @param string $subTitle Panel subtitle
+     * @param string $level Access permission
+     * @param boolean $hidden Whether to hide
+     * @param string $addLink Link for adding new items, shown after the page title
      * @return integer
      */
     public static function addPanel(
@@ -343,10 +343,10 @@ class Helper
     }
 
     /**
-     * 移除一个面板
+     * Remove a panel
      *
-     * @param integer $index 菜单索引
-     * @param string $fileName 文件名称
+     * @param integer $index Menu index
+     * @param string $fileName File name
      * @return integer
      */
     public static function removePanel(int $index, string $fileName): int
@@ -374,7 +374,7 @@ class Helper
     }
 
     /**
-     * 获取面板url
+     * Get panel URL
      *
      * @param string $fileName
      * @return string
@@ -385,11 +385,11 @@ class Helper
     }
 
     /**
-     * 手动配置插件变量
+     * Manually configure plugin variables
      *
-     * @param mixed $pluginName 插件名称
-     * @param array $settings 变量键值对
-     * @param bool $isPersonal . (default: false) 是否为私人变量
+     * @param mixed $pluginName Plugin name
+     * @param array $settings Variable key-value pairs
+     * @param bool $isPersonal . (default: false) Whether this is a private variable
      */
     public static function configPlugin($pluginName, array $settings, bool $isPersonal = false)
     {
@@ -401,14 +401,14 @@ class Helper
     }
 
     /**
-     * 评论回复按钮
+     * Comment reply button
      *
      * @access public
-     * @param string $theId 评论元素id
-     * @param integer $coid 评论id
-     * @param string $word 按钮文字
-     * @param string $formId 表单id
-     * @param integer $style 样式类型
+     * @param string $theId Comment element ID
+     * @param integer $coid Comment ID
+     * @param string $word Button text
+     * @param string $formId Form ID
+     * @param integer $style Style type
      * @return void
      */
     public static function replyLink(
@@ -425,10 +425,10 @@ class Helper
     }
 
     /**
-     * 评论取消按钮
+     * Comment cancel button
      *
-     * @param string $word 按钮文字
-     * @param string $formId 表单id
+     * @param string $word Button text
+     * @param string $formId Form ID
      */
     public static function cancelCommentReplyLink(string $word = 'Cancel', string $formId = 'respond')
     {
@@ -439,7 +439,7 @@ class Helper
     }
 
     /**
-     * 评论回复js脚本
+     * Comment reply JS script
      */
     public static function threadedCommentsScript()
     {

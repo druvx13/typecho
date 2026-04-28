@@ -5,7 +5,7 @@ namespace Typecho\Widget\Helper;
 use Typecho\Widget\Exception;
 
 /**
- * 内容分页抽象类
+ * Content pagination abstract class
  *
  * @package Widget
  */
@@ -26,7 +26,7 @@ abstract class PageNavigator
     protected int $totalPage;
 
     /**
-     * 当前页面
+     * Current page
      *
      * @var integer
      */
@@ -61,11 +61,11 @@ abstract class PageNavigator
     protected $pageHolder = ['{page}', '%7Bpage%7D'];
 
     /**
-     * 构造函数,初始化页面基本信息
+     * Constructor,初始化页面基本信息
      *
      * @param integer $total 记录总数
-     * @param integer $currentPage 当前页面
-     * @param integer $pageSize 每页记录数
+     * @param integer $currentPage Current page面
+     * @param integer $pageSize Records per page
      * @param string $pageTemplate 页面链接模板
      * @throws Exception
      */

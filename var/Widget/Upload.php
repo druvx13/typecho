@@ -14,7 +14,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 上传组件
+ * Upload widget
  *
  * @author qining
  * @category typecho
@@ -22,11 +22,11 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
  */
 class Upload extends Contents implements ActionInterface
 {
-    //上传文件目录
+    //Upload file目录
     public const UPLOAD_DIR = '/usr/uploads';
 
     /**
-     * 删除文件
+     * Delete file
      *
      * @param array $content 文件相关信息
      * @return bool
@@ -83,7 +83,7 @@ class Upload extends Contents implements ActionInterface
     }
 
     /**
-     * 初始化函数
+     * Initialization function
      */
     public function action()
     {
@@ -100,7 +100,7 @@ class Upload extends Contents implements ActionInterface
     }
 
     /**
-     * 执行升级程序
+     * Execute upgrade routine
      *
      * @throws Exception
      */
@@ -128,7 +128,7 @@ class Upload extends Contents implements ActionInterface
                     exit;
                 }
 
-                // xhr的send无法支持utf8
+                // XHR send does not support UTF-8
                 if ($this->request->isAjax()) {
                     $file['name'] = urldecode($file['name']);
                 }
@@ -145,7 +145,7 @@ class Upload extends Contents implements ActionInterface
                     $this->db->fetchRow($this->select()->where('table.contents.cid = ?', $this->cid)
                         ->where('table.contents.type = ?', 'attachment'), [$this, 'push']);
 
-                    /** 增加插件接口 */
+                    /** Add plugin interface */
                     self::pluginHandle()->call('modify', $this);
 
                     $this->response->throwJson([$this->attachment->url, [
@@ -195,7 +195,7 @@ class Upload extends Contents implements ActionInterface
         );
         $dir = dirname($path);
 
-        //创建上传目录
+        // Create upload directory
         if (!is_dir($dir)) {
             if (!self::makeUploadDir($dir)) {
                 return false;
@@ -205,21 +205,21 @@ class Upload extends Contents implements ActionInterface
         if (isset($file['tmp_name'])) {
             @unlink($path);
 
-            //移动上传文件
+            // Move uploaded file
             if (!@move_uploaded_file($file['tmp_name'], $path)) {
                 return false;
             }
         } elseif (isset($file['bytes'])) {
             @unlink($path);
 
-            //直接写入文件
+            // Write directly to file
             if (!file_put_contents($path, $file['bytes'])) {
                 return false;
             }
         } elseif (isset($file['bits'])) {
             @unlink($path);
 
-            //直接写入文件
+            // Write directly to file
             if (!file_put_contents($path, $file['bits'])) {
                 return false;
             }
@@ -231,7 +231,7 @@ class Upload extends Contents implements ActionInterface
             $file['size'] = filesize($path);
         }
 
-        //返回相对存储路径
+        // Return relative storage path
         return [
             'name' => $content['attachment']->name,
             'path' => $content['attachment']->path,
@@ -242,7 +242,7 @@ class Upload extends Contents implements ActionInterface
     }
 
     /**
-     * 获取安全的文件名
+     * 获取安全的File name
      *
      * @param string $name
      * @return string
@@ -287,7 +287,7 @@ class Upload extends Contents implements ActionInterface
     }
 
     /**
-     * 执行升级程序
+     * Execute upgrade routine
      *
      * @throws Exception
      */
@@ -296,7 +296,7 @@ class Upload extends Contents implements ActionInterface
         if (!empty($_FILES)) {
             $file = array_pop($_FILES);
             if (0 == $file['error'] && is_uploaded_file($file['tmp_name'])) {
-                // xhr的send无法支持utf8
+                // XHR send does not support UTF-8
                 if ($this->request->isAjax()) {
                     $file['name'] = urldecode($file['name']);
                 }
@@ -329,7 +329,7 @@ class Upload extends Contents implements ActionInterface
                     $this->db->fetchRow($this->select()->where('table.contents.cid = ?', $insertId)
                         ->where('table.contents.type = ?', 'attachment'), [$this, 'push']);
 
-                    /** 增加插件接口 */
+                    /** Add plugin interface */
                     self::pluginHandle()->call('upload', $this);
 
                     $this->response->throwJson([$this->attachment->url, [
@@ -350,7 +350,7 @@ class Upload extends Contents implements ActionInterface
     }
 
     /**
-     * 上传文件处理函数,如果需要实现自己的文件哈希或者特殊的文件系统,请在options表里把uploadHandle改成自己的函数
+     * Upload file处理函数,如果需要实现自己的文件哈希或者特殊的文件系统,请在options表里把uploadHandle改成自己的函数
      *
      * @param array $file 上传的文件
      * @return mixed
@@ -378,29 +378,29 @@ class Upload extends Contents implements ActionInterface
             defined('__TYPECHO_UPLOAD_ROOT_DIR__') ? __TYPECHO_UPLOAD_ROOT_DIR__ : __TYPECHO_ROOT_DIR__
         ) . '/' . $date->year . '/' . $date->month;
 
-        //创建上传目录
+        // Create upload directory
         if (!is_dir($path)) {
             if (!self::makeUploadDir($path)) {
                 return false;
             }
         }
 
-        //获取文件名
+        //获取File name
         $fileName = sprintf('%u', crc32(uniqid())) . '.' . $ext;
         $path = $path . '/' . $fileName;
 
         if (isset($file['tmp_name'])) {
-            //移动上传文件
+            // Move uploaded file
             if (!@move_uploaded_file($file['tmp_name'], $path)) {
                 return false;
             }
         } elseif (isset($file['bytes'])) {
-            //直接写入文件
+            // Write directly to file
             if (!file_put_contents($path, $file['bytes'])) {
                 return false;
             }
         } elseif (isset($file['bits'])) {
-            //直接写入文件
+            // Write directly to file
             if (!file_put_contents($path, $file['bits'])) {
                 return false;
             }
@@ -412,7 +412,7 @@ class Upload extends Contents implements ActionInterface
             $file['size'] = filesize($path);
         }
 
-        //返回相对存储路径
+        // Return relative storage path
         return [
             'name' => $file['name'],
             'path' => (defined('__TYPECHO_UPLOAD_DIR__') ? __TYPECHO_UPLOAD_DIR__ : self::UPLOAD_DIR)
@@ -424,7 +424,7 @@ class Upload extends Contents implements ActionInterface
     }
 
     /**
-     * 检查文件名
+     * 检查File name
      *
      * @access private
      * @param string $ext 扩展名

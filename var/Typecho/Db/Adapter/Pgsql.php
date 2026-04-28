@@ -20,7 +20,7 @@ class Pgsql implements Adapter
     use PgsqlTrait;
 
     /**
-     * 判断适配器是否可用
+     * Check whether the adapter is available
      *
      * @access public
      * @return boolean
@@ -31,9 +31,9 @@ class Pgsql implements Adapter
     }
 
     /**
-     * 数据库连接函数
+     * Database connection function
      *
-     * @param Config $config 数据库配置
+     * @param Config $config Database configuration
      * @return resource
      * @throws ConnectionException
      */
@@ -54,12 +54,12 @@ class Pgsql implements Adapter
             return $dbLink;
         }
 
-        /** 数据库异常 */
+        /** Database exception */
         throw new ConnectionException("Couldn't connect to database.");
     }
 
     /**
-     * 获取数据库版本
+     * Get database version
      *
      * @param mixed $handle
      * @return string
@@ -71,13 +71,13 @@ class Pgsql implements Adapter
     }
 
     /**
-     * 执行数据库查询
+     * Execute database query
      *
-     * @param string $query 数据库查询SQL字符串
-     * @param resource $handle 连接对象
-     * @param integer $op 数据库读写状态
-     * @param string|null $action 数据库动作
-     * @param string|null $table 数据表
+     * @param string $query Database SQL query string
+     * @param resource $handle Connection handle
+     * @param integer $op Database read/write mode
+     * @param string|null $action Database action
+     * @param string|null $table Database table
      * @return resource
      * @throws SQLException
      */
@@ -88,7 +88,7 @@ class Pgsql implements Adapter
             return $resource;
         }
 
-        /** 数据库异常 */
+        /** Database exception */
         throw new SQLException(
             @pg_last_error($handle),
             pg_result_error_field(pg_get_result($handle), PGSQL_DIAG_SQLSTATE)
@@ -96,7 +96,7 @@ class Pgsql implements Adapter
     }
 
     /**
-     * 将数据查询的其中一行作为数组取出,其中字段名对应数组键值
+     * Fetch one row from the query result as an array, keyed by column name
      *
      * @param resource $resource 查询返回资源标识
      * @return array|null
@@ -107,9 +107,9 @@ class Pgsql implements Adapter
     }
 
     /**
-     * 将数据查询的其中一行作为对象取出,其中字段名对应对象属性
+     * Fetch one row from the query result as an object, with column names as properties
      *
-     * @param resource $resource 查询的资源数据
+     * @param resource $resource Query resource data
      * @return \stdClass|null
      */
     public function fetchObject($resource): ?\stdClass
@@ -127,10 +127,10 @@ class Pgsql implements Adapter
     }
 
     /**
-     * 取出最后一次查询影响的行数
+     * Get the number of rows affected by the last query
      *
-     * @param resource $resource 查询的资源数据
-     * @param resource $handle 连接对象
+     * @param resource $resource Query resource data
+     * @param resource $handle Connection handle
      * @return integer
      */
     public function affectedRows($resource, $handle): int
@@ -139,9 +139,9 @@ class Pgsql implements Adapter
     }
 
     /**
-     * 引号转义函数
+     * Quote escaping function
      *
-     * @param mixed $string 需要转义的字符串
+     * @param mixed $string String to escape
      * @return string
      */
     public function quoteValue($string): string

@@ -11,7 +11,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 异步调用组件
+ * Async call widget
  *
  * @author qining
  * @category typecho
@@ -49,7 +49,7 @@ class Ajax extends BaseOptions implements ActionInterface
             try {
                 $client->send('https://typecho.org/version.json');
 
-                /** 匹配内容体 */
+                /** Match content body */
                 $response = $client->getResponseBody();
                 $json = json_decode($response, true);
 
@@ -93,7 +93,7 @@ class Ajax extends BaseOptions implements ActionInterface
                 ->setTimeout(10)
                 ->send('https://typecho.org/feed/');
 
-            /** 匹配内容体 */
+            /** Match content body */
             $response = $client->getResponseBody();
             preg_match_all(
                 "/<item>\s*<title>([^>]*)<\/title>\s*<link>([^>]*)<\/link>\s*<guid>[^>]*<\/guid>\s*<pubDate>([^>]*)<\/pubDate>/i",
@@ -147,7 +147,7 @@ class Ajax extends BaseOptions implements ActionInterface
     }
 
     /**
-     * 异步请求入口
+     * Async request entry point
      *
      * @access public
      * @return void

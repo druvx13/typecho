@@ -25,28 +25,28 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Admin extends Users
 {
     /**
-     * 分页计算对象
+     * Pagination calculation object
      *
      * @var Query
      */
     private Query $countSql;
 
     /**
-     * 所有文章个数
+     * Total post count
      *
      * @var integer
      */
     private int $total;
 
     /**
-     * 当前页
+     * Current page
      *
      * @var integer
      */
     private int $currentPage;
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @throws Db\Exception
      */
@@ -56,7 +56,7 @@ class Admin extends Users
         $select = $this->select();
         $this->currentPage = $this->request->filter('int')->get('page', 1);
 
-        /** 过滤标题 */
+        /** Filter title */
         if (null != ($keywords = $this->request->get('keywords'))) {
             $select->where(
                 'name LIKE ? OR screenName LIKE ?',
@@ -74,7 +74,7 @@ class Admin extends Users
     }
 
     /**
-     * 输出分页
+     * Output pagination
      *
      * @throws Exception|Db\Exception
      */
@@ -82,7 +82,7 @@ class Admin extends Users
     {
         $query = $this->request->makeUriByRequest('page={page}');
 
-        /** 使用盒状分页 */
+        /** Use box-style pagination */
         $nav = new Box(
             !isset($this->total) ? $this->total = $this->size($this->countSql) : $this->total,
             $this->currentPage,
@@ -104,7 +104,7 @@ class Admin extends Users
     }
 
     /**
-     * 发布文章数
+     * Publish post数
      *
      * @return integer
      * @throws Db\Exception

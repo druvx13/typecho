@@ -2713,7 +2713,7 @@ else
     };
 
     // 扩展了原来ui的功能
-    // 允许创建一个自定义html的对话框
+    // 允许创建Mon个自定义html的Dialog
     ui.dialog = function (html, callback, ok, cancel) {
 
         // These variables need to be declared at this level since they are used

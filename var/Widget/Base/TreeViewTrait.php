@@ -12,9 +12,9 @@ trait TreeViewTrait
      * treeViewRows
      *
      * @param mixed $rowOptions 输出选项
-     * @param string $type 类型
-     * @param string $func 回调函数
-     * @param int $current 当前项
+     * @param string $type Type
+     * @param string $func Callback function
+     * @param int $current Current item
      */
     protected function listRows(Config $rowOptions, string $type, string $func, int $current = 0)
     {
@@ -35,10 +35,10 @@ trait TreeViewTrait
     /**
      * 列出分类回调
      *
-     * @param Config $rowOptions 输出选项
-     * @param string $type 类型
-     * @param string $func 回调函数
-     * @param int $current 当前项
+     * @param Config $rowOptions Output options
+     * @param string $type Type
+     * @param string $func Callback function
+     * @param int $current Current item
      */
     private function treeViewRowsCallback(Config $rowOptions, string $type, string $func, int $current): void
     {
@@ -94,20 +94,20 @@ trait TreeViewTrait
     /**
      * treeViewRows
      *
-     * @param Config $rowOptions 输出选项
-     * @param string $type 类型
-     * @param string $func 回调函数
-     * @param int $current 当前项
+     * @param Config $rowOptions Output options
+     * @param string $type Type
+     * @param string $func Callback function
+     * @param int $current Current item
      */
     private function treeViewRows(Config $rowOptions, string $type, string $func, int $current)
     {
         $children = $this->children;
         if ($children) {
-            //缓存变量便于还原
+            // Cache variable for later restoration
             $tmp = $this->row;
             $this->sequence++;
 
-            //在子评论之前输出
+            // Output before child comments
             echo '<' . $rowOptions->wrapTag . (empty($rowOptions->wrapClass)
                     ? '' : ' class="' . $rowOptions->wrapClass . '"') . '>';
 
@@ -117,7 +117,7 @@ trait TreeViewTrait
                 $this->row = $tmp;
             }
 
-            //在子评论之后输出
+            // Output after child comments
             echo '</' . $rowOptions->wrapTag . '>';
 
             $this->sequence--;

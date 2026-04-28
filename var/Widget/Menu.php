@@ -21,14 +21,14 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 后台菜单显示
+ * Admin menu display
  *
  * @package Widget
  */
 class Menu extends Base
 {
     /**
-     * 当前菜单标题
+     * 当前菜单Title
      * @var string
      */
     public string $title;
@@ -61,7 +61,7 @@ class Menu extends Base
     private int $currentChild = 0;
 
     /**
-     * 当前页面
+     * Current page
      *
      * @var string
      */
@@ -75,61 +75,61 @@ class Menu extends Base
     private string $currentMenuUrl;
 
     /**
-     * 执行函数,初始化菜单
+     * Execute action,初始化菜单
      */
     public function execute()
     {
-        $parentNodes = [null, _t('控制台'), _t('撰写'), _t('管理'), _t('设置')];
+        $parentNodes = [null, _t('Console'), _t('Write'), _t('Admin'), _t('Settings')];
 
         $childNodes = [
             [
-                [_t('登录'), _t('登录到%s', $this->options->title), 'login.php', 'visitor'],
-                [_t('注册'), _t('注册到%s', $this->options->title), 'register.php', 'visitor']
+                [_t('Login'), _t('Login to %s', $this->options->title), 'login.php', 'visitor'],
+                [_t('Register'), _t('Register at %s', $this->options->title), 'register.php', 'visitor']
             ],
             [
-                [_t('概要'), _t('网站概要'), 'index.php', 'subscriber'],
-                [_t('个人设置'), _t('个人设置'), 'profile.php', 'subscriber'],
-                [_t('插件'), _t('插件管理'), 'plugins.php', 'administrator'],
+                [_t('Overview'), _t('Website overview'), 'index.php', 'subscriber'],
+                [_t('Preferences'), _t('Preferences'), 'profile.php', 'subscriber'],
+                [_t('Plugins'), _t('manage plugins'), 'plugins.php', 'administrator'],
                 [[Config::class, 'getMenuTitle'], [Config::class, 'getMenuTitle'], 'options-plugin.php?config=', 'administrator', true],
-                [_t('外观'), _t('网站外观'), 'themes.php', 'administrator'],
+                [_t('Appearance'), _t('Website appearances'), 'themes.php', 'administrator'],
                 [[Files::class, 'getMenuTitle'], [Files::class, 'getMenuTitle'], 'theme-editor.php', 'administrator', true],
-                [_t('设置外观'), _t('设置外观'), 'options-theme.php', 'administrator', true],
-                [_t('备份'), _t('备份'), 'backup.php', 'administrator'],
-                [_t('升级'), _t('升级程序'), 'upgrade.php', 'administrator', true],
-                [_t('欢迎'), _t('欢迎使用'), 'welcome.php', 'subscriber', true]
+                [_t('Setup Appearance'), _t('Setup Appearance'), 'options-theme.php', 'administrator', true],
+                [_t('Backup'), _t('Backup'), 'backup.php', 'administrator'],
+                [_t('Upgrade'), _t('Upgrade program'), 'upgrade.php', 'administrator', true],
+                [_t('Welcome'), _t('Welcome'), 'welcome.php', 'subscriber', true]
             ],
             [
-                [_t('撰写文章'), _t('撰写新文章'), 'write-post.php', 'contributor'],
+                [_t('Write a post'), _t('Write a new post'), 'write-post.php', 'contributor'],
                 [[PostEdit::class, 'getMenuTitle'], [PostEdit::class, 'getMenuTitle'], 'write-post.php?cid=', 'contributor', true],
-                [_t('创建页面'), _t('创建新页面'), 'write-page.php', 'editor'],
+                [_t('Create a page'), _t('Create a new page'), 'write-page.php', 'editor'],
                 [[PageEdit::class, 'getMenuTitle'], [PageEdit::class, 'getMenuTitle'], 'write-page.php?cid=', 'editor', true],
                 [[PageEdit::class, 'getMenuTitle'], [PageEdit::class, 'getMenuTitle'], 'write-page.php?parent=', 'editor', true],
             ],
             [
-                [_t('文章'), _t('管理文章'), 'manage-posts.php', 'contributor', false, 'write-post.php'],
+                [_t('Posts'), _t('Manage posts'), 'manage-posts.php', 'contributor', false, 'write-post.php'],
                 [[PostAdmin::class, 'getMenuTitle'], [PostAdmin::class, 'getMenuTitle'], 'manage-posts.php?uid=', 'contributor', true],
-                [_t('独立页面'), _t('管理独立页面'), 'manage-pages.php', 'editor', false, 'write-page.php'],
+                [_t('Pages'), _t('Manage pages'), 'manage-pages.php', 'editor', false, 'write-page.php'],
                 [[PageAdmin::class, 'getMenuTitle'], [PageAdmin::class, 'getMenuTitle'], 'manage-pages.php?parent=', 'editor', true, [PageAdmin::class, 'getAddLink']],
-                [_t('评论'), _t('管理评论'), 'manage-comments.php', 'contributor'],
+                [_t('Comments'), _t('Manage comments'), 'manage-comments.php', 'contributor'],
                 [[CommentsAdmin::class, 'getMenuTitle'], [CommentsAdmin::class, 'getMenuTitle'], 'manage-comments.php?cid=', 'contributor', true],
-                [_t('分类'), _t('管理分类'), 'manage-categories.php', 'editor', false, 'category.php'],
-                [_t('新增分类'), _t('新增分类'), 'category.php', 'editor', true],
+                [_t('Category'), _t('Manage categories'), 'manage-categories.php', 'editor', false, 'category.php'],
+                [_t('New category'), _t('New category'), 'category.php', 'editor', true],
                 [[CategoryAdmin::class, 'getMenuTitle'], [CategoryAdmin::class, 'getMenuTitle'], 'manage-categories.php?parent=', 'editor', true, [CategoryAdmin::class, 'getAddLink']],
                 [[CategoryEdit::class, 'getMenuTitle'], [CategoryEdit::class, 'getMenuTitle'], 'category.php?mid=', 'editor', true],
                 [[CategoryEdit::class, 'getMenuTitle'], [CategoryEdit::class, 'getMenuTitle'], 'category.php?parent=', 'editor', true],
-                [_t('标签'), _t('管理标签'), 'manage-tags.php', 'editor'],
+                [_t('Tag'), _t('Manage tags'), 'manage-tags.php', 'editor'],
                 [[TagAdmin::class, 'getMenuTitle'], [TagAdmin::class, 'getMenuTitle'], 'manage-tags.php?mid=', 'editor', true],
-                [_t('文件'), _t('管理文件'), 'manage-medias.php', 'editor'],
+                [_t('Files'), _t('Manage files'), 'manage-medias.php', 'editor'],
                 [[AttachmentEdit::class, 'getMenuTitle'], [AttachmentEdit::class, 'getMenuTitle'], 'media.php?cid=', 'contributor', true],
-                [_t('用户'), _t('管理用户'), 'manage-users.php', 'administrator', false, 'user.php'],
-                [_t('新增用户'), _t('新增用户'), 'user.php', 'administrator', true],
+                [_t('Users'), _t('Manage users'), 'manage-users.php', 'administrator', false, 'user.php'],
+                [_t('Add users'), _t('Add users'), 'user.php', 'administrator', true],
                 [[UsersEdit::class, 'getMenuTitle'], [UsersEdit::class, 'getMenuTitle'], 'user.php?uid=', 'administrator', true],
             ],
             [
-                [_t('基本'), _t('基本设置'), 'options-general.php', 'administrator'],
-                [_t('评论'), _t('评论设置'), 'options-discussion.php', 'administrator'],
-                [_t('阅读'), _t('阅读设置'), 'options-reading.php', 'administrator'],
-                [_t('永久链接'), _t('永久链接设置'), 'options-permalink.php', 'administrator'],
+                [_t('Basic'), _t('Basic settings'), 'options-general.php', 'administrator'],
+                [_t('Comments'), _t('Comments settings'), 'options-discussion.php', 'administrator'],
+                [_t('Read'), _t('Reading settings'), 'options-reading.php', 'administrator'],
+                [_t('Permalink'), _t('Permalink settings'), 'options-permalink.php', 'administrator'],
             ]
         ];
 

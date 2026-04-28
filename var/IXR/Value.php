@@ -3,7 +3,7 @@
 namespace IXR;
 
 /**
- * IXR值
+ * IXR value
  *
  * @package IXR
  */

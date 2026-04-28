@@ -28,7 +28,7 @@ class Edit extends Contents implements ActionInterface
     use EditTrait;
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @access public
      * @return void
@@ -42,7 +42,7 @@ class Edit extends Contents implements ActionInterface
     }
 
     /**
-     * 发布文章
+     * Publish post
      */
     public function writePage()
     {
@@ -57,7 +57,7 @@ class Edit extends Contents implements ActionInterface
             'visibility'
         );
 
-        $contents['title'] = $this->request->get('title', _t('未命名页面'));
+        $contents['title'] = $this->request->get('title', _t('Unnamed page.'));
         $contents['created'] = $this->getCreated();
         $contents['visibility'] = ('hidden' == $contents['visibility'] ? 'hidden' : 'publish');
         $contents['parent'] = $this->getParent();
@@ -69,37 +69,37 @@ class Edit extends Contents implements ActionInterface
         $contents = self::pluginHandle()->filter('write', $contents, $this);
 
         if ($this->request->is('do=publish')) {
-            /** 重新发布已经存在的文章 */
+            /** Re-publish existing post */
             $contents['type'] = 'page';
             $this->publish($contents, false);
 
-            // 完成发布插件接口
+            // Complete publish plugin interface
             self::pluginHandle()->call('finishPublish', $contents, $this);
 
-            /** 发送ping */
+            /** Send ping */
             Service::alloc()->sendPing($this);
 
-            /** 设置提示信息 */
+            /** Set notice message */
             Notice::alloc()->set(
-                _t('页面 "<a href="%s">%s</a>" 已经发布', $this->permalink, $this->title),
+                _t('Page "<a href="%s">%s</a>" published.', $this->permalink, $this->title),
                 'success'
             );
 
-            /** 设置高亮 */
+            /** Set highlight */
             Notice::alloc()->highlight($this->theId);
 
-            /** 页面跳转 */
+            /** Page redirect */
             $this->response->redirect(Common::url('manage-pages.php'
                 . ($this->parent ? '?parent=' . $this->parent : ''), $this->options->adminUrl));
         } else {
-            /** 保存文章 */
+            /** Save post */
             $contents['type'] = 'page_draft';
             $draftId = $this->save($contents, false);
 
-            // 完成发布插件接口
+            // Complete publish plugin interface
             self::pluginHandle()->call('finishSave', $contents, $this);
 
-            /** 设置高亮 */
+            /** Set highlight */
             Notice::alloc()->highlight($this->cid);
 
             if ($this->request->isAjax()) {
@@ -111,10 +111,10 @@ class Edit extends Contents implements ActionInterface
                     'draftId' => $draftId
                 ]);
             } else {
-                /** 设置提示信息 */
-                Notice::alloc()->set(_t('草稿 "%s" 已经被保存', $this->title), 'success');
+                /** Set notice message */
+                Notice::alloc()->set(_t('Draft "%s" saved.', $this->title), 'success');
 
-                /** 返回原页面 */
+                /** Return to original page */
                 $this->response->redirect(Common::url('write-page.php?cid=' . $this->cid, $this->options->adminUrl));
             }
         }
@@ -129,8 +129,8 @@ class Edit extends Contents implements ActionInterface
     {
         $status = $this->request->get('status');
         $statusList = [
-            'publish' => _t('公开'),
-            'hidden'  => _t('隐藏')
+            'publish' => _t('Public'),
+            'hidden'  => _t('Hide')
         ];
 
         if (!isset($statusList[$status])) {
@@ -141,12 +141,12 @@ class Edit extends Contents implements ActionInterface
         $markCount = 0;
 
         foreach ($pages as $page) {
-            // 标记插件接口
+            // Mark plugin interface
             self::pluginHandle()->call('mark', $status, $page, $this);
             $condition = $this->db->sql()->where('cid = ?', $page);
 
             if ($this->db->query($condition->update('table.contents')->rows(['status' => $status]))) {
-                // 处理草稿
+                // Handle draft
                 $draft = $this->db->fetchRow($this->db->select('cid')
                     ->from('table.contents')
                     ->where('table.contents.parent = ? AND table.contents.type = ?', $page, 'revision')
@@ -157,7 +157,7 @@ class Edit extends Contents implements ActionInterface
                         ->where('cid = ?', $draft['cid']));
                 }
 
-                // 完成标记插件接口
+                // Complete mark plugin interface
                 self::pluginHandle()->call('finishMark', $status, $page, $this);
 
                 $markCount++;
@@ -166,19 +166,19 @@ class Edit extends Contents implements ActionInterface
             unset($condition);
         }
 
-        /** 设置提示信息 */
+        /** Set notice message */
         Notice::alloc()
             ->set(
                 $markCount > 0 ? _t('页面已经被标记为<strong>%s</strong>', $statusList[$status]) : _t('没有页面被标记'),
                 $markCount > 0 ? 'success' : 'notice'
             );
 
-        /** 返回原网页 */
+        /** Return to original page */
         $this->response->goBack();
     }
 
     /**
-     * 删除页面
+     * Delete page
      *
      * @throws DbException
      */
@@ -188,32 +188,32 @@ class Edit extends Contents implements ActionInterface
         $deleteCount = 0;
 
         foreach ($pages as $page) {
-            // 删除插件接口
+            // Remove plugin interface
             self::pluginHandle()->call('delete', $page, $this);
             $parent = $this->db->fetchObject($this->select()->where('cid = ?', $page))->parent;
 
             if ($this->delete($this->db->sql()->where('cid = ?', $page))) {
-                /** 删除评论 */
+                /** Delete comment */
                 $this->db->query($this->db->delete('table.comments')
                     ->where('cid = ?', $page));
 
-                /** 解除附件关联 */
+                /** Dissociate attachment */
                 $this->unAttach($page);
 
-                /** 解除首页关联 */
+                /** Dissociate homepage */
                 if ($this->options->frontPage == 'page:' . $page) {
                     $this->db->query($this->db->update('table.options')
                         ->rows(['value' => 'recent'])
                         ->where('name = ?', 'frontPage'));
                 }
 
-                /** 删除草稿 */
+                /** Delete draft */
                 $draft = $this->db->fetchRow($this->db->select('cid')
                     ->from('table.contents')
                     ->where('table.contents.parent = ? AND table.contents.type = ?', $page, 'revision')
                     ->limit(1));
 
-                /** 删除自定义字段 */
+                /** Delete custom fields */
                 $this->deleteFields($page);
 
                 if ($draft) {
@@ -228,26 +228,26 @@ class Edit extends Contents implements ActionInterface
                         ->where('type = ? OR type = ?', 'page', 'page_draft')
                 );
 
-                // 完成删除插件接口
+                // Complete remove plugin interface
                 self::pluginHandle()->call('finishDelete', $page, $this);
 
                 $deleteCount++;
             }
         }
 
-        /** 设置提示信息 */
+        /** Set notice message */
         Notice::alloc()
             ->set(
-                $deleteCount > 0 ? _t('页面已经被删除') : _t('没有页面被删除'),
+                $deleteCount > 0 ? _t('Pages deleted.') : _t('No page to delete.'),
                 $deleteCount > 0 ? 'success' : 'notice'
             );
 
-        /** 返回原网页 */
+        /** Return to original page */
         $this->response->goBack();
     }
 
     /**
-     * 删除页面所属草稿
+     * Delete page所属草稿
      *
      * @throws DbException
      */
@@ -257,7 +257,7 @@ class Edit extends Contents implements ActionInterface
         $deleteCount = 0;
 
         foreach ($pages as $page) {
-            /** 删除草稿 */
+            /** Delete draft */
             $draft = $this->db->fetchRow($this->db->select('cid')
                 ->from('table.contents')
                 ->where('table.contents.parent = ? AND table.contents.type = ?', $page, 'revision')
@@ -270,19 +270,19 @@ class Edit extends Contents implements ActionInterface
             }
         }
 
-        /** 设置提示信息 */
+        /** Set notice message */
         Notice::alloc()
             ->set(
-                $deleteCount > 0 ? _t('草稿已经被删除') : _t('没有草稿被删除'),
+                $deleteCount > 0 ? _t('Drafts deleted.') : _t('No draft to delete.'),
                 $deleteCount > 0 ? 'success' : 'notice'
             );
 
-        /** 返回原网页 */
+        /** Return to original page */
         $this->response->goBack();
     }
 
     /**
-     * 页面排序
+     * 页面Sort
      *
      * @throws DbException
      */
@@ -298,10 +298,10 @@ class Edit extends Contents implements ActionInterface
         }
 
         if (!$this->request->isAjax()) {
-            /** 转向原页 */
+            /** Redirect to original page */
             $this->response->goBack();
         } else {
-            $this->response->throwJson(['success' => 1, 'message' => _t('页面排序已经完成')]);
+            $this->response->throwJson(['success' => 1, 'message' => _t('Page sorted.')]);
         }
     }
 
@@ -312,11 +312,11 @@ class Edit extends Contents implements ActionInterface
      */
     public function prepare(): self
     {
-        return $this->prepareEdit('page', true, _t('页面不存在'));
+        return $this->prepareEdit('page', true, _t('Page does not exist.'));
     }
 
     /**
-     * 绑定动作
+     * Bind action
      *
      * @return void
      * @throws DbException
@@ -335,7 +335,7 @@ class Edit extends Contents implements ActionInterface
     }
 
     /**
-     * 获取网页标题
+     * Get page title
      *
      * @return string
      */
@@ -344,7 +344,7 @@ class Edit extends Contents implements ActionInterface
         $this->prepare();
 
         if ($this->have()) {
-            return _t('编辑 %s', $this->title);
+            return _t('Edit %s', $this->title);
         }
 
         if ($this->request->is('parent')) {
@@ -357,7 +357,7 @@ class Edit extends Contents implements ActionInterface
             }
         }
 
-        throw new Exception(_t('页面不存在'), 404);
+        throw new Exception(_t('Page does not exist.'), 404);
     }
 
 

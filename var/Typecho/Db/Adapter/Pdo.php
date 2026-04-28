@@ -18,7 +18,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 abstract class Pdo implements Adapter
 {
     /**
-     * 数据库对象
+     * Database object
      *
      * @access protected
      * @var \PDO
@@ -26,7 +26,7 @@ abstract class Pdo implements Adapter
     protected \PDO $object;
 
     /**
-     * 最后一次操作的数据表
+     * 最后Mon次操作的数据表
      *
      * @access protected
      * @var string|null
@@ -34,7 +34,7 @@ abstract class Pdo implements Adapter
     protected ?string $lastTable;
 
     /**
-     * 判断适配器是否可用
+     * Check whether the adapter is available
      *
      * @access public
      * @return boolean
@@ -45,9 +45,9 @@ abstract class Pdo implements Adapter
     }
 
     /**
-     * 数据库连接函数
+     * Database connection function
      *
-     * @param Config $config 数据库配置
+     * @param Config $config Database configuration
      * @return \PDO
      * @throws ConnectionException
      */
@@ -58,15 +58,15 @@ abstract class Pdo implements Adapter
             $this->object->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             return $this->object;
         } catch (\PDOException $e) {
-            /** 数据库异常 */
+            /** Database exception */
             throw new ConnectionException($e->getMessage(), $e->getCode());
         }
     }
 
     /**
-     * 初始化数据库
+     * Initialize database
      *
-     * @param Config $config 数据库配置
+     * @param Config $config Database configuration
      * @abstract
      * @access public
      * @return \PDO
@@ -74,7 +74,7 @@ abstract class Pdo implements Adapter
     abstract public function init(Config $config): \PDO;
 
     /**
-     * 获取数据库版本
+     * Get database version
      *
      * @param mixed $handle
      * @return string
@@ -85,13 +85,13 @@ abstract class Pdo implements Adapter
     }
 
     /**
-     * 执行数据库查询
+     * Execute database query
      *
-     * @param string $query 数据库查询SQL字符串
-     * @param \PDO $handle 连接对象
-     * @param integer $op 数据库读写状态
-     * @param string|null $action 数据库动作
-     * @param string|null $table 数据表
+     * @param string $query Database SQL query string
+     * @param \PDO $handle Connection handle
+     * @param integer $op Database read/write mode
+     * @param string|null $action Database action
+     * @param string|null $table Database table
      * @return \PDOStatement
      * @throws SQLException
      */
@@ -107,7 +107,7 @@ abstract class Pdo implements Adapter
             $resource = $handle->prepare($query);
             $resource->execute();
         } catch (\PDOException $e) {
-            /** 数据库异常 */
+            /** Database exception */
             throw new SQLException($e->getMessage(), $e->getCode());
         }
 
@@ -115,9 +115,9 @@ abstract class Pdo implements Adapter
     }
 
     /**
-     * 将数据查询的结果作为数组全部取出,其中字段名对应数组键值
+     * Fetch all query results as an array, keyed by column name
      *
-     * @param \PDOStatement $resource 查询的资源数据
+     * @param \PDOStatement $resource Query resource data
      * @return array
      */
     public function fetchAll($resource): array
@@ -126,9 +126,9 @@ abstract class Pdo implements Adapter
     }
 
     /**
-     * 将数据查询的其中一行作为数组取出,其中字段名对应数组键值
+     * Fetch one row from the query result as an array, keyed by column name
      *
-     * @param \PDOStatement $resource 查询返回资源标识
+     * @param \PDOStatement $resource Query result resource
      * @return array|null
      */
     public function fetch($resource): ?array
@@ -137,9 +137,9 @@ abstract class Pdo implements Adapter
     }
 
     /**
-     * 将数据查询的其中一行作为对象取出,其中字段名对应对象属性
+     * Fetch one row from the query result as an object, with column names as properties
      *
-     * @param \PDOStatement $resource 查询的资源数据
+     * @param \PDOStatement $resource Query resource data
      * @return \stdClass|null
      */
     public function fetchObject($resource): ?\stdClass
@@ -148,9 +148,9 @@ abstract class Pdo implements Adapter
     }
 
     /**
-     * 引号转义函数
+     * Quote escaping function
      *
-     * @param mixed $string 需要转义的字符串
+     * @param mixed $string String to escape
      * @return string
      */
     public function quoteValue($string): string
@@ -159,10 +159,10 @@ abstract class Pdo implements Adapter
     }
 
     /**
-     * 取出最后一次查询影响的行数
+     * Get the number of rows affected by the last query
      *
-     * @param \PDOStatement $resource 查询的资源数据
-     * @param \PDO $handle 连接对象
+     * @param \PDOStatement $resource Query resource data
+     * @param \PDO $handle Connection handle
      * @return integer
      */
     public function affectedRows($resource, $handle): int
@@ -171,10 +171,10 @@ abstract class Pdo implements Adapter
     }
 
     /**
-     * 取出最后一次插入返回的主键值
+     * Get the primary key value returned by the last insert
      *
-     * @param \PDOStatement $resource 查询的资源数据
-     * @param \PDO $handle 连接对象
+     * @param \PDOStatement $resource Query resource data
+     * @param \PDO $handle Connection handle
      * @return integer
      */
     public function lastInsertId($resource, $handle): int

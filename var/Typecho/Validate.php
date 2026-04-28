@@ -3,14 +3,14 @@
 namespace Typecho;
 
 /**
- * 验证类
+ * Validation class
  *
  * @package Validate
  */
 class Validate
 {
     /**
-     * 内部数据
+     * Internal data
      *
      * @access private
      * @var array
@@ -26,7 +26,7 @@ class Validate
     private string $key;
 
     /**
-     * 验证规则数组
+     * Validation rule数组
      *
      * @access private
      * @var array
@@ -34,7 +34,7 @@ class Validate
     private array $rules = [];
 
     /**
-     * 中断模式,一旦出现验证错误即抛出而不再继续执行
+     * 中断模式,Mon旦出现验证错误即抛出而不再继续执行
      *
      * @access private
      * @var boolean
@@ -46,7 +46,7 @@ class Validate
      *
      * @access public
      *
-     * @param string $str 待处理的字符串
+     * @param string $str String to process
      * @param integer $length 最小长度
      *
      * @return boolean
@@ -61,7 +61,7 @@ class Validate
      *
      * @access public
      *
-     * @param string $str 待处理的字符串
+     * @param string $str String to process
      * @param array $params 枚举值
      *
      * @return bool
@@ -158,7 +158,7 @@ class Validate
     }
 
     /**
-     * 对xss字符串的检测
+     * 对xssString的检测
      *
      * @access public
      *
@@ -215,7 +215,7 @@ class Validate
     }
 
     /**
-     * 正则表达式验证
+     * Regular expression验证
      *
      * @param string $str
      * @param string $pattern
@@ -227,13 +227,13 @@ class Validate
     }
 
     /**
-     * 增加验证规则
+     * 增加Validation rule
      *
      * @access public
      *
-     * @param string $key 数值键值
+     * @param string $key 数值Key value
      * @param string|callable $rule 规则名称
-     * @param string $message 错误字符串
+     * @param string $message 错误String
      *
      * @return $this
      */
@@ -311,12 +311,12 @@ class Validate
     }
 
     /**
-     * 验证输入是否一致
+     * 验证输入是否Mon致
      *
      * @access public
      *
-     * @param string|null $str 待处理的字符串
-     * @param string $key 需要一致性检查的键值
+     * @param string|null $str 待处理的String
+     * @param string $key 需要Mon致性检查的Key value
      *
      * @return boolean
      */

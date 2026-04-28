@@ -3,7 +3,7 @@
 namespace Typecho\Widget\Helper;
 
 /**
- * HTML布局帮手类
+ * HTML layout helper class
  *
  * @category typecho
  * @package Widget
@@ -29,7 +29,7 @@ class Layout
     private array $attributes = [];
 
     /**
-     * 标签名称
+     * Label名称
      *
      * @access private
      * @var string
@@ -53,7 +53,7 @@ class Layout
     private ?bool $forceClose = null;
 
     /**
-     * 内部数据
+     * Internal data
      *
      * @access private
      * @var string
@@ -69,9 +69,9 @@ class Layout
     private $parent;
 
     /**
-     * 构造函数,设置标签名称
+     * Constructor,设置Label名称
      *
-     * @param string $tagName 标签名称
+     * @param string $tagName Label名称
      * @param array|null $attributes 属性列表
      *
      */
@@ -89,7 +89,7 @@ class Layout
     /**
      * 设置表单属性
      *
-     * @param string $attributeName 属性名称
+     * @param string $attributeName Attribute name
      * @param mixed $attributeValue 属性值
      * @return $this
      */
@@ -102,7 +102,7 @@ class Layout
     /**
      * 删除元素
      *
-     * @param Layout $item 元素
+     * @param Layout $item Layout item
      * @return $this
      */
     public function removeItem(Layout $item): Layout
@@ -132,9 +132,9 @@ class Layout
     }
 
     /**
-     * 设置标签名
+     * 设置Label名
      *
-     * @param string $tagName 标签名
+     * @param string $tagName Label名
      */
     public function setTagName(string $tagName)
     {
@@ -144,7 +144,7 @@ class Layout
     /**
      * 移除某个属性
      *
-     * @param string $attributeName 属性名称
+     * @param string $attributeName Attribute name
      * @return $this
      */
     public function removeAttribute(string $attributeName): Layout
@@ -157,7 +157,7 @@ class Layout
     }
 
     /**
-     * 获取属性
+     * Get attribute
      *
      * @access public
      *
@@ -218,7 +218,7 @@ class Layout
     /**
      * 增加元素
      *
-     * @param Layout $item 元素
+     * @param Layout $item Layout item
      * @return $this
      */
     public function addItem(Layout $item): Layout
@@ -229,9 +229,9 @@ class Layout
     }
 
     /**
-     * 获取属性
+     * Get attribute
      *
-     * @param string $name 属性名称
+     * @param string $name Attribute name
      * @return string|null
      */
     public function __get(string $name): ?string
@@ -242,7 +242,7 @@ class Layout
     /**
      * 设置属性
      *
-     * @param string $name 属性名称
+     * @param string $name Attribute name
      * @param string $value 属性值
      */
     public function __set(string $name, string $value)
@@ -251,7 +251,7 @@ class Layout
     }
 
     /**
-     * 输出所有元素
+     * Output all elements
      */
     public function render()
     {
@@ -269,11 +269,11 @@ class Layout
     }
 
     /**
-     * 开始标签
+     * 开始Label
      */
     public function start()
     {
-        /** 输出标签 */
+        /** 输出Label */
         echo $this->tagName ? "<{$this->tagName}" : null;
 
         /** 输出属性 */
@@ -310,7 +310,7 @@ class Layout
     }
 
     /**
-     * 结束标签
+     * 结束Label
      *
      * @return void
      */

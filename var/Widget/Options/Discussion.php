@@ -26,13 +26,13 @@ class Discussion extends Options implements ActionInterface
     use EditTrait;
 
     /**
-     * 执行更新动作
+     * Execute update action
      *
      * @throws Exception
      */
     public function updateDiscussionSettings()
     {
-        /** 验证格式 */
+        /** Validate form */
         if ($this->form()->validate()) {
             $this->response->goBack();
         }
@@ -108,28 +108,28 @@ class Discussion extends Options implements ActionInterface
             $this->update(['value' => $value], $this->db->sql()->where('name = ?', $name));
         }
 
-        Notice::alloc()->set(_t("设置已经保存"), 'success');
+        Notice::alloc()->set(_t("Your settings have been saved."), 'success');
         $this->response->goBack();
     }
 
     /**
-     * 输出表单结构
+     * Output form structure
      *
      * @return Form
      */
     public function form(): Form
     {
-        /** 构建表格 */
+        /** Build form */
         $form = new Form($this->security->getIndex('/action/options-discussion'), Form::POST_METHOD);
 
-        /** 评论日期格式 */
+        /** 评论Sun期格式 */
         $commentDateFormat = new Form\Element\Text(
             'commentDateFormat',
             null,
             $this->options->commentDateFormat,
-            _t('评论日期格式'),
-            _t('这是一个默认的格式,当你在模板中调用显示评论日期方法时, 如果没有指定日期格式, 将按照此格式输出.') . '<br />'
-            . _t('具体写法请参考 <a href="https://www.php.net/manual/zh/function.date.php">PHP 日期格式写法</a>.')
+            _t('Comment date format'),
+            _t('This is a default format. When you call the show comment date method in templates, this format will be adopted if you do not specify any date format.') . '<br />'
+            . _t('See <a href="https://www.php.net/manual/en/function.date.php">PHP date format reference</a> for details.')
         );
         $commentDateFormat->input->setAttribute('class', 'w-40 mono');
         $form->addInput($commentDateFormat);
@@ -139,37 +139,37 @@ class Discussion extends Options implements ActionInterface
             'commentsListSize',
             null,
             $this->options->commentsListSize,
-            _t('评论列表数目'),
-            _t('此数目用于指定显示在侧边栏中的评论列表数目.')
+            _t('Comment list length'),
+            _t('This number specifies how many comments to display in the comment list of the sidebar')
         );
         $commentsListSize->input->setAttribute('class', 'w-20');
-        $form->addInput($commentsListSize->addRule('isInteger', _t('请填入一个数字')));
+        $form->addInput($commentsListSize->addRule('isInteger', _t('Please enter a number')));
 
         $commentsShowOptions = [
-            'commentsShowCommentOnly' => _t('仅显示评论, 不显示 Pingback 和 Trackback'),
-            'commentsMarkdown'        => _t('在评论中使用 Markdown 语法'),
-            'commentsShowUrl'         => _t('评论者名称显示时自动加上其个人主页链接'),
-            'commentsUrlNofollow'     => _t('对评论者个人主页链接使用 <a href="https://en.wikipedia.org/wiki/Nofollow">nofollow 属性</a>'),
+            'commentsShowCommentOnly' => _t('Display comments without Pingback and Trackback'),
+            'commentsMarkdown'        => _t('Enable Markdown syntax for comments'),
+            'commentsShowUrl'         => _t('Automatically link commentators to their personal homepage URL.'),
+            'commentsUrlNofollow'     => _t('Apply the <a href="https://en.wikipedia.org/wiki/Nofollow">nofollow attribute</a> to commenter website links'),
             'commentsAvatar'          => _t('启用 <a href="https://gravatar.com">Gravatar</a> 头像服务, 最高显示评级为 %s 的头像',
                 '</label><select id="commentsShow-commentsAvatarRating" name="commentsAvatarRating">
-            <option value="G"' . ('G' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>' . _t('G - 普通') . '</option>
-            <option value="PG"' . ('PG' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>' . _t('PG - 13岁以上') . '</option>
-            <option value="R"' . ('R' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>' . _t('R - 17岁以上成人') . '</option>
-            <option value="X"' . ('X' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>' . _t('X - 限制级') . '</option></select>
+            <option value="G"' . ('G' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>' . _t('G – General Audiences') . '</option>
+            <option value="PG"' . ('PG' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>' . _t('PG-13 – Inappropriate for children under 13') . '</option>
+            <option value="R"' . ('R' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>' . _t('R-17 - Restricted for children under 17') . '</option>
+            <option value="X"' . ('X' == $this->options->commentsAvatarRating ? ' selected="true"' : '') . '>' . _t('X - Inappropriate for minors') . '</option></select>
             <label for="commentsShow-commentsAvatarRating">'),
-            'commentsPageBreak'       => _t('启用分页, 并且每页显示 %s 篇评论, 在列出时将 %s 作为默认显示',
+            'commentsPageBreak'       => _t('Enable pages for comments, display %s comments per page, and use %s as the default display.',
                 '</label><input type="number" value="' . $this->options->commentsPageSize
                 . '" class="text num text-s" id="commentsShow-commentsPageSize" name="commentsPageSize" /><label for="commentsShow-commentsPageSize">',
                 '</label><select id="commentsShow-commentsPageDisplay" name="commentsPageDisplay">
-            <option value="first"' . ('first' == $this->options->commentsPageDisplay ? ' selected="true"' : '') . '>' . _t('第一页') . '</option>
-            <option value="last"' . ('last' == $this->options->commentsPageDisplay ? ' selected="true"' : '') . '>' . _t('最后一页') . '</option></select>'
+            <option value="first"' . ('first' == $this->options->commentsPageDisplay ? ' selected="true"' : '') . '>' . _t('First') . '</option>
+            <option value="last"' . ('last' == $this->options->commentsPageDisplay ? ' selected="true"' : '') . '>' . _t('Last') . '</option></select>'
                 . '<label for="commentsShow-commentsPageDisplay">'),
-            'commentsThreaded'        => _t('启用评论回复, 以 %s 层作为每个评论最多的回复层数',
+            'commentsThreaded'        => _t('Enable replying to comments. Allow %s depth of comments.',
                     '</label><input name="commentsMaxNestingLevels" type="number" class="text num text-s" value="' . $this->options->commentsMaxNestingLevels . '" id="commentsShow-commentsMaxNestingLevels" />
             <label for="commentsShow-commentsMaxNestingLevels">') . '</label></span><span class="multiline">'
-                . _t('将 %s 的评论显示在前面', '<select id="commentsShow-commentsOrder" name="commentsOrder">
-            <option value="DESC"' . ('DESC' == $this->options->commentsOrder ? ' selected="true"' : '') . '>' . _t('较新的') . '</option>
-            <option value="ASC"' . ('ASC' == $this->options->commentsOrder ? ' selected="true"' : '') . '>' . _t('较旧的') . '</option></select><label for="commentsShow-commentsOrder">')
+                . _t('Display %s comments first.', '<select id="commentsShow-commentsOrder" name="commentsOrder">
+            <option value="DESC"' . ('DESC' == $this->options->commentsOrder ? ' selected="true"' : '') . '>' . _t('Newer') . '</option>
+            <option value="ASC"' . ('ASC' == $this->options->commentsOrder ? ' selected="true"' : '') . '>' . _t('Older') . '</option></select><label for="commentsShow-commentsOrder">')
         ];
 
         $commentsShowOptionsValue = [];
@@ -205,22 +205,22 @@ class Discussion extends Options implements ActionInterface
             'commentsShow',
             $commentsShowOptions,
             $commentsShowOptionsValue,
-            _t('评论显示')
+            _t('Comments display.')
         );
         $form->addInput($commentsShow->multiMode());
 
         /** 评论提交 */
         $commentsPostOptions = [
-            'commentsRequireModeration'  => _t('所有评论必须经过审核'),
-            'commentsWhitelist'          => _t('评论者之前须有评论通过了审核'),
-            'commentsRequireMail'        => _t('必须填写邮箱'),
-            'commentsRequireUrl'         => _t('必须填写网址'),
-            'commentsCheckReferer'       => _t('检查评论来源页 URL 是否与文章链接一致'),
-            'commentsAntiSpam'           => _t('开启反垃圾保护'),
-            'commentsAutoClose'          => _t('在文章发布 %s 天以后自动关闭评论',
+            'commentsRequireModeration'  => _t('All comments must be reviewed before publication.'),
+            'commentsWhitelist'          => _t('Commentators must have a comment previously approved in reviews.'),
+            'commentsRequireMail'        => _t('You must enter an email address.'),
+            'commentsRequireUrl'         => _t('You must enter a website URL.'),
+            'commentsCheckReferer'       => _t('Check if the source URL of the comment is coherent with the post link.'),
+            'commentsAntiSpam'           => _t('Turn on Anti-Spam protection'),
+            'commentsAutoClose'          => _t('Automatically close comments %s days after the publication. ',
                 '</label><input name="commentsPostTimeout" type="number" class="text num text-s" value="' . intval($this->options->commentsPostTimeout / (24 * 3600)) . '" id="commentsPost-commentsPostTimeout" />
             <label for="commentsPost-commentsPostTimeout">'),
-            'commentsPostIntervalEnable' => _t('同一 IP 发布评论的时间间隔限制为 %s 分钟',
+            'commentsPostIntervalEnable' => _t('Comments interval is %s minutes for an identical IP.',
                 '</label><input name="commentsPostInterval" type="number" class="text num text-s" value="' . round($this->options->commentsPostInterval / (60), 1) . '" id="commentsPost-commentsPostInterval" />
             <label for="commentsPost-commentsPostInterval">')
         ];
@@ -262,24 +262,24 @@ class Discussion extends Options implements ActionInterface
             'commentsPost',
             $commentsPostOptions,
             $commentsPostOptionsValue,
-            _t('评论提交')
+            _t('Submit comment.')
         );
         $form->addInput($commentsPost->multiMode());
 
-        /** 允许使用的HTML标签和属性 */
+        /** 允许使用的HTMLLabel和属性 */
         $commentsHTMLTagAllowed = new Form\Element\Textarea(
             'commentsHTMLTagAllowed',
             null,
             $this->options->commentsHTMLTagAllowed,
-            _t('允许使用的HTML标签和属性'),
-            _t('默认的用户评论不允许填写任何的HTML标签, 你可以在这里填写允许使用的HTML标签.') . '<br />'
-            . _t('比如: %s', '<code>&lt;a href=&quot;&quot;&gt; &lt;img src=&quot;&quot;&gt; &lt;blockquote&gt;</code>')
+            _t('Allowed HTML tags and attributes'),
+            _t('By default, in comments users are not allowed to use any HTML tags. You can enter allowed HTML tags here:') . '<br />'
+            . _t('e.g. %s', '<code>&lt;a href=&quot;&quot;&gt; &lt;img src=&quot;&quot;&gt; &lt;blockquote&gt;</code>')
         );
         $commentsHTMLTagAllowed->input->setAttribute('class', 'mono');
         $form->addInput($commentsHTMLTagAllowed);
 
-        /** 提交按钮 */
-        $submit = new Form\Element\Submit('submit', null, _t('保存设置'));
+        /** Submit button */
+        $submit = new Form\Element\Submit('submit', null, _t('Save settings.'));
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
 
@@ -287,7 +287,7 @@ class Discussion extends Options implements ActionInterface
     }
 
     /**
-     * 绑定动作
+     * Bind action
      *
      * @access public
      * @return void

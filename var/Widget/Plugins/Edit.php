@@ -32,33 +32,33 @@ class Edit extends Options implements ActionInterface
     private bool $configNoticed = false;
 
     /**
-     * 启用插件
+     * Enable plugin
      *
      * @param $pluginName
      * @throws Exception|Db\Exception|Plugin\Exception
      */
     public function activate($pluginName)
     {
-        /** 获取插件入口 */
+        /** Get plugin entry point */
         [$pluginFileName, $className] = Plugin::portal($pluginName, $this->options->pluginDir);
         $info = Plugin::parseInfo($pluginFileName);
 
         /** 检测依赖信息 */
         if (Plugin::checkDependence($info['since'])) {
 
-            /** 获取已启用插件 */
+            /** Get enabled plugins */
             $plugins = Plugin::export();
             $activatedPlugins = $plugins['activated'];
 
-            /** 载入插件 */
+            /** Load plugin */
             require_once $pluginFileName;
 
-            /** 判断实例化是否成功 */
+            /** Check whether instantiation succeeded */
             if (
                 isset($activatedPlugins[$pluginName]) || !class_exists($className)
                 || !method_exists($className, 'activate')
             ) {
-                throw new Exception(_t('无法启用插件'), 500);
+                throw new Exception(_t('Cannot enable plugins.'), 500);
             }
 
             try {
@@ -69,7 +69,7 @@ class Edit extends Options implements ActionInterface
                     $this->db->sql()->where('name = ?', 'plugins')
                 );
             } catch (Plugin\Exception $e) {
-                /** 截获异常 */
+                /** Catch exception */
                 Notice::alloc()->set($e->getMessage(), 'error');
                 $this->response->goBack();
             }
@@ -91,33 +91,33 @@ class Edit extends Options implements ActionInterface
                 self::configPlugin($pluginName, $personalOptions, true);
             }
         } else {
-            $result = _t('<a href="%s">%s</a> 无法在此版本的typecho下正常工作', $info['homepage'], $info['title']);
+            $result = _t('<a href="%s">%s</a> cannot work under this version of typecho.', $info['homepage'], $info['title']);
         }
 
-        /** 设置高亮 */
+        /** Set highlight */
         Notice::alloc()->highlight('plugin-' . $pluginName);
 
         if (isset($result) && is_string($result)) {
             Notice::alloc()->set($result, 'notice');
         } else {
-            Notice::alloc()->set(_t('插件已经被启用'), 'success');
+            Notice::alloc()->set(_t('Plugin enabled.'), 'success');
         }
         $this->response->goBack();
     }
 
     /**
-     * 用自有函数处理配置信息
+     * Process configuration value with own function
      *
      * @access public
-     * @param string $pluginName 插件名称
-     * @param array $settings 配置值
-     * @param boolean $isInit 是否为初始化
+     * @param string $pluginName Plugin name
+     * @param array $settings Configuration values
+     * @param boolean $isInit Whether this is initialization
      * @return boolean
      * @throws Plugin\Exception
      */
     public function configHandle(string $pluginName, array $settings, bool $isInit): bool
     {
-        /** 获取插件入口 */
+        /** Get plugin entry point */
         [$pluginFileName, $className] = Plugin::portal($pluginName, $this->options->pluginDir);
 
         if (!$isInit && method_exists($className, 'configCheck')) {
@@ -138,11 +138,11 @@ class Edit extends Options implements ActionInterface
     }
 
     /**
-     * 手动配置插件变量
+     * Manually configure plugin variables
      *
-     * @param string $pluginName 插件名称
-     * @param array $settings 变量键值对
-     * @param bool $isPersonal 是否为私人变量
+     * @param string $pluginName Plugin name
+     * @param array $settings Variable key-value pairs
+     * @param bool $isPersonal Whether this is a private variable
      * @throws Db\Exception
      */
     public static function configPlugin(string $pluginName, array $settings, bool $isPersonal = false)
@@ -182,10 +182,10 @@ class Edit extends Options implements ActionInterface
     }
 
     /**
-     * 用自有函数处理自定义配置信息
+     * Process custom configuration value with own function
      *
-     * @param string $className 类名
-     * @param array $settings 配置值
+     * @param string $className Class name
+     * @param array $settings Configuration values
      * @return boolean
      */
     public function personalConfigHandle(string $className, array $settings): bool
@@ -199,7 +199,7 @@ class Edit extends Options implements ActionInterface
     }
 
     /**
-     * 禁用插件
+     * Disable plugin
      *
      * @param string $pluginName
      * @throws Db\Exception
@@ -208,13 +208,13 @@ class Edit extends Options implements ActionInterface
      */
     public function deactivate(string $pluginName)
     {
-        /** 获取已启用插件 */
+        /** Get enabled plugins */
         $plugins = Plugin::export();
         $activatedPlugins = $plugins['activated'];
         $pluginFileExist = true;
 
         try {
-            /** 获取插件入口 */
+            /** Get plugin entry point */
             [$pluginFileName, $className] = Plugin::portal($pluginName, $this->options->pluginDir);
         } catch (Plugin\Exception $e) {
             $pluginFileExist = false;
@@ -224,33 +224,33 @@ class Edit extends Options implements ActionInterface
             }
         }
 
-        /** 判断实例化是否成功 */
+        /** Check whether instantiation succeeded */
         if (!isset($activatedPlugins[$pluginName])) {
-            throw new Exception(_t('无法禁用插件'), 500);
+            throw new Exception(_t('Cannot disable the plugin.'), 500);
         }
 
         if ($pluginFileExist) {
 
-            /** 载入插件 */
+            /** Load plugin */
             require_once $pluginFileName;
 
-            /** 判断实例化是否成功 */
+            /** Check whether instantiation succeeded */
             if (
                 !isset($activatedPlugins[$pluginName]) || !class_exists($className)
                 || !method_exists($className, 'deactivate')
             ) {
-                throw new Exception(_t('无法禁用插件'), 500);
+                throw new Exception(_t('Cannot disable the plugin.'), 500);
             }
 
             try {
                 $result = call_user_func([$className, 'deactivate']);
             } catch (Plugin\Exception $e) {
-                /** 截获异常 */
+                /** Catch exception */
                 Notice::alloc()->set($e->getMessage(), 'error');
                 $this->response->goBack();
             }
 
-            /** 设置高亮 */
+            /** Set highlight */
             Notice::alloc()->highlight('plugin-' . $pluginName);
         }
 
@@ -263,13 +263,13 @@ class Edit extends Options implements ActionInterface
         if (isset($result) && is_string($result)) {
             Notice::alloc()->set($result);
         } else {
-            Notice::alloc()->set(_t('插件已经被禁用'), 'success');
+            Notice::alloc()->set(_t('Plugin disabled.'), 'success');
         }
         $this->response->goBack();
     }
 
     /**
-     * 配置插件
+     * Configure plugin
      *
      * @param string $pluginName
      * @throws Db\Exception
@@ -280,7 +280,7 @@ class Edit extends Options implements ActionInterface
     {
         $form = Config::alloc()->config();
 
-        /** 验证表单 */
+        /** Validate form */
         if ($form->validate()) {
             $this->response->goBack();
         }
@@ -291,20 +291,20 @@ class Edit extends Options implements ActionInterface
             self::configPlugin($pluginName, $settings);
         }
 
-        /** 设置高亮 */
+        /** Set highlight */
         Notice::alloc()->highlight('plugin-' . $pluginName);
 
         if (!$this->configNoticed) {
-            /** 提示信息 */
-            Notice::alloc()->set(_t("插件设置已经保存"), 'success');
+            /** Notice message */
+            Notice::alloc()->set(_t("Plugin settings saved."), 'success');
         }
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->redirect(Common::url('plugins.php', $this->options->adminUrl));
     }
 
     /**
-     * 绑定动作
+     * Bind action
      */
     public function action()
     {

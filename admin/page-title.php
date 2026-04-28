@@ -3,7 +3,7 @@
     <h2><?php echo $menu->title; ?></h2>
     <?php
     if (!empty($menu->addLink)) {
-        echo "<a href=\"{$menu->addLink}\">" . _t("新增") . "</a>";
+        echo "<a href=\"{$menu->addLink}\">" . _t("Add") . "</a>";
     }
     ?>
 </div>

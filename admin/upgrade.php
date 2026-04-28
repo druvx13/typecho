@@ -13,16 +13,16 @@ include 'menu.php';
                     <form action="<?php echo $security->getTokenUrl(
                         \Typecho\Router::url('do', ['action' => 'upgrade', 'widget' => 'Upgrade'],
                             \Typecho\Common::url('index.php', $options->rootUrl))); ?>" method="post">
-                        <h3><?php _e('检测到新版本!'); ?></h3>
+                        <h3><?php _e('A newer version has been detected.'); ?></h3>
                         <ul>
-                            <li><?php _e('您已经更新了系统程序, 我们还需要执行一些后续步骤来完成升级'); ?></li>
-                            <li><?php _e('此程序将把您的系统从 <strong>%s</strong> 升级到 <strong>%s</strong>', $options->version, \Typecho\Common::VERSION); ?></li>
+                            <li><?php _e('You have already updated the program, we still need some steps to finish the upgrade'); ?></li>
+                            <li><?php _e('Your system will be upgrade from <strong>%s</strong> to <strong>%s</strong>.', $options->version, \Typecho\Common::VERSION); ?></li>
                             <li><strong
-                                    class="warning"><?php _e('在升级之前强烈建议先<a href="%s">备份您的数据</a>', \Typecho\Common::url('backup.php', $options->adminUrl)); ?></strong>
+                                    class="warning"><?php _e('Attention - please backup your files <a href="%s">before upgrading</a>', \Typecho\Common::url('backup.php', $options->adminUrl)); ?></strong>
                             </li>
                         </ul>
                         <p>
-                            <button class="btn primary" type="submit"><?php _e('完成升级 &raquo;'); ?></button>
+                            <button class="btn primary" type="submit"><?php _e('Finish upgrade &raquo;'); ?></button>
                         </p>
                     </form>
                 </div>

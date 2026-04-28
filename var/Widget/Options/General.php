@@ -14,7 +14,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 基本设置组件
+ * Basic settings widget
  *
  * @author qining
  * @category typecho
@@ -75,13 +75,13 @@ class General extends Options implements ActionInterface
     }
 
     /**
-     * 执行更新动作
+     * Execute update action
      *
      * @throws Exception
      */
     public function updateGeneralSettings()
     {
-        /** 验证格式 */
+        /** Validate form */
         if ($this->form()->validate()) {
             $this->response->goBack();
         }
@@ -131,25 +131,25 @@ class General extends Options implements ActionInterface
             $this->update(['value' => $value], $this->db->sql()->where('name = ?', $name));
         }
 
-        Notice::alloc()->set(_t("设置已经保存"), 'success');
+        Notice::alloc()->set(_t("Your settings have been saved."), 'success');
         $this->response->goBack();
     }
 
     /**
-     * 输出表单结构
+     * Output form structure
      *
      * @return Form
      */
     public function form(): Form
     {
-        /** 构建表格 */
+        /** Build form */
         $form = new Form($this->security->getIndex('/action/options-general'), Form::POST_METHOD);
 
         /** 站点名称 */
-        $title = new Form\Element\Text('title', null, $this->options->title, _t('站点名称'), _t('站点的名称将显示在网页的标题处.'));
+        $title = new Form\Element\Text('title', null, $this->options->title, _t('Site name'), _t('Site name will be displayed in the title of the web page.'));
         $title->input->setAttribute('class', 'w-100');
-        $form->addInput($title->addRule('required', _t('请填写站点名称'))
-            ->addRule('xssCheck', _t('请不要在站点名称中使用特殊字符')));
+        $form->addInput($title->addRule('required', _t('Please fill in the name of the site'))
+            ->addRule('xssCheck', _t('Please do not use special characters in the name of the site')));
 
         /** 站点地址 */
         if (!defined('__TYPECHO_SITE_URL__')) {
@@ -157,14 +157,14 @@ class General extends Options implements ActionInterface
                 'siteUrl',
                 null,
                 $this->options->originalSiteUrl,
-                _t('站点地址'),
-                _t('站点地址主要用于生成内容的永久链接.') . ($this->options->originalSiteUrl == $this->options->rootUrl ?
+                _t('Site URL Address'),
+                _t('Site address is used to generate permanent links to content.') . ($this->options->originalSiteUrl == $this->options->rootUrl ?
                     '' : '</p><p class="message notice mono">'
-                    . _t('当前地址 <strong>%s</strong> 与上述设定值不一致', $this->options->rootUrl))
+                    . _t('The URL <strong>%s</strong> is not the same with the one you typed above', $this->options->rootUrl))
             );
             $siteUrl->input->setAttribute('class', 'w-100 mono');
-            $form->addInput($siteUrl->addRule('required', _t('请填写站点地址'))
-                ->addRule('url', _t('请填写一个合法的URL地址')));
+            $form->addInput($siteUrl->addRule('required', _t('Please fill in the site address'))
+                ->addRule('url', _t('Please enter a valid URL address')));
         }
 
         /** 站点描述 */
@@ -172,37 +172,37 @@ class General extends Options implements ActionInterface
             'description',
             null,
             $this->options->description,
-            _t('站点描述'),
-            _t('站点描述将显示在网页代码的头部.')
+            _t('Site description'),
+            _t('Site description will be displayed in the header of the web page.')
         );
-        $form->addInput($description->addRule('xssCheck', _t('请不要在站点描述中使用特殊字符')));
+        $form->addInput($description->addRule('xssCheck', _t('Please do not use special characters in the site description')));
 
         /** 关键词 */
         $keywords = new Form\Element\Text(
             'keywords',
             null,
             $this->options->keywords,
-            _t('关键词'),
-            _t('请以半角逗号 "," 分割多个关键字.')
+            _t('Keywords'),
+            _t('Please split multiple keywords with comma ",".')
         );
-        $form->addInput($keywords->addRule('xssCheck', _t('请不要在关键词中使用特殊字符')));
+        $form->addInput($keywords->addRule('xssCheck', _t('Please do not use special characters in your tags')));
 
         /** 注册 */
         $allowRegister = new Form\Element\Radio(
             'allowRegister',
-            ['0' => _t('不允许'), '1' => _t('允许')],
+            ['0' => _t('Forbid'), '1' => _t('Allow')],
             $this->options->allowRegister,
-            _t('是否允许注册'),
-            _t('允许访问者注册到你的网站, 默认的注册用户不享有任何写入权限.')
+            _t('Whether Allow registration'),
+            _t('Allow users to register at your site. By default registered users cannot post.')
         );
         $form->addInput($allowRegister);
 
         /** XMLRPC */
         $allowXmlRpc = new Form\Element\Radio(
             'allowXmlRpc',
-            ['0' => _t('关闭'), '1' => _t('仅关闭 Pingback 接口'), '2' => _t('打开')],
+            ['0' => _t('Close.'), '1' => _t('Turn off the Pingback interface only'), '2' => _t('Open')],
             $this->options->allowXmlRpc,
-            _t('XMLRPC 接口')
+            _t('XMLRPC interface')
         );
         $form->addInput($allowXmlRpc);
 
@@ -213,40 +213,40 @@ class General extends Options implements ActionInterface
         $langs = self::getLangs();
 
         if (count($langs) > 1) {
-            $lang = new Form\Element\Select('lang', $langs, $this->options->lang, _t('语言'));
-            $form->addInput($lang->addRule([$this, 'checkLang'], _t('所选择的语言包不存在')));
+            $lang = new Form\Element\Select('lang', $langs, $this->options->lang, _t('Language'));
+            $form->addInput($lang->addRule([$this, 'checkLang'], _t('The selected language pack does not exist')));
         }
 
         /** 时区 */
         $timezoneList = [
-            "0"      => _t('格林威治(子午线)标准时间 (GMT)'),
-            "3600"   => _t('中欧标准时间 阿姆斯特丹,荷兰,法国 (GMT +1)'),
-            "7200"   => _t('东欧标准时间 布加勒斯特,塞浦路斯,希腊 (GMT +2)'),
-            "10800"  => _t('莫斯科时间 伊拉克,埃塞俄比亚,马达加斯加 (GMT +3)'),
-            "14400"  => _t('第比利斯时间 阿曼,毛里塔尼亚,留尼汪岛 (GMT +4)'),
-            "18000"  => _t('新德里时间 巴基斯坦,马尔代夫 (GMT +5)'),
-            "21600"  => _t('科伦坡时间 孟加拉 (GMT +6)'),
-            "25200"  => _t('曼谷雅加达 柬埔寨,苏门答腊,老挝 (GMT +7)'),
-            "28800"  => _t('北京时间 香港,新加坡,越南 (GMT +8)'),
-            "32400"  => _t('东京平壤时间 西伊里安,摩鹿加群岛 (GMT +9)'),
-            "36000"  => _t('悉尼关岛时间 塔斯马尼亚岛,新几内亚 (GMT +10)'),
-            "39600"  => _t('所罗门群岛 库页岛 (GMT +11)'),
-            "43200"  => _t('惠灵顿时间 新西兰,斐济群岛 (GMT +12)'),
-            "-3600"  => _t('佛德尔群岛 亚速尔群岛,葡属几内亚 (GMT -1)'),
-            "-7200"  => _t('大西洋中部时间 格陵兰 (GMT -2)'),
-            "-10800" => _t('布宜诺斯艾利斯 乌拉圭,法属圭亚那 (GMT -3)'),
-            "-14400" => _t('智利巴西 委内瑞拉,玻利维亚 (GMT -4)'),
-            "-18000" => _t('纽约渥太华 古巴,哥伦比亚,牙买加 (GMT -5)'),
-            "-21600" => _t('墨西哥城时间 洪都拉斯,危地马拉,哥斯达黎加 (GMT -6)'),
-            "-25200" => _t('美国丹佛时间 (GMT -7)'),
-            "-28800" => _t('美国旧金山时间 (GMT -8)'),
-            "-32400" => _t('阿拉斯加时间 (GMT -9)'),
-            "-36000" => _t('夏威夷群岛 (GMT -10)'),
-            "-39600" => _t('东萨摩亚群岛 (GMT -11)'),
-            "-43200" => _t('艾尼威托克岛 (GMT -12)')
+            "0"      => _t('Greenwich Mean Time （GMT）'),
+            "3600"   => _t('Central European Time, West African Time  (GMT +1)'),
+            "7200"   => _t('Eastern European Time, Central African Time (GMT +2)'),
+            "10800"  => _t('Moscow Standard Time, Eastern African Time (GMT +3)'),
+            "14400"  => _t('Gulf Standard Time, Samara Standard Time (GMT +4)'),
+            "18000"  => _t('Pakistan Standard Time, Yekaterinburg Standard Time (GMT +5)'),
+            "21600"  => _t(' Bangladesh Time, Bhutan Time, Novosibirsk Standard Time (GMT +6)'),
+            "25200"  => _t('Indochina Time, Krasnoyarsk Standard Time (GMT +7)'),
+            "28800"  => _t('Chinese Standard Time, Australian Western Standard Time, Irkutsk Standard Time (GMT +8)'),
+            "32400"  => _t('Japan Standard Time, Korea Standard Time, Chita Standard Time  (GMT +9)'),
+            "36000"  => _t('Australian Eastern Standard Time, Vladivostok Standard Time (GMT +10)'),
+            "39600"  => _t('Solomon Island Time, Magadan Standard Time (GMT +11)'),
+            "43200"  => _t('New Zealand Time, Fiji Time, Kamchatka Standard Time (GMT +12)'),
+            "-3600"  => _t('Azores Standard Time, Cape Verde Time, Eastern Greenland Time (GMT -1)'),
+            "-7200"  => _t('Fernando de Noronha Time, South Georgia &amp; the South Sandwich Islands Time (GMT -2)'),
+            "-10800" => _t('Amazon Standard Time, Central Greenland Time  (GMT -3)'),
+            "-14400" => _t('Atlantic Standard Time (GMT -4)'),
+            "-18000" => _t('Eastern Standard Time (GMT -5)'),
+            "-21600" => _t('Central Standard Time (GMT -6)'),
+            "-25200" => _t('Mountain Standard Time (GMT -7)'),
+            "-28800" => _t('Pacific Standard Time (GMT -8)'),
+            "-32400" => _t('Alaska Standard Time, Gambier Island Time (GMT -9)'),
+            "-36000" => _t('Hawaii-Aleutian Standard Time, Cook Island Time  (GMT -10)'),
+            "-39600" => _t('Niue Time, Samoa Standard Time (GMT -11)'),
+            "-43200" => _t('Baker Island Time  (GMT -12)')
         ];
 
-        $timezone = new Form\Element\Select('timezone', $timezoneList, $this->options->timezone, _t('时区'));
+        $timezone = new Form\Element\Select('timezone', $timezoneList, $this->options->timezone, _t('Timezone'));
         $form->addInput($timezone);
 
         /** 扩展名 */
@@ -274,11 +274,11 @@ class General extends Options implements ActionInterface
         }
 
         $attachmentTypesOptions = [
-            '@image@' => _t('图片文件') . ' <code>(gif jpg jpeg png tiff bmp webp avif)</code>',
-            '@media@' => _t('多媒体文件') . ' <code>(mp3 mp4 mov wmv wma rmvb rm avi flv ogg oga ogv)</code>',
-            '@doc@'   => _t('常用档案文件') . ' <code>(txt doc docx xls xlsx ppt pptx zip rar pdf)</code>',
+            '@image@' => _t('Image files') . ' <code>(gif jpg jpeg png tiff bmp webp avif)</code>',
+            '@media@' => _t('Media files') . ' <code>(mp3 mp4 mov wmv wma rmvb rm avi flv ogg oga ogv)</code>',
+            '@doc@'   => _t('Common archival files') . ' <code>(txt doc docx xls xlsx ppt pptx zip rar pdf)</code>',
             '@other@' => _t(
-                '其他格式 %s',
+                'Other format %s',
                 ' <input type="text" class="w-50 text-s mono" name="attachmentTypesOther" value="'
                 . htmlspecialchars($attachmentTypesOtherValue) . '" />'
             ),
@@ -288,13 +288,13 @@ class General extends Options implements ActionInterface
             'attachmentTypes',
             $attachmentTypesOptions,
             $attachmentTypesOptionsValue,
-            _t('允许上传的文件类型'),
-            _t('用逗号 "," 将后缀名隔开, 例如: %s', '<code>cpp, h, mak</code>')
+            _t('File types allowed to upload.'),
+            _t('Split file extensions with comma ",", e.g. %s', '<code>cpp, h, mak</code>')
         );
         $form->addInput($attachmentTypes->multiMode());
 
-        /** 提交按钮 */
-        $submit = new Form\Element\Submit('submit', null, _t('保存设置'));
+        /** Submit button */
+        $submit = new Form\Element\Submit('submit', null, _t('Save settings.'));
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
 
@@ -302,7 +302,7 @@ class General extends Options implements ActionInterface
     }
 
     /**
-     * 绑定动作
+     * Bind action
      */
     public function action()
     {

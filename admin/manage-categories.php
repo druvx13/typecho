@@ -16,22 +16,22 @@ include 'menu.php';
                 <form method="post" name="manage_categories" class="operate-form">
                     <div class="typecho-list-operate">
                         <div class="operate">
-                            <label><i class="sr-only"><?php _e('全选'); ?></i><input type="checkbox"
+                            <label><i class="sr-only"><?php _e('Select all'); ?></i><input type="checkbox"
                                                                                    class="typecho-table-select-all"/></label>
                             <div class="btn-group btn-drop">
                                 <button class="btn dropdown-toggle btn-s" type="button"><i
-                                        class="sr-only"><?php _e('操作'); ?></i><?php _e('选中项'); ?> <i
+                                        class="sr-only"><?php _e('Operations'); ?></i><?php _e('Selected'); ?> <i
                                         class="i-caret-down"></i></button>
                                 <ul class="dropdown-menu">
-                                    <li><a lang="<?php _e('此分类下的所有内容将被删除, 你确认要删除这些分类吗?'); ?>"
-                                           href="<?php $security->index('/action/metas-category-edit?do=delete'); ?>"><?php _e('删除'); ?></a>
+                                    <li><a lang="<?php _e('All contents under these categories will be deleted, are you sure?'); ?>"
+                                           href="<?php $security->index('/action/metas-category-edit?do=delete'); ?>"><?php _e('Delete'); ?></a>
                                     </li>
-                                    <li><a lang="<?php _e('刷新分类可能需要等待较长时间, 你确认要刷新这些分类吗?'); ?>"
-                                           href="<?php $security->index('/action/metas-category-edit?do=refresh'); ?>"><?php _e('刷新'); ?></a>
+                                    <li><a lang="<?php _e('Refresh these categories may take a long time, are you sure?'); ?>"
+                                           href="<?php $security->index('/action/metas-category-edit?do=refresh'); ?>"><?php _e('Refresh'); ?></a>
                                     </li>
                                     <li class="multiline">
                                         <button type="button" class="btn merge btn-s"
-                                                rel="<?php $security->index('/action/metas-category-edit?do=merge'); ?>"><?php _e('合并到'); ?></button>
+                                                rel="<?php $security->index('/action/metas-category-edit?do=merge'); ?>"><?php _e('Combine to'); ?></button>
                                         <select name="merge">
                                             <?php $categories->parse('<option value="{mid}">{name}</option>'); ?>
                                         </select>
@@ -56,11 +56,11 @@ include 'menu.php';
                         <thead>
                         <tr class="nodrag">
                             <th class="kit-hidden-mb"></th>
-                            <th><?php _e('名称'); ?></th>
-                            <th><?php _e('子分类'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('缩略名'); ?></th>
+                            <th><?php _e('Name'); ?></th>
+                            <th><?php _e('Subcategory'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Abbreviation'); ?></th>
                             <th></th>
-                            <th class="kit-hidden-mb"><?php _e('文章数'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Number of posts'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -73,24 +73,24 @@ include 'menu.php';
                                     <td>
                                         <a href="<?php $options->adminUrl('category.php?mid=' . $categories->mid); ?>"><?php $categories->name(); ?></a>
                                         <a href="<?php $categories->permalink(); ?>"
-                                           title="<?php _e('浏览 %s', $categories->name); ?>"><i class="i-exlink"></i></a>
+                                           title="<?php _e('View %s', $categories->name); ?>"><i class="i-exlink"></i></a>
                                     </td>
                                     <td>
 
                                         <?php if (count($categories->children) > 0): ?>
-                                            <a href="<?php $options->adminUrl('manage-categories.php?parent=' . $categories->mid); ?>"><?php echo _n('一个分类', '%d个分类', count($categories->children)); ?></a>
+                                            <a href="<?php $options->adminUrl('manage-categories.php?parent=' . $categories->mid); ?>"><?php echo _n('one category', '%d categories', count($categories->children)); ?></a>
                                         <?php else: ?>
-                                            <a href="<?php $options->adminUrl('category.php?parent=' . $categories->mid); ?>"><?php echo _e('新增'); ?></a>
+                                            <a href="<?php $options->adminUrl('category.php?parent=' . $categories->mid); ?>"><?php echo _e('Add'); ?></a>
                                         <?php endif; ?>
                                     </td>
                                     <td class="kit-hidden-mb"><?php $categories->slug(); ?></td>
                                     <td>
                                         <?php if ($options->defaultCategory == $categories->mid): ?>
-                                            <?php _e('默认'); ?>
+                                            <?php _e('default'); ?>
                                         <?php else: ?>
                                             <a class="hidden-by-mouse"
                                                href="<?php $security->index('/action/metas-category-edit?do=default&mid=' . $categories->mid); ?>"
-                                               title="<?php _e('设为默认'); ?>"><?php _e('默认'); ?></a>
+                                               title="<?php _e('set to default'); ?>"><?php _e('default'); ?></a>
                                         <?php endif; ?>
                                     </td>
                                     <td class="kit-hidden-mb"><a
@@ -101,7 +101,7 @@ include 'menu.php';
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="6" class="none"><?php _e('没有任何分类'); ?></td>
+                                <td colspan="6" class="none"><?php _e('No category.'); ?></td>
                             </tr>
                         <?php endif; ?>
                         </tbody>

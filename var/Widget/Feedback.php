@@ -15,7 +15,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 反馈提交组件
+ * Feedback submission widget
  *
  * @category typecho
  * @package Widget
@@ -35,14 +35,14 @@ class Feedback extends Comments implements ActionInterface
     /**
      * 对已注册用户的保护性检测
      *
-     * @param string $userName 用户名
+     * @param string $userName Username
      * @return bool
      * @throws Db\Exception
      */
     public function requireUserLogin(string $userName): bool
     {
         if ($this->user->hasLogin() && $this->user->screenName != $userName) {
-            /** 当前用户名与提交者不匹配 */
+            /** Current user名与提交者不匹配 */
             return false;
         } elseif (
             !$this->user->hasLogin() && $this->db->fetchRow($this->db->select('uid')
@@ -56,7 +56,7 @@ class Feedback extends Comments implements ActionInterface
     }
 
     /**
-     * 初始化函数
+     * Initialization function
      *
      * @throws \Exception
      */
@@ -77,7 +77,7 @@ class Feedback extends Comments implements ActionInterface
             if ('comment' == $callback) {
                 /** 评论关闭 */
                 if (!$this->content->allow('comment')) {
-                    throw new Exception(_t('对不起,此内容的反馈被禁止.'), 403);
+                    throw new Exception(_t('Sorry, feedback of this content is not allowed.'), 403);
                 }
 
                 /** 检查来源 */
@@ -85,7 +85,7 @@ class Feedback extends Comments implements ActionInterface
                     $referer = $this->request->getReferer();
 
                     if (empty($referer)) {
-                        throw new Exception(_t('评论来源页错误.'), 403);
+                        throw new Exception(_t('The source of comments is wrong.'), 403);
                     }
 
                     $refererPart = parse_url($referer);
@@ -103,10 +103,10 @@ class Feedback extends Comments implements ActionInterface
                                 $refererPart['host'] != $currentPart['host'] ||
                                 0 !== strpos($refererPart['path'], $currentPart['path'])
                             ) {
-                                throw new Exception(_t('评论来源页错误.'), 403);
+                                throw new Exception(_t('The source of comments is wrong.'), 403);
                             }
                         } else {
-                            throw new Exception(_t('评论来源页错误.'), 403);
+                            throw new Exception(_t('The source of comments is wrong.'), 403);
                         }
                     }
                 }
@@ -125,20 +125,20 @@ class Feedback extends Comments implements ActionInterface
                         $latestComment && ($this->options->time - $latestComment['created'] > 0 &&
                             $this->options->time - $latestComment['created'] < $this->options->commentsPostInterval)
                     ) {
-                        throw new Exception(_t('对不起, 您的发言过于频繁, 请稍候再次发布.'), 403);
+                        throw new Exception(_t('Sorry, you are commenting too frequently. Please re-post it later.'), 403);
                     }
                 }
             }
 
             /** 如果文章不允许引用 */
             if ('trackback' == $callback && !$this->content->allow('ping')) {
-                throw new Exception(_t('对不起,此内容的引用被禁止.'), 403);
+                throw new Exception(_t('Sorry, citation of this content is not allowed.'), 403);
             }
 
             /** 调用函数 */
             $this->$callback();
         } else {
-            throw new Exception(_t('找不到内容'), 404);
+            throw new Exception(_t('Cannot find content.'), 404);
         }
     }
 
@@ -173,35 +173,35 @@ class Feedback extends Comments implements ActionInterface
             ) {
                 $comment['parent'] = $parentId;
             } else {
-                throw new Exception(_t('父级评论不存在'));
+                throw new Exception(_t('Parent comment does not exist.'));
             }
         }
 
-        //检验格式
+        // Validate format
         $validator = new Validate();
-        $validator->addRule('author', 'required', _t('必须填写用户名'));
-        $validator->addRule('author', 'xssCheck', _t('请不要在用户名中使用特殊字符'));
-        $validator->addRule('author', [$this, 'requireUserLogin'], _t('您所使用的用户名已经被注册,请登录后再次提交'));
-        $validator->addRule('author', 'maxLength', _t('用户名最多包含150个字符'), 150);
+        $validator->addRule('author', 'required', _t('You must enter a username.'));
+        $validator->addRule('author', 'xssCheck', _t('Please do not include special characters in username.'));
+        $validator->addRule('author', [$this, 'requireUserLogin'], _t('Your username is already used. Please login and re-submit.'));
+        $validator->addRule('author', 'maxLength', _t('Usernames should contain at most 150 characters.'), 150);
 
         if ($this->options->commentsRequireMail && !$this->user->hasLogin()) {
-            $validator->addRule('mail', 'required', _t('必须填写电子邮箱地址'));
+            $validator->addRule('mail', 'required', _t('You must enter an email address.'));
         }
 
-        $validator->addRule('mail', 'email', _t('邮箱地址不合法'));
-        $validator->addRule('mail', 'maxLength', _t('电子邮箱最多包含150个字符'), 150);
+        $validator->addRule('mail', 'email', _t('Email address is invalid.'));
+        $validator->addRule('mail', 'maxLength', _t('Email address should contain at most 150 characters'), 150);
 
         if ($this->options->commentsRequireUrl && !$this->user->hasLogin()) {
-            $validator->addRule('url', 'required', _t('必须填写个人主页'));
+            $validator->addRule('url', 'required', _t('You must enter your homepage.'));
         }
-        $validator->addRule('url', 'url', _t('个人主页地址格式错误'));
-        $validator->addRule('url', 'maxLength', _t('个人主页地址最多包含255个字符'), 255);
+        $validator->addRule('url', 'url', _t('Invalid omepage URL format'));
+        $validator->addRule('url', 'maxLength', _t('URL address should contain at most 255 characters'), 255);
 
-        $validator->addRule('text', 'required', _t('必须填写评论内容'));
+        $validator->addRule('text', 'required', _t('You must enter comment content.'));
 
         $comment['text'] = $this->request->get('text');
 
-        /** 对一般匿名访问者,将用户数据保存一个月 */
+        /** 对Mon般匿名访问者,将用户数据保存Mon个月 */
         if (!$this->user->hasLogin()) {
             /** Anti-XSS */
             $comment['author'] = $this->request->filter('trim')->get('author');
@@ -253,7 +253,7 @@ class Feedback extends Comments implements ActionInterface
             throw new Exception(implode("\n", $error));
         }
 
-        /** 生成过滤器 */
+        /** Generate filter */
         try {
             $comment = self::pluginHandle()->filter('comment', $comment, $this->content);
         } catch (\Typecho\Exception $e) {
@@ -267,7 +267,7 @@ class Feedback extends Comments implements ActionInterface
         $this->db->fetchRow($this->select()->where('coid = ?', $commentId)
             ->limit(1), [$this, 'push']);
 
-        /** 评论完成接口 */
+        /** Comment completion interface */
         self::pluginHandle()->call('finishComment', $this);
 
         if ($this->status !== 'approved') {
@@ -295,7 +295,7 @@ class Feedback extends Comments implements ActionInterface
                 ->where('status = ? AND ip = ?', 'spam', $this->request->getIp())) > 0
         ) {
             /** 使用404告诉机器人 */
-            throw new Exception(_t('找不到内容'), 404);
+            throw new Exception(_t('Cannot find content.'), 404);
         }
 
         $trackback = [
@@ -312,7 +312,7 @@ class Feedback extends Comments implements ActionInterface
         $trackback['url'] = $this->request->filter('trim', 'url')->get('url');
         $trackback['text'] = $this->request->get('excerpt');
 
-        //检验格式
+        // Validate format
         $validator = new Validate();
         $validator->addRule('url', 'required', 'We require all Trackbacks to provide an url.')
             ->addRule('url', 'url', 'Your url is not valid.')
@@ -337,16 +337,16 @@ class Feedback extends Comments implements ActionInterface
                 ->where('cid = ? AND url = ? AND type <> ?', $this->content->cid, $trackback['url'], 'comment')) > 0
         ) {
             /** 使用403告诉机器人 */
-            throw new Exception(_t('禁止重复提交'), 403);
+            throw new Exception(_t('Re-submission is not allowed.'), 403);
         }
 
-        /** 生成过滤器 */
+        /** Generate filter */
         $trackback = self::pluginHandle()->filter('trackback', $trackback, $this->content);
 
         /** 添加引用 */
         $this->insert($trackback);
 
-        /** 评论完成接口 */
+        /** Comment completion interface */
         self::pluginHandle()->call('finishTrackback', $this);
 
         /** 返回正确 */

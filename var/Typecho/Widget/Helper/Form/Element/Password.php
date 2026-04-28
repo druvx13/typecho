@@ -9,7 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 密码输入表单项帮手类
+ * Password input form element helper class
  *
  * @category typecho
  * @package Widget

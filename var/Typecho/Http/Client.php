@@ -6,7 +6,7 @@ use Typecho\Common;
 use Typecho\Http\Client\Exception;
 
 /**
- * Http客户端
+ * HTTP client
  *
  * @category typecho
  * @package Http
@@ -107,10 +107,10 @@ class Client
     private string $responseBody;
 
     /**
-     * 设置指定的COOKIE值
+     * Set specified cookie value
      *
-     * @param string $key 指定的参数
-     * @param mixed $value 设置的值
+     * @param string $key Specified parameter
+     * @param mixed $value Value to set
      * @return $this
      */
     public function setCookie(string $key, $value): Client
@@ -200,9 +200,9 @@ class Client
     }
 
     /**
-     * 设置超时时间
+     * Set timeout
      *
-     * @param integer $timeout 超时时间
+     * @param integer $timeout Timeout时间
      * @return $this
      */
     public function setTimeout(int $timeout): Client
@@ -247,8 +247,8 @@ class Client
     /**
      * 设置头信息参数
      *
-     * @param string $key 参数名称
-     * @param string $value 参数值
+     * @param string $key Parameter name
+     * @param string $value Parameter value
      * @return $this
      */
     public function setHeader(string $key, string $value): Client
@@ -267,7 +267,7 @@ class Client
     /**
      * 发送请求
      *
-     * @param string $url 请求地址
+     * @param string $url Request URL
      * @throws Exception
      */
     public function send(string $url)

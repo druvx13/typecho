@@ -13,7 +13,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 备份工具
+ * Backup utility
  *
  * @package Widget
  */
@@ -85,7 +85,7 @@ class Backup extends BaseOptions implements ActionInterface
     }
 
     /**
-     * 绑定动作
+     * Bind action
      */
     public function action()
     {
@@ -153,7 +153,7 @@ class Backup extends BaseOptions implements ActionInterface
     }
 
     /**
-     * 过滤字段
+     * Filter fields
      *
      * @param $table
      * @param $data
@@ -190,26 +190,26 @@ class Backup extends BaseOptions implements ActionInterface
             $file = array_pop($_FILES);
 
             if(UPLOAD_ERR_NO_FILE == $file['error']) {
-                Notice::alloc()->set(_t('没有选择任何备份文件'), 'error');
+                Notice::alloc()->set(_t('No backup file selected'), 'error');
                 $this->response->goBack();
             }
 
             if (UPLOAD_ERR_OK == $file['error'] && is_uploaded_file($file['tmp_name'])) {
                 $path = $file['tmp_name'];
             } else {
-                Notice::alloc()->set(_t('备份文件上传失败'), 'error');
+                Notice::alloc()->set(_t('Failed to upload backup file'), 'error');
                 $this->response->goBack();
             }
         } else {
             if (!$this->request->is('file')) {
-                Notice::alloc()->set(_t('没有选择任何备份文件'), 'error');
+                Notice::alloc()->set(_t('No backup file selected'), 'error');
                 $this->response->goBack();
             }
 
             $path = __TYPECHO_BACKUP_DIR__ . '/' . $this->request->get('file');
 
             if (!file_exists($path)) {
-                Notice::alloc()->set(_t('备份文件不存在'), 'error');
+                Notice::alloc()->set(_t('Backup file does not exist'), 'error');
                 $this->response->goBack();
             }
         }
@@ -228,7 +228,7 @@ class Backup extends BaseOptions implements ActionInterface
         $fp = @fopen($file, 'rb');
 
         if (!$fp) {
-            Notice::alloc()->set(_t('无法读取备份文件'), 'error');
+            Notice::alloc()->set(_t('Cannot read backup file'), 'error');
             $this->response->goBack();
         }
 
@@ -237,7 +237,7 @@ class Backup extends BaseOptions implements ActionInterface
 
         if ($fileSize < $headerSize) {
             @fclose($fp);
-            Notice::alloc()->set(_t('备份文件格式错误'), 'error');
+            Notice::alloc()->set(_t('The backup file is corrupted'), 'error');
             $this->response->goBack();
         }
 
@@ -245,7 +245,7 @@ class Backup extends BaseOptions implements ActionInterface
 
         if (!$this->parseHeader($fileHeader, $version)) {
             @fclose($fp);
-            Notice::alloc()->set(_t('备份文件格式错误'), 'error');
+            Notice::alloc()->set(_t('The backup file is corrupted'), 'error');
             $this->response->goBack();
         }
 
@@ -254,7 +254,7 @@ class Backup extends BaseOptions implements ActionInterface
 
         if (!$this->parseHeader($fileFooter, $version)) {
             @fclose($fp);
-            Notice::alloc()->set(_t('备份文件格式错误'), 'error');
+            Notice::alloc()->set(_t('The backup file is corrupted'), 'error');
             $this->response->goBack();
         }
 
@@ -266,7 +266,7 @@ class Backup extends BaseOptions implements ActionInterface
 
             if (!$data) {
                 @fclose($fp);
-                Notice::alloc()->set(_t('恢复数据出现错误'), 'error');
+                Notice::alloc()->set(_t('Data restore failed'), 'error');
                 $this->response->goBack();
             }
 
@@ -283,7 +283,7 @@ class Backup extends BaseOptions implements ActionInterface
         }
 
         @fclose($fp);
-        Notice::alloc()->set(_t('数据恢复完成'), 'success');
+        Notice::alloc()->set(_t('Successfully restored backup data'), 'success');
         $this->response->goBack();
     }
 
@@ -355,7 +355,7 @@ class Backup extends BaseOptions implements ActionInterface
 
             $db->query($db->insert('table.' . $table)->rows($this->applyFields($table, $data)));
         } catch (Exception $e) {
-            Notice::alloc()->set(_t('恢复过程中遇到如下错误: %s', $e->getMessage()), 'error');
+            Notice::alloc()->set(_t('Recovery from backup gave the following error: %s', $e->getMessage()), 'error');
             $this->response->goBack();
         }
     }

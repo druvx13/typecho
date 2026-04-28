@@ -2,19 +2,19 @@
 -- version 2.11.5
 -- http://www.phpmyadmin.net
 --
--- 主机: localhost
--- 生成日期: 2008 年 07 月 06 日 18:00
--- 服务器版本: 5.0.51
--- PHP 版本: 5.2.5
+-- Host: localhost
+-- Generated: 2008-07-06 18:00
+-- Server version: 5.0.51
+-- PHP version: 5.2.5
 
 --
--- 数据库: `typecho`
+-- Database: `typecho`
 --
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `typecho_comments`
+-- Table structure for `typecho_comments`
 --
 
 CREATE TABLE `typecho_comments` (
@@ -40,7 +40,7 @@ CREATE TABLE `typecho_comments` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `typecho_contents`
+-- Table structure for `typecho_contents`
 --
 
 CREATE TABLE `typecho_contents` (
@@ -69,7 +69,7 @@ CREATE TABLE `typecho_contents` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `typecho_fields`
+-- Table structure for `typecho_fields`
 --
 
 CREATE TABLE `typecho_fields` (
@@ -87,7 +87,7 @@ CREATE TABLE `typecho_fields` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `typecho_metas`
+-- Table structure for `typecho_metas`
 --
 
 CREATE TABLE `typecho_metas` (
@@ -106,7 +106,7 @@ CREATE TABLE `typecho_metas` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `typecho_options`
+-- Table structure for `typecho_options`
 --
 
 CREATE TABLE `typecho_options` (
@@ -119,7 +119,7 @@ CREATE TABLE `typecho_options` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `typecho_relationships`
+-- Table structure for `typecho_relationships`
 --
 
 CREATE TABLE `typecho_relationships` (
@@ -131,7 +131,7 @@ CREATE TABLE `typecho_relationships` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `typecho_users`
+-- Table structure for `typecho_users`
 --
 
 CREATE TABLE `typecho_users` (

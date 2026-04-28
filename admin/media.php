@@ -30,7 +30,7 @@ include 'menu.php';
 
                 <div id="upload-panel" class="p">
                     <div class="upload-area" data-url="<?php $security->index('/action/upload?do=modify'); ?>">
-                        <?php _e('拖放文件到这里<br>或者 %s选择文件上传%s', '<a href="###" class="upload-file">', '</a>'); ?>
+                        <?php _e('Drag your files here <br>or %s select files to upload %s', '<a href="###" class="upload-file">', '</a>'); ?>
                     </div>
                     <ul id="file-list"></ul>
                 </div>
@@ -68,7 +68,7 @@ include 'file-upload-js.php';
                 $('.typecho-attachment-photo').attr('src', attachment.url + '?' + Math.random());
             }
 
-            $('#file-list li').text('<?php _e('文件 %s 已经替换'); ?>'.replace('%s', attachment.title))
+            $('#file-list li').text('<?php _e('File %s replaced.'); ?>'.replace('%s', attachment.title))
                 .effect('highlight', 1000, function () {
                     $(this).remove();
                 });

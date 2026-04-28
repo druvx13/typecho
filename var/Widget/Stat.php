@@ -7,7 +7,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 全局统计组件
+ * Global stats widget
  *
  * @property-read int $publishedPostsNum
  * @property-read int $waitingPostsNum
@@ -82,7 +82,7 @@ class Stat extends Base
     }
 
     /**
-     * 获取当前用户已发布的文章数目
+     * Get number of published posts by current user
      *
      * @return integer
      */
@@ -96,7 +96,7 @@ class Stat extends Base
     }
 
     /**
-     * 获取当前用户待审核文章数目
+     * Get number of posts pending review by current user
      *
      * @return integer
      */
@@ -110,7 +110,7 @@ class Stat extends Base
     }
 
     /**
-     * 获取当前用户草稿文章数目
+     * Get number of draft posts by current user
      *
      * @return integer
      */
@@ -123,7 +123,7 @@ class Stat extends Base
     }
 
     /**
-     * 获取当前用户已发布的文章数目
+     * Get number of published posts by current user
      *
      * @return integer
      */
@@ -137,7 +137,7 @@ class Stat extends Base
     }
 
     /**
-     * 获取当前用户待审核文章数目
+     * Get number of posts pending review by current user
      *
      * @return integer
      */
@@ -151,7 +151,7 @@ class Stat extends Base
     }
 
     /**
-     * 获取当前用户草稿文章数目
+     * Get number of draft posts by current user
      *
      * @return integer
      */
@@ -327,7 +327,7 @@ class Stat extends Base
     }
 
     /**
-     * 获取标签数目
+     * 获取Label数目
      *
      * @return integer
      */

@@ -11,7 +11,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 数据库SQLite适配器
+ * 数据库SQLite adapter
  *
  * @package Db
  */
@@ -20,7 +20,7 @@ class SQLite implements Adapter
     use SQLiteTrait;
 
     /**
-     * 判断适配器是否可用
+     * Check whether the adapter is available
      *
      * @access public
      * @return boolean
@@ -31,9 +31,9 @@ class SQLite implements Adapter
     }
 
     /**
-     * 数据库连接函数
+     * Database connection function
      *
-     * @param Config $config 数据库配置
+     * @param Config $config Database configuration
      * @return \SQLite3
      * @throws ConnectionException
      */
@@ -50,7 +50,7 @@ class SQLite implements Adapter
     }
 
     /**
-     * 获取数据库版本
+     * Get database version
      *
      * @param mixed $handle
      * @return string
@@ -61,13 +61,13 @@ class SQLite implements Adapter
     }
 
     /**
-     * 执行数据库查询
+     * Execute database query
      *
-     * @param string $query 数据库查询SQL字符串
-     * @param \SQLite3 $handle 连接对象
-     * @param integer $op 数据库读写状态
-     * @param string|null $action 数据库动作
-     * @param string|null $table 数据表
+     * @param string $query Database SQL query string
+     * @param \SQLite3 $handle Connection handle
+     * @param integer $op Database read/write mode
+     * @param string|null $action Database action
+     * @param string|null $table Database table
      * @return \SQLite3Result
      * @throws SQLException
      */
@@ -84,14 +84,14 @@ class SQLite implements Adapter
             }
         }
 
-        /** 数据库异常 */
+        /** Database exception */
         throw new SQLException($handle->lastErrorMsg(), $handle->lastErrorCode());
     }
 
     /**
-     * 将数据查询的其中一行作为对象取出,其中字段名对应对象属性
+     * Fetch one row from the query result as an object, with column names as properties
      *
-     * @param \SQLite3Result $resource 查询的资源数据
+     * @param \SQLite3Result $resource Query resource data
      * @return \stdClass|null
      */
     public function fetchObject($resource): ?\stdClass
@@ -101,7 +101,7 @@ class SQLite implements Adapter
     }
 
     /**
-     * 将数据查询的其中一行作为数组取出,其中字段名对应数组键值
+     * Fetch one row from the query result as an array, keyed by column name
      *
      * @param \SQLite3Result $resource 查询返回资源标识
      * @return array|null
@@ -113,9 +113,9 @@ class SQLite implements Adapter
     }
 
     /**
-     * 将数据查询的结果作为数组全部取出,其中字段名对应数组键值
+     * Fetch all query results as an array, keyed by column name
      *
-     * @param \SQLite3Result $resource 查询的资源数据
+     * @param \SQLite3Result $resource Query resource data
      * @return array
      */
     public function fetchAll($resource): array
@@ -130,9 +130,9 @@ class SQLite implements Adapter
     }
 
     /**
-     * 引号转义函数
+     * Quote escaping function
      *
-     * @param mixed $string 需要转义的字符串
+     * @param mixed $string String to escape
      * @return string
      */
     public function quoteValue($string): string
@@ -141,10 +141,10 @@ class SQLite implements Adapter
     }
 
     /**
-     * 取出最后一次查询影响的行数
+     * Get the number of rows affected by the last query
      *
-     * @param \SQLite3Result $resource 查询的资源数据
-     * @param \SQLite3 $handle 连接对象
+     * @param \SQLite3Result $resource Query resource data
+     * @param \SQLite3 $handle Connection handle
      * @return integer
      */
     public function affectedRows($resource, $handle): int
@@ -153,10 +153,10 @@ class SQLite implements Adapter
     }
 
     /**
-     * 取出最后一次插入返回的主键值
+     * Get the primary key value returned by the last insert
      *
-     * @param \SQLite3Result $resource 查询的资源数据
-     * @param \SQLite3 $handle 连接对象
+     * @param \SQLite3Result $resource Query resource data
+     * @param \SQLite3 $handle Connection handle
      * @return integer
      */
     public function lastInsertId($resource, $handle): int

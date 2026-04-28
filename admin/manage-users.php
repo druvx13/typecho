@@ -12,26 +12,26 @@ $users = \Widget\Users\Admin::alloc();
             <div class="col-mb-12 typecho-list">
                 <form method="get" class="typecho-list-operate">
                     <div class="operate">
-                        <label><i class="sr-only"><?php _e('全选'); ?></i><input type="checkbox"
+                        <label><i class="sr-only"><?php _e('Select all'); ?></i><input type="checkbox"
                                                                                class="typecho-table-select-all"/></label>
                         <div class="btn-group btn-drop">
                             <button class="btn dropdown-toggle btn-s" type="button"><i
-                                    class="sr-only"><?php _e('操作'); ?></i><?php _e('选中项'); ?> <i
+                                    class="sr-only"><?php _e('Operations'); ?></i><?php _e('Selected'); ?> <i
                                     class="i-caret-down"></i></button>
                             <ul class="dropdown-menu">
-                                <li><a lang="<?php _e('你确认要删除这些用户吗?'); ?>"
-                                       href="<?php $security->index('/action/users-edit?do=delete'); ?>"><?php _e('删除'); ?></a>
+                                <li><a lang="<?php _e('Are you sure to delete these users?'); ?>"
+                                       href="<?php $security->index('/action/users-edit?do=delete'); ?>"><?php _e('Delete'); ?></a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="search" role="search">
                         <?php if ('' != $request->keywords): ?>
-                            <a href="<?php $options->adminUrl('manage-users.php'); ?>"><?php _e('&laquo; 取消筛选'); ?></a>
+                            <a href="<?php $options->adminUrl('manage-users.php'); ?>"><?php _e('&laquo; cancel the filtering'); ?></a>
                         <?php endif; ?>
-                        <input type="text" class="text-s" placeholder="<?php _e('请输入关键字'); ?>"
+                        <input type="text" class="text-s" placeholder="<?php _e('Please enter keywords'); ?>"
                                value="<?php echo $request->filter('html')->keywords; ?>" name="keywords"/>
-                        <button type="submit" class="btn btn-s"><?php _e('筛选'); ?></button>
+                        <button type="submit" class="btn btn-s"><?php _e('Filter'); ?></button>
                     </div>
                 </form>
 
@@ -49,10 +49,10 @@ $users = \Widget\Users\Admin::alloc();
                         <tr>
                             <th class="kit-hidden-mb"></th>
                             <th class="kit-hidden-mb"></th>
-                            <th><?php _e('用户名'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('昵称'); ?></th>
-                            <th class="kit-hidden-mb"><?php _e('电子邮件'); ?></th>
-                            <th><?php _e('用户组'); ?></th>
+                            <th><?php _e('username'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Nickname'); ?></th>
+                            <th class="kit-hidden-mb"><?php _e('Email'); ?></th>
+                            <th><?php _e('User groups'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -67,28 +67,28 @@ $users = \Widget\Users\Admin::alloc();
                                 <td>
                                     <a href="<?php $options->adminUrl('user.php?uid=' . $users->uid); ?>"><?php $users->name(); ?></a>
                                     <a href="<?php $users->permalink(); ?>"
-                                       title="<?php _e('浏览 %s', $users->screenName); ?>"><i
+                                       title="<?php _e('View %s', $users->screenName); ?>"><i
                                             class="i-exlink"></i></a>
                                 </td>
                                 <td class="kit-hidden-mb"><?php $users->screenName(); ?></td>
                                 <td class="kit-hidden-mb"><?php if ($users->mail): ?><a
-                                        href="mailto:<?php $users->mail(); ?>"><?php $users->mail(); ?></a><?php else: _e('暂无'); endif; ?>
+                                        href="mailto:<?php $users->mail(); ?>"><?php $users->mail(); ?></a><?php else: _e('None yet'); endif; ?>
                                 </td>
                                 <td><?php switch ($users->group) {
                                         case 'administrator':
-                                            _e('管理员');
+                                            _e('Admin');
                                             break;
                                         case 'editor':
-                                            _e('编辑');
+                                            _e('Editors');
                                             break;
                                         case 'contributor':
-                                            _e('贡献者');
+                                            _e('Contributors');
                                             break;
                                         case 'subscriber':
-                                            _e('关注者');
+                                            _e('Followers');
                                             break;
                                         case 'visitor':
-                                            _e('访问者');
+                                            _e('Visitors');
                                             break;
                                         default:
                                             break;
@@ -101,15 +101,15 @@ $users = \Widget\Users\Admin::alloc();
 
                 <form method="get" class="typecho-list-operate">
                     <div class="operate">
-                        <label><i class="sr-only"><?php _e('全选'); ?></i><input type="checkbox"
+                        <label><i class="sr-only"><?php _e('Select all'); ?></i><input type="checkbox"
                                                                                class="typecho-table-select-all"/></label>
                         <div class="btn-group btn-drop">
                             <button class="btn dropdown-toggle btn-s" type="button"><i
-                                    class="sr-only"><?php _e('操作'); ?></i><?php _e('选中项'); ?> <i
+                                    class="sr-only"><?php _e('Operations'); ?></i><?php _e('Selected'); ?> <i
                                     class="i-caret-down"></i></button>
                             <ul class="dropdown-menu">
-                                <li><a lang="<?php _e('你确认要删除这些用户吗?'); ?>"
-                                       href="<?php $security->index('/action/users-edit?do=delete'); ?>"><?php _e('删除'); ?></a>
+                                <li><a lang="<?php _e('Are you sure to delete these users?'); ?>"
+                                       href="<?php $security->index('/action/users-edit?do=delete'); ?>"><?php _e('Delete'); ?></a>
                                 </li>
                             </ul>
                         </div>

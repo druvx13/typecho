@@ -19,7 +19,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 编辑文章组件
+ * Post editing widget
  *
  * @property-read array $draft
  */
@@ -29,18 +29,18 @@ class Edit extends Contents implements ActionInterface
     use EditTrait;
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @throws Exception|DbException
      */
     public function execute()
     {
-        /** 必须为贡献者以上权限 */
+        /** Must be contributor or higher */
         $this->user->pass('contributor');
     }
 
     /**
-     * 发布文章
+     * Publish post
      */
     public function writePost()
     {
@@ -56,7 +56,7 @@ class Edit extends Contents implements ActionInterface
         );
 
         $contents['category'] = $this->request->getArray('category');
-        $contents['title'] = $this->request->get('title', _t('未命名文档'));
+        $contents['title'] = $this->request->get('title', _t('Unnamed document'));
         $contents['created'] = $this->getCreated();
 
         if ($this->request->is('markdown=1') && $this->options->markdown) {
@@ -66,41 +66,41 @@ class Edit extends Contents implements ActionInterface
         $contents = self::pluginHandle()->filter('write', $contents, $this);
 
         if ($this->request->is('do=publish')) {
-            /** 重新发布已经存在的文章 */
+            /** Re-publish existing post */
             $contents['type'] = 'post';
             $this->publish($contents);
 
-            // 完成发布插件接口
+            // Complete publish plugin interface
             self::pluginHandle()->call('finishPublish', $contents, $this);
 
-            /** 发送ping */
+            /** Send ping */
             $trackback = array_filter(
                 array_unique(preg_split("/(\r|\n|\r\n)/", trim($this->request->get('trackback', ''))))
             );
             Service::alloc()->sendPing($this, $trackback);
 
-            /** 设置提示信息 */
+            /** Set notice message */
             Notice::alloc()->set('post' == $this->type ?
-                _t('文章 "<a href="%s">%s</a>" 已经发布', $this->permalink, $this->title) :
-                _t('文章 "%s" 等待审核', $this->title), 'success');
+                _t('Post "<a href="%s">%s</a>" published.', $this->permalink, $this->title) :
+                _t('Post "%s" under review.', $this->title), 'success');
 
-            /** 设置高亮 */
+            /** Set highlight */
             Notice::alloc()->highlight($this->theId);
 
-            /** 获取页面偏移 */
+            /** Get page offset */
             $pageQuery = $this->getPageOffsetQuery($this->cid);
 
-            /** 页面跳转 */
+            /** Page redirect */
             $this->response->redirect(Common::url('manage-posts.php?' . $pageQuery, $this->options->adminUrl));
         } else {
-            /** 保存文章 */
+            /** Save post */
             $contents['type'] = 'post_draft';
             $draftId = $this->save($contents);
 
-            // 完成保存插件接口
+            // 完成保存Plugin interface
             self::pluginHandle()->call('finishSave', $contents, $this);
 
-            /** 设置高亮 */
+            /** Set highlight */
             Notice::alloc()->highlight($this->cid);
 
             if ($this->request->isAjax()) {
@@ -112,20 +112,20 @@ class Edit extends Contents implements ActionInterface
                     'draftId' => $draftId
                 ]);
             } else {
-                /** 设置提示信息 */
-                Notice::alloc()->set(_t('草稿 "%s" 已经被保存', $this->title), 'success');
+                /** Set notice message */
+                Notice::alloc()->set(_t('Draft "%s" saved.', $this->title), 'success');
 
-                /** 返回原页面 */
+                /** Return to original page */
                 $this->response->redirect(Common::url('write-post.php?cid=' . $this->cid, $this->options->adminUrl));
             }
         }
     }
 
     /**
-     * 获取页面偏移的URL Query
+     * Get page offset URL query
      *
      * @param integer $cid 文章id
-     * @param string|null $status 状态
+     * @param string|null $status Status
      * @return string
      * @throws DbException
      */
@@ -149,10 +149,10 @@ class Edit extends Contents implements ActionInterface
     {
         $status = $this->request->get('status');
         $statusList = [
-            'publish' => _t('公开'),
-            'private' => _t('私密'),
-            'hidden'  => _t('隐藏'),
-            'waiting' => _t('待审核')
+            'publish' => _t('Public'),
+            'private' => _t('Private'),
+            'hidden'  => _t('Hide'),
+            'waiting' => _t('Awaiting approval')
         ];
 
         if (!isset($statusList[$status])) {
@@ -163,7 +163,7 @@ class Edit extends Contents implements ActionInterface
         $markCount = 0;
 
         foreach ($posts as $post) {
-            // 标记插件接口
+            // Mark plugin interface
             self::pluginHandle()->call('mark', $status, $post, $this);
 
             $condition = $this->db->sql()->where('cid = ?', $post);
@@ -197,7 +197,7 @@ class Edit extends Contents implements ActionInterface
                     }
                 }
 
-                // 处理草稿
+                // Handle draft
                 $draft = $this->db->fetchRow($this->db->select('cid')
                     ->from('table.contents')
                     ->where('table.contents.parent = ? AND table.contents.type = ?', $post, 'revision')
@@ -208,7 +208,7 @@ class Edit extends Contents implements ActionInterface
                         ->where('cid = ?', $draft['cid']));
                 }
 
-                // 完成标记插件接口
+                // Complete mark plugin interface
                 self::pluginHandle()->call('finishMark', $status, $post, $this);
 
                 $markCount++;
@@ -217,19 +217,19 @@ class Edit extends Contents implements ActionInterface
             unset($condition);
         }
 
-        /** 设置提示信息 */
+        /** Set notice message */
         Notice::alloc()
             ->set(
                 $markCount > 0 ? _t('文章已经被标记为<strong>%s</strong>', $statusList[$status]) : _t('没有文章被标记'),
                 $markCount > 0 ? 'success' : 'notice'
             );
 
-        /** 返回原网页 */
+        /** Return to original page */
         $this->response->goBack();
     }
 
     /**
-     * 删除文章
+     * Delete post
      *
      * @throws DbException
      */
@@ -239,7 +239,7 @@ class Edit extends Contents implements ActionInterface
         $deleteCount = 0;
 
         foreach ($posts as $post) {
-            // 删除插件接口
+            // Remove plugin interface
             self::pluginHandle()->call('delete', $post, $this);
 
             $condition = $this->db->sql()->where('cid = ?', $post);
@@ -248,28 +248,28 @@ class Edit extends Contents implements ActionInterface
 
             if ($this->isWriteable(clone $condition) && count((array)$postObject) && $this->delete($condition)) {
 
-                /** 删除分类 */
+                /** Delete category */
                 $this->setCategories($post, [], 'publish' == $postObject->status
                     && 'post' == $postObject->type);
 
-                /** 删除标签 */
+                /** Delete label */
                 $this->setTags($post, null, 'publish' == $postObject->status
                     && 'post' == $postObject->type);
 
-                /** 删除评论 */
+                /** Delete comment */
                 $this->db->query($this->db->delete('table.comments')
                     ->where('cid = ?', $post));
 
-                /** 解除附件关联 */
+                /** Dissociate attachment */
                 $this->unAttach($post);
 
-                /** 删除草稿 */
+                /** Delete draft */
                 $draft = $this->db->fetchRow($this->db->select('cid')
                     ->from('table.contents')
                     ->where('table.contents.parent = ? AND table.contents.type = ?', $post, 'revision')
                     ->limit(1));
 
-                /** 删除自定义字段 */
+                /** Delete custom fields */
                 $this->deleteFields($post);
 
                 if ($draft) {
@@ -277,7 +277,7 @@ class Edit extends Contents implements ActionInterface
                     $this->deleteFields($draft['cid']);
                 }
 
-                // 完成删除插件接口
+                // Complete remove plugin interface
                 self::pluginHandle()->call('finishDelete', $post, $this);
 
                 $deleteCount++;
@@ -286,23 +286,23 @@ class Edit extends Contents implements ActionInterface
             unset($condition);
         }
 
-        // 清理标签
+        // 清理Label
         if ($deleteCount > 0) {
             Metas::alloc()->clearTags();
         }
 
-        /** 设置提示信息 */
+        /** Set notice message */
         Notice::alloc()->set(
-            $deleteCount > 0 ? _t('文章已经被删除') : _t('没有文章被删除'),
+            $deleteCount > 0 ? _t('Post deleted.') : _t('No post to delete.'),
             $deleteCount > 0 ? 'success' : 'notice'
         );
 
-        /** 返回原网页 */
+        /** Return to original page */
         $this->response->goBack();
     }
 
     /**
-     * 删除文章所属草稿
+     * Delete post所属草稿
      *
      * @throws DbException
      */
@@ -312,7 +312,7 @@ class Edit extends Contents implements ActionInterface
         $deleteCount = 0;
 
         foreach ($posts as $post) {
-            /** 删除草稿 */
+            /** Delete draft */
             $draft = $this->db->fetchRow($this->db->select('cid')
                 ->from('table.contents')
                 ->where('table.contents.parent = ? AND table.contents.type = ?', $post, 'revision')
@@ -325,14 +325,14 @@ class Edit extends Contents implements ActionInterface
             }
         }
 
-        /** 设置提示信息 */
+        /** Set notice message */
         Notice::alloc()
             ->set(
-                $deleteCount > 0 ? _t('草稿已经被删除') : _t('没有草稿被删除'),
+                $deleteCount > 0 ? _t('Drafts deleted.') : _t('No draft to delete.'),
                 $deleteCount > 0 ? 'success' : 'notice'
             );
 
-        /** 返回原网页 */
+        /** Return to original page */
         $this->response->goBack();
     }
 
@@ -343,11 +343,11 @@ class Edit extends Contents implements ActionInterface
      */
     public function prepare(): self
     {
-        return $this->prepareEdit('post', true, _t('文章不存在'));
+        return $this->prepareEdit('post', true, _t('Post does not exist.'));
     }
 
     /**
-     * 绑定动作
+     * Bind action
      *
      * @throws Exception|DbException
      */

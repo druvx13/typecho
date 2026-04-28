@@ -12,7 +12,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 表单处理帮手
+ * Form processing helper
  *
  * @category typecho
  * @package Widget
@@ -45,13 +45,13 @@ class Form extends Layout
     private array $inputs = [];
 
     /**
-     * 构造函数,设置基本属性
+     * Constructor,设置基本属性
      *
      * @access public
      */
     public function __construct($action = null, $method = self::GET_METHOD, $enctype = self::STANDARD_ENCODE)
     {
-        /** 设置表单标签 */
+        /** 设置表单Label */
         parent::__construct('form');
 
         /** 关闭自闭合 */

@@ -11,7 +11,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 安全选项组件
+ * Security options widget
  *
  * @link typecho
  * @package Widget
@@ -39,7 +39,7 @@ class Security extends Base
     }
 
     /**
-     * 初始化函数
+     * Initialization function
      */
     public function execute()
     {
@@ -79,7 +79,7 @@ class Security extends Base
     }
 
     /**
-     * 获取绝对路由路径
+     * 获取绝对Route path
      *
      * @param string|null $path
      * @return string
@@ -133,7 +133,7 @@ class Security extends Base
     }
 
     /**
-     * 输出安全的路由路径
+     * 输出安全的Route path
      *
      * @param $path
      */
@@ -143,7 +143,7 @@ class Security extends Base
     }
 
     /**
-     * 获取安全的路由路径
+     * 获取安全的Route path
      *
      * @param $path
      * @return string

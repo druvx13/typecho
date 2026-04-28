@@ -59,7 +59,7 @@ trait TreeTrait
     private array $parents = [];
 
     /**
-     * 根据深度余数输出
+     * Output based on depth remainder
      *
      * @param ...$args
      */
@@ -205,7 +205,7 @@ trait TreeTrait
             $this->map[$row[$pk]] = $row;
         }
 
-        // 读取数据
+        // Read data
         foreach ($this->map as $id => $row) {
             $parent = $row['parent'];
 

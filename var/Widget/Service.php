@@ -14,7 +14,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 通用异步服务组件
+ * General async service widget
  *
  * @author qining
  * @category typecho
@@ -36,7 +36,7 @@ class Service extends BaseOptions implements ActionInterface
      */
     public function sendPingHandle()
     {
-        /** 验证权限 */
+        /** Verify permissions */
         $data = $this->request->get('@json');
         $token = $data['token'] ?? '';
         $permalink = $data['permalink'] ?? '';
@@ -46,12 +46,12 @@ class Service extends BaseOptions implements ActionInterface
         $response = ['trackback' => [], 'pingback' => []];
 
         if (!Common::timeTokenValidate($token, $this->options->secret, 3) || empty($permalink)) {
-            throw new Exception(_t('禁止访问'), 403);
+            throw new Exception(_t('Access denied.'), 403);
         }
 
         $this->response->throwFinish();
 
-        /** 忽略超时 */
+        /** Ignore timeout */
         if (function_exists('ignore_user_abort')) {
             ignore_user_abort(true);
         }
@@ -221,7 +221,7 @@ class Service extends BaseOptions implements ActionInterface
     }
 
     /**
-     * 请求异步服务
+     * Request async service
      *
      * @param $method
      * @param mixed $params
@@ -260,17 +260,17 @@ class Service extends BaseOptions implements ActionInterface
      */
     public function asyncHandle()
     {
-        /** 验证权限 */
+        /** Verify permissions */
         $data = $this->request->get('@json');
         $token = $data['token'] ?? '';
 
         if (!Common::timeTokenValidate($token, $this->options->secret, 3)) {
-            throw new Exception(_t('禁止访问'), 403);
+            throw new Exception(_t('Access denied.'), 403);
         }
 
         $this->response->throwFinish();
 
-        /** 忽略超时 */
+        /** Ignore timeout */
         if (function_exists('ignore_user_abort')) {
             ignore_user_abort(true);
         }
@@ -291,7 +291,7 @@ class Service extends BaseOptions implements ActionInterface
     }
 
     /**
-     * 异步请求入口
+     * Async request entry point
      */
     public function action()
     {

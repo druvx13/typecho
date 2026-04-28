@@ -11,7 +11,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 全局选项组件
+ * Global options widget
  *
  * @link typecho
  * @package Widget
@@ -21,7 +21,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Options extends Base implements QueryInterface
 {
     /**
-     * 获取原始查询对象
+     * Get raw query object
      *
      * @param mixed ...$fields
      * @return Query
@@ -33,9 +33,9 @@ class Options extends Base implements QueryInterface
     }
 
     /**
-     * 插入一条记录
+     * Insert one record
      *
-     * @param array $rows 记录插入值
+     * @param array $rows Record insert values
      * @return integer
      * @throws Exception
      */
@@ -45,10 +45,10 @@ class Options extends Base implements QueryInterface
     }
 
     /**
-     * 更新记录
+     * Update record
      *
-     * @param array $rows 记录更新值
-     * @param Query $condition 更新条件
+     * @param array $rows Record update values
+     * @param Query $condition Update condition
      * @return integer
      * @throws Exception
      */
@@ -58,9 +58,9 @@ class Options extends Base implements QueryInterface
     }
 
     /**
-     * 删除记录
+     * Delete record
      *
-     * @param Query $condition 删除条件
+     * @param Query $condition Delete condition
      * @return integer
      * @throws Exception
      */
@@ -70,9 +70,9 @@ class Options extends Base implements QueryInterface
     }
 
     /**
-     * 获取记录总数
+     * Get total record count
      *
-     * @param Query $condition 计算条件
+     * @param Query $condition Count condition
      * @return integer
      * @throws Exception
      */

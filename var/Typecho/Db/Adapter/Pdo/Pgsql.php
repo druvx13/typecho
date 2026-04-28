@@ -22,7 +22,7 @@ class Pgsql extends Pdo
     use PgsqlTrait;
 
     /**
-     * 判断适配器是否可用
+     * Check whether the adapter is available
      *
      * @access public
      * @return boolean
@@ -33,13 +33,13 @@ class Pgsql extends Pdo
     }
 
     /**
-     * 执行数据库查询
+     * Execute database query
      *
-     * @param string $query 数据库查询SQL字符串
-     * @param \PDO $handle 连接对象
-     * @param integer $op 数据库读写状态
-     * @param string|null $action 数据库动作
-     * @param string|null $table 数据表
+     * @param string $query Database SQL query string
+     * @param \PDO $handle Connection handle
+     * @param integer $op Database read/write mode
+     * @param string|null $action Database action
+     * @param string|null $table Database table
      * @return \PDOStatement
      * @throws SQLException
      */
@@ -55,9 +55,9 @@ class Pgsql extends Pdo
     }
 
     /**
-     * 初始化数据库
+     * Initialize database
      *
-     * @param Config $config 数据库配置
+     * @param Config $config Database configuration
      * @return \PDO
      */
     public function init(Config $config): \PDO

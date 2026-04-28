@@ -26,7 +26,7 @@ class Rows extends Metas
     use TreeViewTrait;
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @return void
      */
@@ -42,7 +42,7 @@ class Rows extends Metas
      */
     public function listCategories($categoryOptions = null)
     {
-        //初始化一些变量
+        // Initialize some variables
         $categoryOptions = Config::factory($categoryOptions);
         $categoryOptions->setDefault([
             'wrapTag'       => 'ul',
@@ -55,7 +55,7 @@ class Rows extends Metas
             'feedTemplate'  => '<a href="%s">RSS</a>'
         ]);
 
-        // 插件插件接口
+        // Plugin interface
         self::pluginHandle()->trigger($plugged)->call('listCategories', $categoryOptions, $this);
 
         if (!$plugged) {

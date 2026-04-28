@@ -33,7 +33,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * XmlRpc接口
+ * XML-RPC interface
  *
  * @author blankyao
  * @category typecho
@@ -44,7 +44,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class XmlRpc extends Contents implements ActionInterface, Hook
 {
     /**
-     * wordpress风格的系统选项
+     * WordPress-style system options
      *
      * @access private
      * @var array
@@ -52,9 +52,9 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     private array $wpOptions;
 
     /**
-     * 如果这里没有重载, 每次都会被默认执行
+     * If not overridden, this is executed by default every time
      *
-     * @param bool $run 是否执行
+     * @param bool $run Whether to execute
      */
     public function execute(bool $run = false)
     {
@@ -62,76 +62,76 @@ class XmlRpc extends Contents implements ActionInterface, Hook
             parent::execute();
         }
 
-        // 临时保护模块
+        // Temporary protection module
         $this->security->enable(false);
 
         $this->wpOptions = [
             // Read only options
             'software_name'    => [
-                'desc'     => _t('软件名称'),
+                'desc'     => _t('Software name'),
                 'readonly' => true,
                 'value'    => $this->options->software
             ],
             'software_version' => [
-                'desc'     => _t('软件版本'),
+                'desc'     => _t('Software version'),
                 'readonly' => true,
                 'value'    => $this->options->version
             ],
             'blog_url'         => [
-                'desc'     => _t('博客地址'),
+                'desc'     => _t('Blog URL'),
                 'readonly' => true,
                 'option'   => 'siteUrl'
             ],
             'home_url'         => [
-                'desc'     => _t('博客首页地址'),
+                'desc'     => _t('Homepage URL'),
                 'readonly' => true,
                 'option'   => 'siteUrl'
             ],
             'login_url'        => [
-                'desc'     => _t('登录地址'),
+                'desc'     => _t('Login URL'),
                 'readonly' => true,
                 'value'    => $this->options->loginUrl
             ],
             'admin_url'        => [
-                'desc'     => _t('管理区域的地址'),
+                'desc'     => _t('Control Panel URL'),
                 'readonly' => true,
                 'value'    => $this->options->adminUrl
             ],
 
             'post_thumbnail'     => [
-                'desc'     => _t('文章缩略图'),
+                'desc'     => _t('Article slug'),
                 'readonly' => true,
                 'value'    => false
             ],
 
             // Updatable options
             'time_zone'          => [
-                'desc'     => _t('时区'),
+                'desc'     => _t('Timezone'),
                 'readonly' => false,
                 'option'   => 'timezone'
             ],
             'blog_title'         => [
-                'desc'     => _t('博客标题'),
+                'desc'     => _t('Blog title'),
                 'readonly' => false,
                 'option'   => 'title'
             ],
             'blog_tagline'       => [
-                'desc'     => _t('博客关键字'),
+                'desc'     => _t('Blog keywords'),
                 'readonly' => false,
                 'option'   => 'description'
             ],
             'date_format'        => [
-                'desc'     => _t('日期格式'),
+                'desc'     => _t('Date format'),
                 'readonly' => false,
                 'option'   => 'postDateFormat'
             ],
             'time_format'        => [
-                'desc'     => _t('时间格式'),
+                'desc'     => _t('Time format'),
                 'readonly' => false,
                 'option'   => 'postDateFormat'
             ],
             'users_can_register' => [
-                'desc'     => _t('是否允许注册'),
+                'desc'     => _t('Whether Allow registration'),
                 'readonly' => false,
                 'option'   => 'allowRegister'
             ]
@@ -139,7 +139,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取pageId指定的page
+     * Get page specified by pageId
      * about wp xmlrpc api, you can see http://codex.wordpress.org/XML-RPC
      *
      * @param int $blogId
@@ -150,10 +150,10 @@ class XmlRpc extends Contents implements ActionInterface, Hook
      */
     public function wpGetPage(int $blogId, int $pageId, string $userName, string $password): array
     {
-        /** 获取页面 */
+        /** Get page */
         $page = PageEdit::alloc(null, ['cid' => $pageId], false);
 
-        /** 对文章内容做截取处理，以获得description和text_more*/
+        /** Truncate post content to obtain description and text_more */
         [$excerpt, $more] = $this->getPostExtended($page);
 
         return [
@@ -218,14 +218,14 @@ class XmlRpc extends Contents implements ActionInterface, Hook
 
         if ($valid == 0) {
             if ($this->user->login($auth['userName'], $auth['password'], true)) {
-                /** 验证权限 */
+                /** Verify permissions */
                 if ($this->user->pass($accesses[$methodName] ?? 'contributor', true)) {
                     $this->user->execute();
                 } else {
-                    throw new Exception(_t('权限不足'), 403);
+                    throw new Exception(_t('Permission is too low.'), 403);
                 }
             } else {
-                throw new Exception(_t('无法登录, 密码错误'), 403);
+                throw new Exception(_t('Login failed: incorrect password'), 403);
             }
         }
     }
@@ -240,7 +240,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取所有的page
+     * Get all pages
      *
      * @param int $blogId
      * @param string $userName
@@ -249,15 +249,15 @@ class XmlRpc extends Contents implements ActionInterface, Hook
      */
     public function wpGetPages(int $blogId, string $userName, string $password): array
     {
-        /** 过滤type为page的contents */
-        /** 同样需要flush一下, 需要取出所有status的页面 */
+        /** Filter contents of type page */
+        /** Also needs to flush; must retrieve pages of all statuses */
         $pages = PageAdmin::alloc(null, 'status=all');
 
-        /** 初始化要返回的数据结构 */
+        /** Initialize the data structure to return */
         $pageStructs = [];
 
         while ($pages->next()) {
-            /** 对文章内容做截取处理，以获得description和text_more*/
+            /** Truncate post content to obtain description and text_more */
             [$excerpt, $more] = $this->getPostExtended($pages);
             $pageStructs[] = [
                 'dateCreated'            => new Date($this->options->timezone + $pages->created),
@@ -294,7 +294,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 撰写一个新page
+     * Create a new page
      *
      * @param int $blogId
      * @param string $userName
@@ -324,16 +324,16 @@ class XmlRpc extends Contents implements ActionInterface, Hook
      */
     public function mwNewPost(int $blogId, string $userName, string $password, array $content, bool $publish): int
     {
-        /** 取得content内容 */
+        /** Get content body */
         $input = [];
         $type = isset($content['post_type']) && 'page' == $content['post_type'] ? 'page' : 'post';
 
-        $input['title'] = trim($content['title']) == null ? _t('未命名文档') : $content['title'];
+        $input['title'] = trim($content['title']) == null ? _t('Unnamed document') : $content['title'];
 
         if (isset($content['slug'])) {
             $input['slug'] = $content['slug'];
         } elseif (isset($content['wp_slug'])) {
-            //fix issue 338, wlw只发送这个
+            // Fix issue 338: Windows Live Writer only sends this
             $input['slug'] = $content['wp_slug'];
         }
 
@@ -356,7 +356,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
         }
 
         if (isset($content['dateCreated'])) {
-            /** 解决客户端与服务器端时间偏移 */
+            /** Resolve client-server time offset */
             $input['created'] = $content['dateCreated']->getTimestamp()
                 - $this->options->timezone + $this->options->serverTimezone;
         }
@@ -391,7 +391,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
         $input['do'] = $publish ? 'publish' : 'save';
         $input['markdown'] = $this->options->xmlrpcMarkdown;
 
-        /** 调整状态 */
+        /** Adjust status */
         if (isset($content["{$type}_status"])) {
             $status = $this->wordpressToTypechoStatus($content["{$type}_status"], $type);
             $input['visibility'] = $content["visibility"] ?? $status;
@@ -406,7 +406,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
             }
         }
 
-        /** 对未归档附件进行归档 */
+        /** Archive unarchived attachments */
         $unattached = Unattached::alloc();
 
         if ($unattached->have()) {
@@ -421,7 +421,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
             }
         }
 
-        /** 调用已有组件 */
+        /** Invoke existing widget */
         if ('page' == $type) {
             $widget = PageEdit::alloc(null, $input, function (PageEdit $page) {
                 $page->writePage();
@@ -436,7 +436,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 添加一个新的分类
+     * Add a new category
      *
      * @param int $blogId
      * @param string $userName
@@ -453,13 +453,13 @@ class XmlRpc extends Contents implements ActionInterface, Hook
         $input['parent'] = $category['parent_id'] ?? ($category['parent'] ?? 0);
         $input['description'] = Common::strBy($category['description'] ?? null, $category['name']);
 
-        /** 调用已有组件 */
+        /** Invoke existing widget */
         $categoryWidget = CategoryEdit::alloc(null, $input, function (CategoryEdit $category) {
             $category->insertCategory();
         });
 
         if (!$categoryWidget->have()) {
-            throw new Exception(_t('分类不存在'), 404);
+            throw new Exception(_t('This category does not exist.'), 404);
         }
 
         return $categoryWidget->mid;
@@ -552,7 +552,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
 
             $attachment['text'] = json_encode($text);
 
-            /** 更新数据 */
+            /** Update data */
             $updateRows = $this->update($attachment, $this->db->sql()->where('cid = ?', $postId));
             return $updateRows > 0;
         }
@@ -587,7 +587,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获得一个由blog所有作者的信息组成的数组
+     * 获得Mon个由blog所有作者的信息组成的数组
      *
      * @param int $blogId
      * @param string $userName
@@ -597,7 +597,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
      */
     public function wpGetAuthors(int $blogId, string $userName, string $password): array
     {
-        /** 构建查询*/
+        /** Build query*/
         $select = $this->db->select('table.users.uid', 'table.users.name', 'table.users.screenName')
             ->from('table.users');
         $authors = $this->db->fetchAll($select);
@@ -651,7 +651,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
         /** 不要category push到contents的容器中 */
         $categories = MetasFrom::alloc(['query' => $select]);
 
-        /** 初始化categorise数组*/
+        /** Initialize categories array */
         $categoryStructs = [];
         while ($categories->next()) {
             $categoryStructs[] = [
@@ -664,10 +664,10 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取用户
+     * Get user
      *
-     * @param string $userName 用户名
-     * @param string $password 密码
+     * @param string $userName Username
+     * @param string $password Password
      * @return array
      */
     public function wpGetUsersBlogs(string $userName, string $password): array
@@ -684,11 +684,11 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取用户
+     * Get user
      *
      * @param int $blogId
-     * @param string $userName 用户名
-     * @param string $password 密码
+     * @param string $userName Username
+     * @param string $password Password
      * @return array
      */
     public function wpGetProfile(int $blogId, string $userName, string $password): array
@@ -709,7 +709,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取标签列表
+     * 获取Tag list
      *
      * @param integer $blogId
      * @param string $userName
@@ -736,7 +736,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 删除分类
+     * Delete category
      *
      * @param integer $blogId
      * @param string $userName
@@ -754,7 +754,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取评论数目
+     * Get comment count
      *
      * @param integer $blogId
      * @param string $userName
@@ -775,7 +775,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取文章类型列表
+     * 获取Post type列表
      *
      * @param integer $blogId
      * @param string $userName
@@ -785,12 +785,12 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     public function wpGetPostFormats(int $blogId, string $userName, string $password): array
     {
         return [
-            'standard' => _t('标准')
+            'standard' => _t('Standard')
         ];
     }
 
     /**
-     * 获取文章状态列表
+     * Get post status列表
      *
      * @param integer $blogId
      * @param string $userName
@@ -800,9 +800,9 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     public function wpGetPostStatusList(int $blogId, string $userName, string $password): array
     {
         return [
-            'draft'   => _t('草稿'),
-            'pending' => _t('待审核'),
-            'publish' => _t('已发布')
+            'draft'   => _t('Drafts'),
+            'pending' => _t('Awaiting approval'),
+            'publish' => _t('Published')
         ];
     }
 
@@ -817,13 +817,13 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     public function wpGetPageStatusList(int $blogId, string $userName, string $password): array
     {
         return [
-            'draft'   => _t('草稿'),
-            'publish' => _t('已发布')
+            'draft'   => _t('Drafts'),
+            'publish' => _t('Published')
         ];
     }
 
     /**
-     * 获取评论状态列表
+     * 获取Comment status列表
      *
      * @param integer $blogId
      * @param string $userName
@@ -833,9 +833,9 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     public function wpGetCommentStatusList(int $blogId, string $userName, string $password): array
     {
         return [
-            'hold'    => _t('待审核'),
-            'approve' => _t('显示'),
-            'spam'    => _t('垃圾')
+            'hold'    => _t('Awaiting approval'),
+            'approve' => _t('Show'),
+            'spam'    => _t('Spam')
         ];
     }
 
@@ -921,7 +921,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取评论
+     * Get comment
      *
      * @param integer $blogId
      * @param string $userName
@@ -937,11 +937,11 @@ class XmlRpc extends Contents implements ActionInterface, Hook
         });
 
         if (!$comment->have()) {
-            throw new Exception(_t('评论不存在'), 404);
+            throw new Exception(_t('Comments do not exist.'), 404);
         }
 
         if (!$comment->commentIsWriteable()) {
-            throw new Exception(_t('没有获取评论的权限'), 403);
+            throw new Exception(_t('No permission to obtain the comments.'), 403);
         }
 
         return [
@@ -963,7 +963,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取评论列表
+     * Get comment列表
      *
      * @param integer $blogId
      * @param string $userName
@@ -1020,7 +1020,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取评论
+     * Get comment
      *
      * @param integer $blogId
      * @param string $userName
@@ -1038,7 +1038,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 编辑评论
+     * Edit comment
      *
      * @param integer $blogId
      * @param string $userName
@@ -1085,7 +1085,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 更新评论
+     * Update comment
      *
      * @param integer $blogId
      * @param string $userName
@@ -1139,7 +1139,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取媒体文件
+     * Get media file
      *
      * @param integer $blogId
      * @param string $userName
@@ -1191,7 +1191,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取媒体文件
+     * Get media file
      *
      * @param integer $blogId
      * @param string $userName
@@ -1231,9 +1231,9 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     {
         $post = PostEdit::alloc(null, ['cid' => $postId], false);
 
-        /** 对文章内容做截取处理，以获得description和text_more*/
+        /** Truncate post content to obtain description and text_more */
         [$excerpt, $more] = $this->getPostExtended($post);
-        /** 只需要分类的name*/
+        /** Only need category name */
         $categories = array_column($post->categories, 'name');
         $tags = array_column($post->tags, 'name');
 
@@ -1279,10 +1279,10 @@ class XmlRpc extends Contents implements ActionInterface, Hook
         $postStructs = [];
         /** 如果这个post存在则输出，否则输出错误 */
         while ($posts->next()) {
-            /** 对文章内容做截取处理，以获得description和text_more*/
+            /** Truncate post content to obtain description and text_more */
             [$excerpt, $more] = $this->getPostExtended($posts);
 
-            /** 只需要分类的name*/
+            /** Only need category name */
             /** 可以用flatten函数处理 */
             $categories = array_column($posts->categories, 'name');
             $tags = array_column($posts->tags, 'name');
@@ -1385,7 +1385,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
             $this->db->fetchRow($this->select()->where('table.contents.cid = ?', $insertId)
                 ->where('table.contents.type = ?', 'attachment'), [$this, 'push']);
 
-            /** 增加插件接口 */
+            /** Add plugin interface */
             self::pluginHandle()->call('upload', $this);
 
             return [
@@ -1406,7 +1406,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
      */
     public function mtGetRecentPostTitles(int $blogId, string $userName, string $password, int $postsNum): array
     {
-        /** 读取数据*/
+        /** Read data*/
         $posts = PostAdmin::alloc('pageSize=' . $postsNum, 'status=all');
 
         /**初始化*/
@@ -1425,7 +1425,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取分类列表
+     * Get category list
      *
      * @param int $blogId
      * @param string $userName
@@ -1436,7 +1436,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     {
         $categories = CategoryRows::alloc();
 
-        /** 初始化categorise数组*/
+        /** Initialize categories array */
         $categoryStructs = [];
         while ($categories->next()) {
             $categoryStructs[] = [
@@ -1550,7 +1550,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     }
 
     /**
-     * 获取当前作者的一个指定id的post的详细信息
+     * 获取当前作者的Mon个指定id的post的详细信息
      *
      * @param int $blogId
      * @param int $postId
@@ -1577,7 +1577,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
 
     /**
      * bloggerDeletePost
-     * 删除文章
+     * Delete post
      *
      * @param int $blogId
      * @param int $postId
@@ -1638,7 +1638,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
      */
     public function bloggerGetTemplate(int $blogId, string $userName, string $password, $template): bool
     {
-        /** todo:暂时先返回true*/
+        /** todo: return true for now */
         return true;
     }
 
@@ -1654,7 +1654,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
      */
     public function bloggerSetTemplate(int $blogId, string $userName, string $password, $content, $template): bool
     {
-        /** todo:暂时先返回true*/
+        /** todo: return true for now */
         return true;
     }
 
@@ -1668,23 +1668,23 @@ class XmlRpc extends Contents implements ActionInterface, Hook
      */
     public function pingbackPing(string $source, string $target): int
     {
-        /** 检查目标地址是否正确*/
+        /** 检查Target URL是否正确*/
         $pathInfo = Common::url(substr($target, strlen($this->options->index)), '/');
         $post = Router::match($pathInfo);
 
         /** 检查源地址是否合法 */
         $params = parse_url($source);
         if (false === $params || !in_array($params['scheme'], ['http', 'https'])) {
-            throw new Exception(_t('源地址服务器错误'), 16);
+            throw new Exception(_t('Source server is incorrect.'), 16);
         }
 
         if (!Common::checkSafeHost($params['host'])) {
-            throw new Exception(_t('源地址服务器错误'), 16);
+            throw new Exception(_t('Source server is incorrect.'), 16);
         }
 
         /** 这样可以得到cid或者slug*/
         if (!($post instanceof Archive) || !$post->have() || !$post->is('single')) {
-            throw new Exception(_t('这个目标地址不存在'), 33);
+            throw new Exception(_t('Target URL does not exist.'), 33);
         }
 
         if ($post) {
@@ -1724,21 +1724,21 @@ class XmlRpc extends Contents implements ActionInterface, Hook
                         /** 执行插入*/
                         $insertId = Comments::alloc()->insert($pingback);
 
-                        /** 评论完成接口 */
+                        /** Comment completion interface */
                         self::pluginHandle()->call('finishPingback', $this);
 
                         return $insertId;
                     } catch (WidgetException $e) {
-                        throw new Exception(_t('源地址服务器错误'), 16);
+                        throw new Exception(_t('Source server is incorrect.'), 16);
                     }
                 } else {
-                    throw new Exception(_t('PingBack已经存在'), 48);
+                    throw new Exception(_t('PingBack already exists.'), 48);
                 }
             } else {
-                throw new Exception(_t('目标地址禁止Ping'), 49);
+                throw new Exception(_t('Target URL forbids Ping.'), 49);
             }
         } else {
-            throw new Exception(_t('这个目标地址不存在'), 33);
+            throw new Exception(_t('Target URL does not exist.'), 33);
         }
     }
 
@@ -1750,7 +1750,7 @@ class XmlRpc extends Contents implements ActionInterface, Hook
     public function action()
     {
         if (0 == $this->options->allowXmlRpc) {
-            throw new Exception(_t('请求的地址不存在'), 404);
+            throw new Exception(_t('Requested URL does not exist.'), 404);
         }
 
         if (isset($this->request->rsd)) {
@@ -1908,7 +1908,7 @@ EOF;
             case false !== strpos($agent, 'wp-iphone'):   // wordpress iphone客户端
             case false !== strpos($agent, 'wp-blackberry'):  // 黑莓
             case false !== strpos($agent, 'wp-andriod'):  // andriod
-            case false !== strpos($agent, 'plain-text'):  // 这是预留给第三方开发者的接口, 用于强行调用非所见即所得数据
+            case false !== strpos($agent, 'plain-text'):  // 这是预留给第Wed方开发者的接口, 用于强行调用非所见即所得数据
             case $this->options->xmlrpcMarkdown:
                 $text = $content->text;
                 break;
@@ -1928,13 +1928,13 @@ EOF;
      * 将typecho的状态类型转换为wordperss的风格
      *
      * @param string $status typecho的状态
-     * @param string $type 内容类型
+     * @param string $type Content type
      * @return string
      */
     private function typechoToWordpressStatus(string $status, string $type = 'post'): string
     {
         if ('post' == $type) {
-            /** 文章状态 */
+            /** Post status */
             switch ($status) {
                 case 'waiting':
                     return 'pending';
@@ -1975,13 +1975,13 @@ EOF;
      *
      * @access private
      * @param string $status wordpress的状态
-     * @param string $type 内容类型
+     * @param string $type Content type
      * @return string
      */
     private function wordpressToTypechoStatus(string $status, string $type = 'post'): string
     {
         if ('post' == $type) {
-            /** 文章状态 */
+            /** Post status */
             switch ($status) {
                 case 'pending':
                     return 'waiting';

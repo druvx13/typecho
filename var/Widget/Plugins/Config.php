@@ -23,14 +23,14 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Config extends Options
 {
     /**
-     * 获取插件信息
+     * Get plugin info
      *
      * @var array
      */
     public array $info;
 
     /**
-     * 插件文件路径
+     * 插件File path
      *
      * @var string
      */
@@ -44,7 +44,7 @@ class Config extends Options
     private string $className;
 
     /**
-     * 绑定动作
+     * Bind action
      *
      * @throws Plugin\Exception
      * @throws Exception|\Typecho\Db\Exception
@@ -54,45 +54,45 @@ class Config extends Options
         $this->user->pass('administrator');
         $config = $this->request->filter('slug')->get('config');
         if (empty($config)) {
-            throw new Exception(_t('插件不存在'), 404);
+            throw new Exception(_t('Plugin does not exist.'), 404);
         }
 
-        /** 获取插件入口 */
+        /** Get plugin entry point */
         [$this->pluginFileName, $this->className] = Plugin::portal($config, $this->options->pluginDir);
         $this->info = Plugin::parseInfo($this->pluginFileName);
     }
 
     /**
-     * 获取菜单标题
+     * Get menu title
      *
      * @return string
      */
     public function getMenuTitle(): string
     {
-        return _t('设置插件 %s', $this->info['title']);
+        return _t('Setup plugin %s', $this->info['title']);
     }
 
     /**
-     * 配置插件
+     * Configure plugin
      *
      * @return Form
      * @throws Exception|Plugin\Exception
      */
     public function config(): Form
     {
-        /** 获取插件名称 */
+        /** Get plugin name */
         $pluginName = $this->request->filter('slug')->get('config');
 
-        /** 获取已启用插件 */
+        /** Get enabled plugins */
         $plugins = Plugin::export();
         $activatedPlugins = $plugins['activated'];
 
-        /** 判断实例化是否成功 */
+        /** Check whether instantiation succeeded */
         if (!$this->info['config'] || !isset($activatedPlugins[$pluginName])) {
-            throw new Exception(_t('无法配置插件'), 500);
+            throw new Exception(_t('Cannot configure plugin.'), 500);
         }
 
-        /** 载入插件 */
+        /** Load plugin */
         require_once $this->pluginFileName;
         $form = new Form($this->security->getIndex('/action/plugins-edit?config=' . $pluginName), Form::POST_METHOD);
         call_user_func([$this->className, 'config'], $form);
@@ -105,7 +105,7 @@ class Config extends Options
             }
         }
 
-        $submit = new Form\Element\Submit(null, null, _t('保存设置'));
+        $submit = new Form\Element\Submit(null, null, _t('Save settings.'));
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
         return $form;

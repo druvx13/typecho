@@ -12,7 +12,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 升级组件
+ * Upgrade widget
  *
  * @author qining
  * @category typecho
@@ -26,7 +26,7 @@ class Upgrade extends BaseOptions implements ActionInterface
     public const MIN_VERSION = '1.1.0';
 
     /**
-     * 执行升级程序
+     * Execute upgrade routine
      *
      * @throws \Typecho\Db\Exception
      */
@@ -67,7 +67,7 @@ class Upgrade extends BaseOptions implements ActionInterface
                 $this->response->goBack();
             }
 
-            /** 更新版本号 */
+            /** Update version number */
             $this->update(
                 ['value' => 'Typecho ' . $version],
                 $this->db->sql()->where('name = ?', 'generator')
@@ -76,20 +76,20 @@ class Upgrade extends BaseOptions implements ActionInterface
             Options::destroy($version);
         }
 
-        /** 更新版本号 */
+        /** Update version number */
         $this->update(
             ['value' => 'Typecho ' . Common::VERSION],
             $this->db->sql()->where('name = ?', 'generator')
         );
 
         Notice::alloc()->set(
-            empty($message) ? _t("升级已经完成") : $message,
+            empty($message) ? _t("Upgrade completed.") : $message,
             empty($message) ? 'success' : 'notice'
         );
     }
 
     /**
-     * 初始化函数
+     * Initialization function
      *
      * @throws \Typecho\Db\Exception
      * @throws \Typecho\Widget\Exception

@@ -17,7 +17,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 编辑文章组件
+ * Post editing widget
  *
  * @author qining
  * @category typecho
@@ -30,20 +30,20 @@ class Edit extends Contents implements ActionInterface
     use PrepareEditTrait;
 
     /**
-     * 执行函数
+     * Execute action
      *
      * @throws Exception|\Typecho\Db\Exception
      */
     public function execute()
     {
-        /** 必须为贡献者以上权限 */
+        /** Must be contributor or higher */
         $this->user->pass('contributor');
     }
 
     /**
-     * 判断文件名转换到缩略名后是否合法
+     * 判断File name转换到缩略名后是否合法
      *
-     * @param string $name 文件名
+     * @param string $name File name
      * @return boolean
      */
     public function nameToSlug(string $name): bool
@@ -61,7 +61,7 @@ class Edit extends Contents implements ActionInterface
     /**
      * 判断文件缩略名是否存在
      *
-     * @param string $slug 缩略名
+     * @param string $slug Slug
      * @return boolean
      * @throws \Typecho\Db\Exception
      */
@@ -93,7 +93,7 @@ class Edit extends Contents implements ActionInterface
             $this->response->goBack();
         }
 
-        /** 取出数据 */
+        /** Fetch data */
         $input = $this->request->from('name', 'slug', 'description');
         $input['slug'] = Common::slugName(Common::strBy($input['slug'] ?? null, $input['name']));
 
@@ -106,7 +106,7 @@ class Edit extends Contents implements ActionInterface
         $attachment['text'] = json_encode($content);
         $cid = $this->request->filter('int')->get('cid');
 
-        /** 更新数据 */
+        /** Update data */
         $updateRows = $this->update($attachment, $this->db->sql()->where('cid = ?', $cid));
 
         if ($updateRows > 0) {
@@ -115,32 +115,32 @@ class Edit extends Contents implements ActionInterface
                 ->where('table.contents.cid = ?', $cid)
                 ->limit(1), [$this, 'push']);
 
-            /** 设置高亮 */
+            /** Set highlight */
             Notice::alloc()->highlight($this->theId);
 
-            /** 提示信息 */
+            /** Notice message */
             Notice::alloc()->set('publish' == $this->status ?
-                _t('文件 <a href="%s">%s</a> 已经被更新', $this->permalink, $this->title) :
-                _t('未归档文件 %s 已经被更新', $this->title), 'success');
+                _t('File <a href="%s">%s</a> updated.', $this->permalink, $this->title) :
+                _t('Unarchived file %s updated.', $this->title), 'success');
         }
 
-        /** 转向原页 */
+        /** Redirect to original page */
         $this->response->redirect(Common::url('manage-medias.php?' .
             $this->getPageOffsetQuery($cid, $this->status), $this->options->adminUrl));
     }
 
     /**
-     * 生成表单
+     * Generate form
      *
      * @return Form
      */
     public function form(): Form
     {
-        /** 构建表格 */
+        /** Build form */
         $form = new Form($this->security->getIndex('/action/contents-attachment-edit'), Form::POST_METHOD);
 
-        /** 文件名称 */
-        $name = new Form\Element\Text('name', null, $this->title, _t('标题') . ' *');
+        /** File name */
+        $name = new Form\Element\Text('name', null, $this->title, _t('Title') . ' *');
         $form->addInput($name);
 
         /** 文件缩略名 */
@@ -148,8 +148,8 @@ class Edit extends Contents implements ActionInterface
             'slug',
             null,
             $this->slug,
-            _t('缩略名'),
-            _t('文件缩略名用于创建友好的链接形式,建议使用字母,数字,下划线和横杠.')
+            _t('Abbreviation'),
+            _t('File abbreviations are used to create friendly URL. We recommend that you use alphanumeric, underlines and dashes.')
         );
         $form->addInput($slug);
 
@@ -158,42 +158,42 @@ class Edit extends Contents implements ActionInterface
             'description',
             null,
             $this->attachment->description,
-            _t('描述'),
-            _t('此文字用于描述文件,在有的主题中它会被显示.')
+            _t('Description'),
+            _t('This text is used to describe files. It will be displayed in certain themes.')
         );
         $form->addInput($description);
 
-        /** 分类动作 */
+        /** Category action */
         $do = new Form\Element\Hidden('do', null, 'update');
         $form->addInput($do);
 
-        /** 分类主键 */
+        /** Category primary key */
         $cid = new Form\Element\Hidden('cid', null, $this->cid);
         $form->addInput($cid);
 
-        /** 提交按钮 */
-        $submit = new Form\Element\Submit(null, null, _t('提交修改'));
+        /** Submit button */
+        $submit = new Form\Element\Submit(null, null, _t('Submit edit.'));
         $submit->input->setAttribute('class', 'btn primary');
         $delete = new Layout('a', [
             'href'  => $this->security->getIndex('/action/contents-attachment-edit?do=delete&cid=' . $this->cid),
             'class' => 'operate-delete',
-            'lang'  => _t('你确认删除文件 %s 吗?', $this->attachment->name)
+            'lang'  => _t('Delete file %s?', $this->attachment->name)
         ]);
-        $submit->container($delete->html(_t('删除文件')));
+        $submit->container($delete->html(_t('Delete file.')));
         $form->addItem($submit);
 
-        $name->addRule('required', _t('必须填写文件标题'));
-        $name->addRule([$this, 'nameToSlug'], _t('文件标题无法被转换为缩略名'));
-        $slug->addRule([$this, 'slugExists'], _t('缩略名已经存在'));
+        $name->addRule('required', _t('You must enter a name for file.'));
+        $name->addRule([$this, 'nameToSlug'], _t('The file name cannot be converted to an abbreviation.'));
+        $slug->addRule([$this, 'slugExists'], _t('Abbreviation already exists.'));
 
         return $form;
     }
 
     /**
-     * 获取页面偏移的URL Query
+     * Get page offset URL query
      *
      * @param integer $cid 文件id
-     * @param string|null $status 状态
+     * @param string|null $status Status
      * @return string
      * @throws \Typecho\Db\Exception|Exception
      */
@@ -209,7 +209,7 @@ class Edit extends Contents implements ActionInterface
     }
 
     /**
-     * 删除文章
+     * Delete post
      *
      * @throws \Typecho\Db\Exception
      */
@@ -221,17 +221,17 @@ class Edit extends Contents implements ActionInterface
         $this->deleteByIds($posts, $deleteCount);
 
         if ($this->request->isAjax()) {
-            $this->response->throwJson($deleteCount > 0 ? ['code' => 200, 'message' => _t('文件已经被删除')]
-                : ['code' => 500, 'message' => _t('没有文件被删除')]);
+            $this->response->throwJson($deleteCount > 0 ? ['code' => 200, 'message' => _t('File deleted.')]
+                : ['code' => 500, 'message' => _t('No file to be deleted.')]);
         } else {
-            /** 设置提示信息 */
+            /** Set notice message */
             Notice::alloc()
                 ->set(
-                    $deleteCount > 0 ? _t('文件已经被删除') : _t('没有文件被删除'),
+                    $deleteCount > 0 ? _t('File deleted.') : _t('No file to be deleted.'),
                     $deleteCount > 0 ? 'success' : 'notice'
                 );
 
-            /** 返回原网页 */
+            /** Return to original page */
             $this->response->redirect(Common::url('manage-medias.php', $this->options->adminUrl));
         }
     }
@@ -258,13 +258,13 @@ class Edit extends Contents implements ActionInterface
             $this->deleteByIds($posts, $deleteCount);
         } while (count($posts) == 100);
 
-        /** 设置提示信息 */
+        /** Set notice message */
         Notice::alloc()->set(
-            $deleteCount > 0 ? _t('未归档文件已经被清理') : _t('没有未归档文件被清理'),
+            $deleteCount > 0 ? _t('Successfully cleaned files that have not been archived.') : _t('No archived files cleaned'),
             $deleteCount > 0 ? 'success' : 'notice'
         );
 
-        /** 返回原网页 */
+        /** Return to original page */
         $this->response->redirect(Common::url('manage-medias.php', $this->options->adminUrl));
     }
 
@@ -275,11 +275,11 @@ class Edit extends Contents implements ActionInterface
      */
     public function prepare(): self
     {
-        return $this->prepareEdit('attachment', false, _t('文件不存在'));
+        return $this->prepareEdit('attachment', false, _t('File does not exist.'));
     }
 
     /**
-     * 绑定动作
+     * Bind action
      *
      * @access public
      * @return void
@@ -302,7 +302,7 @@ class Edit extends Contents implements ActionInterface
     protected function deleteByIds(array $posts, int &$deleteCount): void
     {
         foreach ($posts as $post) {
-            // 删除插件接口
+            // Remove plugin interface
             self::pluginHandle()->call('delete', $post, $this);
 
             $condition = $this->db->sql()->where('cid = ?', $post);
@@ -312,14 +312,14 @@ class Edit extends Contents implements ActionInterface
                 ->limit(1), [$this, 'push']);
 
             if ($this->isWriteable(clone $condition) && $this->delete($condition)) {
-                /** 删除文件 */
+                /** Delete file */
                 Upload::deleteHandle($this->toColumn(['cid', 'attachment', 'parent']));
 
-                /** 删除评论 */
+                /** Delete comment */
                 $this->db->query($this->db->delete('table.comments')
                     ->where('cid = ?', $post));
 
-                // 完成删除插件接口
+                // Complete remove plugin interface
                 self::pluginHandle()->call('finishDelete', $post, $this);
 
                 $deleteCount++;

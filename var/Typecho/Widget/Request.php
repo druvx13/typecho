@@ -11,7 +11,7 @@ use Typecho\Request as HttpRequest;
 class Request
 {
     /**
-     * 支持的过滤器列表
+     * List of supported filters
      *
      * @access private
      * @var string
@@ -75,7 +75,7 @@ class Request
      *
      * @access public
      *
-     * @param mixed $params 参数列表
+     * @param mixed $params Parameter list
      *
      * @return void
      */
@@ -103,10 +103,10 @@ class Request
     }
 
     /**
-     * 获取实际传递参数(magic)
+     * Get actual passed parameters (magic)
      *
      * @deprecated ^1.3.0
-     * @param string $key 指定参数
+     * @param string $key Specified parameter
      * @return mixed
      */
     public function __get(string $key)
@@ -115,10 +115,10 @@ class Request
     }
 
     /**
-     * 判断参数是否存在
+     * Check whether parameter exists
      *
      * @deprecated ^1.3.0
-     * @param string $key 指定参数
+     * @param string $key Specified parameter
      * @return boolean
      */
     public function __isset(string $key)
@@ -157,9 +157,9 @@ class Request
     }
 
     /**
-     * 判断输入是否满足要求
+     * Check whether input meets requirements
      *
-     * @param mixed $query 条件
+     * @param mixed $query Condition
      * @return boolean
      */
     public function is($query): bool
@@ -188,7 +188,7 @@ class Request
     }
 
     /**
-     * 获取请求资源地址
+     * Get request resource URL
      *
      * @return string|null
      */
@@ -198,7 +198,7 @@ class Request
     }
 
     /**
-     * 获取当前pathinfo
+     * Get current path info
      *
      * @return string|null
      */
@@ -208,7 +208,7 @@ class Request
     }
 
     /**
-     * 获取url前缀
+     * Get URL prefix
      *
      * @return string|null
      */
@@ -218,9 +218,9 @@ class Request
     }
 
     /**
-     * 根据当前uri构造指定参数的uri
+     * Build a URI with specified parameters from the current URI
      *
-     * @param mixed $parameter 指定的参数
+     * @param mixed $parameter Specified parameter
      * @return string
      */
     public function makeUriByRequest($parameter = null): string
@@ -229,7 +229,7 @@ class Request
     }
 
     /**
-     * 获取请求的内容类型
+     * Get request content type
      *
      * @return string|null
      */
@@ -239,9 +239,9 @@ class Request
     }
 
     /**
-     * 获取环境变量
+     * Get environment variable
      *
-     * @param string $name 获取环境变量名
+     * @param string $name Environment variable name
      * @param string|null $default
      * @return string|null
      */
@@ -251,7 +251,7 @@ class Request
     }
 
     /**
-     * 获取ip地址
+     * Get IP address
      *
      * @return string
      */
@@ -273,7 +273,7 @@ class Request
     }
 
     /**
-     * 获取客户端
+     * Get client
      *
      * @return string
      */
@@ -283,7 +283,7 @@ class Request
     }
 
     /**
-     * 获取客户端
+     * Get client
      *
      * @return string|null
      */
@@ -293,7 +293,7 @@ class Request
     }
 
     /**
-     * 判断是否为https
+     * Check whether request is HTTPS
      *
      * @return bool
      */
@@ -303,7 +303,7 @@ class Request
     }
 
     /**
-     * 判断是否为get方法
+     * Check whether request method is GET
      *
      * @return boolean
      */
@@ -313,7 +313,7 @@ class Request
     }
 
     /**
-     * 判断是否为post方法
+     * Check whether request method is POST
      *
      * @return boolean
      */
@@ -323,7 +323,7 @@ class Request
     }
 
     /**
-     * 判断是否为put方法
+     * Check whether request method is PUT
      *
      * @return boolean
      */
@@ -333,7 +333,7 @@ class Request
     }
 
     /**
-     * 判断是否为ajax
+     * Check whether request is Ajax
      *
      * @return boolean
      */

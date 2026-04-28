@@ -5,16 +5,16 @@ if (!defined('__DIR__')) {
 
 define('__TYPECHO_ADMIN__', true);
 
-/** 载入配置文件 */
+/** Load configuration file */
 if (!defined('__TYPECHO_ROOT_DIR__') && !@include_once __DIR__ . '/../config.inc.php') {
     file_exists(__DIR__ . '/../install.php') ? header('Location: ../install.php') : print('Missing Config File');
     exit;
 }
 
-/** 初始化组件 */
+/** Initialize components */
 \Widget\Init::alloc();
 
-/** 注册一个初始化插件 */
+/** Register an initialization hook */
 \Typecho\Plugin::factory('admin/common.php')->call('begin');
 
 \Widget\Options::alloc()->to($options);
@@ -22,11 +22,11 @@ if (!defined('__TYPECHO_ROOT_DIR__') && !@include_once __DIR__ . '/../config.inc
 \Widget\Security::alloc()->to($security);
 \Widget\Menu::alloc()->to($menu);
 
-/** 初始化上下文 */
+/** Initialize context */
 $request = $options->request;
 $response = $options->response;
 
-/** 检测是否是第一次登录 */
+/** Check whether this is the first login */
 $currentMenu = $menu->getCurrentMenu();
 
 if (!empty($currentMenu)) {
@@ -40,7 +40,7 @@ if (!empty($currentMenu)) {
             \Typecho\Cookie::set('__typecho_first_run', 1);
         }
     } elseif ($user->pass('administrator', true)) {
-        /** 检测版本是否升级 */
+        /** Check whether the version needs upgrading */
         $mustUpgrade = version_compare(\Typecho\Common::VERSION, $options->version, '>');
 
         if ($mustUpgrade && 'upgrade.php' != $adminFile && 'backup.php' != $adminFile) {

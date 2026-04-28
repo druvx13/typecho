@@ -3,7 +3,7 @@
 namespace Typecho;
 
 /**
- * cookie支持
+ * Cookie support
  *
  * @author qining
  * @category typecho
@@ -12,7 +12,7 @@ namespace Typecho;
 class Cookie
 {
     /**
-     * 前缀
+     * Prefix
      *
      * @var string
      * @access private
@@ -46,7 +46,7 @@ class Cookie
     private static bool $httponly = false;
 
     /**
-     * 获取前缀
+     * 获取Prefix
      *
      * @access public
      * @return string
@@ -57,7 +57,7 @@ class Cookie
     }
 
     /**
-     * 设置前缀
+     * 设置Prefix
      *
      * @param string $url
      *
@@ -119,7 +119,7 @@ class Cookie
     /**
      * 获取指定的COOKIE值
      *
-     * @param string $key 指定的参数
+     * @param string $key Specified parameter
      * @param string|null $default 默认的参数
      * @return mixed
      */
@@ -131,11 +131,11 @@ class Cookie
     }
 
     /**
-     * 设置指定的COOKIE值
+     * Set specified cookie value
      *
-     * @param string $key 指定的参数
-     * @param mixed $value 设置的值
-     * @param integer $expire 过期时间,默认为0,表示随会话时间结束
+     * @param string $key Specified parameter
+     * @param mixed $value Value to set
+     * @param integer $expire Expiry time,默认为0,表示随会话时间结束
      */
     public static function set(string $key, $value, int $expire = 0)
     {
@@ -155,7 +155,7 @@ class Cookie
     /**
      * 删除指定的COOKIE值
      *
-     * @param string $key 指定的参数
+     * @param string $key Specified parameter
      */
     public static function delete(string $key)
     {

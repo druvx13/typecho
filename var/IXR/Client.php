@@ -5,7 +5,7 @@ namespace IXR;
 use Typecho\Http\Client as HttpClient;
 
 /**
- * IXR客户端
+ * IXR client
  * reload by typecho team(http://www.typecho.org)
  *
  * @package IXR
@@ -37,7 +37,7 @@ class Client
     private bool $debug = false;
 
     /**
-     * 请求前缀
+     * 请求Prefix
      *
      * @var string|null
      */
@@ -49,7 +49,7 @@ class Client
     private Error $error;
 
     /**
-     * 客户端构造函数
+     * 客户端Constructor
      *
      * @param string $url 服务端地址
      * @param string|null $prefix
@@ -125,12 +125,12 @@ class Client
     }
 
     /**
-     * 增加前缀
+     * 增加Prefix
      * <code>
      * $rpc->metaWeblog->newPost();
      * </code>
      *
-     * @param string $prefix 前缀
+     * @param string $prefix Prefix
      * @return Client
      */
     public function __get(string $prefix): Client

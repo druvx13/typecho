@@ -23,7 +23,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Reading extends Permalink
 {
     /**
-     * 执行更新动作
+     * Execute update action
      *
      * @throws Exception
      */
@@ -83,32 +83,32 @@ class Reading extends Permalink
             $this->update(['value' => $value], $this->db->sql()->where('name = ?', $name));
         }
 
-        Notice::alloc()->set(_t("设置已经保存"), 'success');
+        Notice::alloc()->set(_t("Your settings have been saved."), 'success');
         $this->response->goBack();
     }
 
     /**
-     * 输出表单结构
+     * Output form structure
      *
      * @return Form
      */
     public function form(): Form
     {
-        /** 构建表格 */
+        /** Build form */
         $form = new Form($this->security->getIndex('/action/options-reading'), Form::POST_METHOD);
 
-        /** 文章日期格式 */
+        /** 文章Sun期格式 */
         $postDateFormat = new Form\Element\Text(
             'postDateFormat',
             null,
             $this->options->postDateFormat,
-            _t('文章日期格式'),
-            _t('此格式用于指定显示在文章归档中的日期默认显示格式.') . '<br />'
-            . _t('在某些主题中这个格式可能不会生效, 因为主题作者可以自定义日期格式.') . '<br />'
-            . _t('请参考 <a href="https://www.php.net/manual/zh/function.date.php">PHP 日期格式写法</a>.')
+            _t('Post date format'),
+            _t('This format can be used to specify the default date display format in archives.') . '<br />'
+            . _t('In some themes, this format may not have effects, since theme authors can use customized date formats. ') . '<br />'
+            . _t('See <a href="https://www.php.net/manual/en/function.date.php">PHP date format reference</a>.')
         );
         $postDateFormat->input->setAttribute('class', 'w-40 mono');
-        $form->addInput($postDateFormat->addRule('xssCheck', _t('请不要在日期格式中使用特殊字符')));
+        $form->addInput($postDateFormat->addRule('xssCheck', _t('Please do not use special characters in date format')));
 
         //首页显示
         $frontPageParts = explode(':', $this->options->frontPage);
@@ -116,14 +116,14 @@ class Reading extends Permalink
         $frontPageValue = count($frontPageParts) > 1 ? $frontPageParts[1] : '';
 
         $frontPageOptions = [
-            'recent' => _t('显示最新发布的文章')
+            'recent' => _t('Display recent posts.')
         ];
 
         $frontPattern = '</label></span><span class="multiline front-archive%class%">'
             . '<input type="checkbox" id="frontArchive" name="frontArchive" value="1"'
             . ($this->options->frontArchive && 'recent' != $frontPageType ? ' checked' : '') . ' />
 <label for="frontArchive">' . _t(
-                '同时将文章列表页路径更改为 %s',
+                'Change the path to blog page to %s',
                 '<input type="text" name="archivePattern" class="w-20 mono" value="'
                 . htmlspecialchars($this->decodeRule($this->options->routingTable['archive']['url'])) . '" />'
             )
@@ -147,7 +147,7 @@ class Reading extends Permalink
             }
             $pagesSelect .= '</select>';
             $frontPageOptions['page'] = _t(
-                '使用 %s 页面作为首页',
+                'Use %s as the front page.',
                 '</label>' . $pagesSelect . '<label for="frontPage-frontPagePage">'
             );
             $selectedFrontPageType = 'page';
@@ -174,7 +174,7 @@ class Reading extends Permalink
 
         if (!empty($filesSelect)) {
             $frontPageOptions['file'] = _t(
-                '直接调用 %s 模板文件',
+                '直接调用 %s Template files',
                 '</label><select name="frontPageFile" id="frontPage-frontPageFile">'
                 . $filesSelect . '</select><label for="frontPage-frontPageFile">'
             );
@@ -191,7 +191,7 @@ class Reading extends Permalink
             $frontPageOptions[$selectedFrontPageType] .= $frontPattern;
         }
 
-        $frontPage = new Form\Element\Radio('frontPage', $frontPageOptions, $frontPageType, _t('站点首页'));
+        $frontPage = new Form\Element\Radio('frontPage', $frontPageOptions, $frontPageType, _t('Front page of site.'));
         $form->addInput($frontPage->multiMode());
 
         /** 文章列表数目 */
@@ -199,36 +199,36 @@ class Reading extends Permalink
             'postsListSize',
             null,
             $this->options->postsListSize,
-            _t('文章列表数目'),
-            _t('此数目用于指定显示在侧边栏中的文章列表数目.')
+            _t('Length of post list.'),
+            _t('This number specifies how many posts will be displayed in the post list of the sidebar.')
         );
         $postsListSize->input->setAttribute('class', 'w-20');
-        $form->addInput($postsListSize->addRule('isInteger', _t('请填入一个数字')));
+        $form->addInput($postsListSize->addRule('isInteger', _t('Please enter a number')));
 
         /** 每页文章数目 */
         $pageSize = new Form\Element\Number(
             'pageSize',
             null,
             $this->options->pageSize,
-            _t('每页文章数目'),
-            _t('此数目用于指定文章归档输出时每页显示的文章数目.')
+            _t('number of posts per page.'),
+            _t('This number specifies number of posts to be displayed in each page.')
         );
         $pageSize->input->setAttribute('class', 'w-20');
-        $form->addInput($pageSize->addRule('isInteger', _t('请填入一个数字')));
+        $form->addInput($pageSize->addRule('isInteger', _t('Please enter a number')));
 
         /** FEED全文输出 */
         $feedFullText = new Form\Element\Radio(
             'feedFullText',
-            ['0' => _t('仅输出摘要'), '1' => _t('全文输出')],
+            ['0' => _t('Only abstracts.'), '1' => _t('Full text.')],
             $this->options->feedFullText,
-            _t('聚合全文输出'),
-            _t('如果你不希望在聚合中输出文章全文,请使用仅输出摘要选项.') . '<br />'
-            . _t('摘要的文字取决于你在文章中使用分隔符的位置.')
+            _t('Aggregated full text'),
+            _t('If you do not want to show full text in aggregations, please choose "Only abstracts".') . '<br />'
+            . _t('Abstracts depend on the separating tag used in the post.')
         );
         $form->addInput($feedFullText);
 
-        /** 提交按钮 */
-        $submit = new Form\Element\Submit('submit', null, _t('保存设置'));
+        /** Submit button */
+        $submit = new Form\Element\Submit('submit', null, _t('Save settings.'));
         $submit->input->setAttribute('class', 'btn primary');
         $form->addItem($submit);
 
@@ -236,7 +236,7 @@ class Reading extends Permalink
     }
 
     /**
-     * 绑定动作
+     * Bind action
      *
      * @access public
      * @return void

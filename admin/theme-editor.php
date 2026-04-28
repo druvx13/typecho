@@ -14,22 +14,22 @@ include 'menu.php';
             <div class="col-mb-12 col-tb-8 col-9 content">
                 <form method="post" name="theme" id="theme"
                       action="<?php $security->index('/action/themes-edit'); ?>">
-                    <label for="content" class="sr-only"><?php _e('编辑源码'); ?></label>
+                    <label for="content" class="sr-only"><?php _e('Edit source.'); ?></label>
                     <textarea name="content" id="content" class="w-100 mono"
                               <?php if (!$files->currentIsWriteable()): ?>readonly<?php endif; ?>><?php echo $files->currentContent(); ?></textarea>
                     <p class="typecho-option typecho-option-submit">
                         <?php if ($files->currentIsWriteable()): ?>
                             <input type="hidden" name="theme" value="<?php echo $files->currentTheme(); ?>"/>
                             <input type="hidden" name="edit" value="<?php echo $files->currentFile(); ?>"/>
-                            <button type="submit" class="btn primary"><?php _e('保存文件'); ?></button>
+                            <button type="submit" class="btn primary"><?php _e('Save file.'); ?></button>
                         <?php else: ?>
-                            <em><?php _e('此文件无法写入'); ?></em>
+                            <em><?php _e('Cannot write this file.'); ?></em>
                         <?php endif; ?>
                     </p>
                 </form>
             </div>
             <ul class="col-mb-12 col-tb-4 col-3">
-                <li><strong>模板文件</strong></li>
+                <li><strong>Template files</strong></li>
                 <?php while ($files->next()): ?>
                     <li<?php if ($files->current): ?> class="current"<?php endif; ?>>
                         <a href="<?php $options->adminUrl('theme-editor.php?theme=' . $files->currentTheme() . '&file=' . $files->file); ?>"><?php $files->file(); ?></a>
